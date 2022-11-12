@@ -12,7 +12,6 @@ function App() {
 	useEffect(() => {
 		axios.get(`${SERVER_URL}/me`)
 			.then((response) => {
-				console.log(response.data);
 				setUserData(response.data);
 			})
 			.catch((error) => {
@@ -21,7 +20,6 @@ function App() {
 	}, []);
 
 	useEffect(() => {
-		console.log(userData);
 		if(userData.id) {
 			setLoggedIn(true);
 		}
@@ -30,17 +28,17 @@ function App() {
 		}
 	}, [userData]);
 
-	/*
-	const test = axios.get('http://localhost:4000/calendar')
-		.then((response) => {
-			//console.log(response);
-			return response;
-		})
-		.catch((error) => {
-		//console.error(error);
-		}); */
-
-	//console.log(test);
+	useEffect( () => {
+		if (loggedIn && userData) {
+			axios.get(`${SERVER_URL}/calendar`, { params: { user: userData } })
+				.then((response) => {
+					console.log(response);
+				})
+				.catch((error) => {
+					console.error(error);
+				});
+		}
+	}, [loggedIn, userData]);
 
 	return (
 		<div className="app">
