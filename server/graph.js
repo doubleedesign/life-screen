@@ -25,7 +25,7 @@ module.exports = {
 		return client
 			.api('/me/calendarview')
 			// Add Prefer header to get back times in user's timezone
-			.header("Prefer", `outlook.timezone="${timeZone}"`)
+			.header('Prefer', `outlook.timezone="${timeZone}"`)
 			// Add the begin and end of the calendar window
 			.query({
 				startDateTime: encodeURIComponent(start),
@@ -54,9 +54,7 @@ function getAuthenticatedClient(msalClient, userId) {
 		authProvider: async (done) => {
 			try {
 				// Get the user's account
-				const account = await msalClient
-					.getTokenCache()
-					.getAccountByHomeId(userId);
+				const account = await msalClient.getTokenCache().getAccountByHomeId(userId);
 
 				if (account) {
 					// Attempt to get the token silently
@@ -72,7 +70,8 @@ function getAuthenticatedClient(msalClient, userId) {
 					// Set to null in success case
 					done(null, response.accessToken);
 				}
-			} catch (err) {
+			}
+			catch (err) {
 				console.log(JSON.stringify(err, Object.getOwnPropertyNames(err)));
 				done(err, null);
 			}

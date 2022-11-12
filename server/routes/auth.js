@@ -1,11 +1,12 @@
-const router = require('express-promise-router')();
 const graph = require('../graph');
+const router = require('express-promise-router').default();
 
 /* GET auth callback. */
-router.get('/signin', async function (req, res) {
+router.get('/login', async function (req, res) {
+	const scopes = process.env.OAUTH_SCOPES || 'https://graph.microsoft.com/.default';
 	const urlParameters = {
-		scopes: process.env.OAUTH_SCOPES.split(','),
-		redirectUri: process.env.OAUTH_REDIRECT_URI
+		scopes: scopes.split(','),
+		redirectUri: process.env.OAUTH_REDIRECT_URI // /auth/callback
 	};
 
 	try {
@@ -13,74 +14,68 @@ router.get('/signin', async function (req, res) {
 		res.redirect(authUrl);
 	}
 	catch (error) {
+		console.error(`Error: ${error}`);
 		req.flash('error_msg', {
 			message: 'Error getting auth URL',
 			debug: JSON.stringify(error, Object.getOwnPropertyNames(error))
 		});
+
 		res.redirect('/');
 	}
 });
 
-router.get('/callback',
-	async function (req, res) {
-		const tokenRequest = {
-			code: req.query.code,
-			scopes: process.env.OAUTH_SCOPES.split(','),
-			redirectUri: process.env.OAUTH_REDIRECT_URI
+
+router.get('/callback', async function (req, res) {
+	const scopes = process.env.OAUTH_SCOPES || 'https://graph.microsoft.com/.default';
+	const tokenRequest = {
+		code: req.query.code,
+		scopes: scopes.split(','),
+		redirectUri: process.env.OAUTH_REDIRECT_URI
+	};
+
+	try {
+		const response = await req.app.locals.msalClient.acquireTokenByCode(tokenRequest);
+
+		// Save the user's homeAccountId in their session
+		req.session.userId = response.account.homeAccountId;
+
+		// Get user object
+		const user = await graph.getUserDetails(req.app.locals.msalClient, req.session.userId);
+
+		// Add the user object  to user storage
+		req.app.locals.users[req.session.userId] = {
+			displayName: user.displayName,
+			email: user.mail || user.userPrincipalName,
+			timeZone: user.mailboxSettings.timeZone,
+			token: response.accessToken
 		};
-
-		try {
-			const response = await req.app.locals.msalClient.acquireTokenByCode(tokenRequest);
-
-			// Save the user's homeAccountId in their session
-			req.session.userId = response.account.homeAccountId;
-
-			const user = await graph.getUserDetails(
-				req.app.locals.msalClient,
-				req.session.userId
-			);
-
-			// Add the user to user storage
-			req.app.locals.users[req.session.userId] = {
-				displayName: user.displayName,
-				email: user.mail || user.userPrincipalName,
-				timeZone: user.mailboxSettings.timeZone
-			};
-
-			console.log(req.app.locals.users);
-		}
-		catch (error) {
-			req.flash('error_msg', {
-				message: 'Error completing authentication',
-				debug: JSON.stringify(error, Object.getOwnPropertyNames(error))
-			});
-		}
-
-		// Go to frontend homepage URL
-		res.redirect('http://localhost:3000/');
 	}
-);
+	catch (error) {
+		req.flash('error', {
+			message: 'Error completing authentication',
+			debug: JSON.stringify(error, Object.getOwnPropertyNames(error))
+		});
+	}
 
-router.get('/signout', async function (req, res) {
-	// Sign out
+	//res.json(req.app.locals.users[req.session.userId]);
+	res.redirect('/');
+});
+
+
+router.get('/logout', async function (req, res) {
 	if (req.session.userId) {
 		// Look up the user's account in the cache
-		const accounts = await req.app.locals.msalClient
-			.getTokenCache()
-			.getAllAccounts();
-
+		const accounts = await req.app.locals.msalClient.getTokenCache().getAllAccounts();
 		const userAccount = accounts.find(a => a.homeAccountId === req.session.userId);
 
 		// Remove the account
 		if (userAccount) {
-			await req.app.locals.msalClient
-				.getTokenCache()
-				.removeAccount(userAccount);
+			await req.app.locals.msalClient.getTokenCache().removeAccount(userAccount);
 		}
 	}
 
-	// Destroy the user's session and redirect to frontend homepage URL
-	req.session.destroy(function() {
+	// Destroy the user's session
+	req.session.destroy(function () {
 		res.redirect('http://localhost:3000');
 	});
 });
