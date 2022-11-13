@@ -10,7 +10,7 @@ router.get('/login', async function (req, res) {
 	};
 
 	try {
-		const authUrl = await req.app.locals.msalClient.getAuthCodeUrl(urlParameters);
+		const authUrl = await req.app.locals.cache.msalClient.getAuthCodeUrl(urlParameters);
 		res.redirect(authUrl);
 	}
 	catch (error) {
@@ -34,16 +34,17 @@ router.get('/callback', async function (req, res) {
 	};
 
 	try {
-		const response = await req.app.locals.msalClient.acquireTokenByCode(tokenRequest);
+		const response = await req.app.locals.cache.msalClient.acquireTokenByCode(tokenRequest);
 
 		// Save the user's homeAccountId in their session
+		// TODO: This might not be necessary given what's cached
 		req.session.userId = response.account.homeAccountId;
 
 		// Get user object
-		const user = await graph.getUserDetails(req.app.locals.msalClient, req.session.userId);
+		const user = await graph.getUserDetails(req.app.locals.cache.msalClient, req.session.userId);
 
-		// Add the user object  to user storage
-		req.app.locals.users[req.session.userId] = {
+		// Add the user object to cached user storage
+		req.app.locals.cache.users[req.session.userId] = {
 			displayName: user.displayName,
 			email: user.mail || user.userPrincipalName,
 			timeZone: user.mailboxSettings.timeZone,
@@ -57,7 +58,7 @@ router.get('/callback', async function (req, res) {
 		});
 	}
 
-	//res.json(req.app.locals.users[req.session.userId]);
+	//res.json(req.app.locals.cache.users[req.session.userId]);
 	res.redirect('/');
 });
 
@@ -65,12 +66,12 @@ router.get('/callback', async function (req, res) {
 router.get('/logout', async function (req, res) {
 	if (req.session.userId) {
 		// Look up the user's account in the cache
-		const accounts = await req.app.locals.msalClient.getTokenCache().getAllAccounts();
+		const accounts = await req.app.locals.cache.msalClient.getTokenCache().getAllAccounts();
 		const userAccount = accounts.find(a => a.homeAccountId === req.session.userId);
 
 		// Remove the account
 		if (userAccount) {
-			await req.app.locals.msalClient.getTokenCache().removeAccount(userAccount);
+			await req.app.locals.cache.msalClient.getTokenCache().removeAccount(userAccount);
 		}
 	}
 

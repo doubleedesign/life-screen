@@ -7,54 +7,43 @@ const zonedTimeToUtc = require('date-fns-tz/zonedTimeToUtc');
 const iana = require('windows-iana');
 
 router.get('/', async function (req, res) {
-	const user = req.query.user;
+	const userId = Object.keys(req.app.locals.cache.users)[0];
 
-	if(!user) {
+	if(!userId) {
 		res.status(404).send('User not found');
 	}
 
 	else {
+		const timezone = req.app.locals.cache.users[userId]['timeZone'];
+
 		// Initialise response object to add things into
 		let response = {};
 
 		// Convert user's Windows time zone (e.g. "Pacific Standard Time") to IANA format ("America/Los_Angeles")
-		//const timeZoneId = iana.findIana(user.mailboxSettings.timeZone)[0];
+		//const timeZoneId = iana.findIana(timezone);
 
 		// Calculate the start and end of the current week
 		// Get midnight on the start of the current week in the user's timezone,
 		// but in UTC. For example, for Pacific Standard Time, the time value would be 07:00:00Z
 		//const weekStart = zonedTimeToUtc(startOfWeek(new Date()), timeZoneId.valueOf());
 		//const weekEnd = addDays(weekStart, 7);
-		//console.log(`Start: ${formatISO(weekStart)}`);
 
-		try {
-			// Get calendars
-			const calendars = await graph.getCalendars(req.app.locals.msalClient, user.id);
+		// Get calendars
+		const calendars = await graph.getCalendars(req.app.locals.cache.msalClient, userId);
 
-			// Get the events
-			/*
-			const events = await graph.getCalendarView(
-				req.app.locals.msalClient,
-				user.id,
-				formatISO(weekStart),
-				formatISO(weekEnd),
-				user.timeZone); */
 
-			console.log('CALENDARS HERE');
-			console.log(calendars);
+		// Get events
+		/*
+		const events = graph.getCalendarView(
+			req.app.locals.cache.msalClient,
+			userId,
+			formatISO(weekStart),
+			formatISO(weekEnd),
+			timezone); */
 
-			res.status(200).send(calendars);
-		}
-		catch (err) {
-			req.flash('error_msg', {
-				message: 'Could not fetch events',
-				debug: JSON.stringify(err, Object.getOwnPropertyNames(err))
-			});
+		//console.log(events);
 
-			res.status(400).send('Something went wrong');
-		}
-
-		res.status(500).send('Something went wrong');
+		res.status(200).send(calendars);
 	}
 
 });

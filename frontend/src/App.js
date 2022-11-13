@@ -3,42 +3,62 @@ import axios from 'axios';
 import './_App.scss';
 
 function App() {
-	const [userData, setUserData] = useState('');
+	const [userData, setUserData] = useState(null);
 	const [loggedIn, setLoggedIn] = useState(false);
+	const [calendars, setCalendars] = useState([]);
 	const SERVER_URL = 'http://localhost:4000';
 	const LOGIN_URL = `${SERVER_URL}/auth/login`;
 	const LOGOUT_URL = `${SERVER_URL}/auth/logout`;
 
-	useEffect(() => {
-		axios.get(`${SERVER_URL}/me`)
+	function fetchProfile() {
+		return axios.get(`${SERVER_URL}/me`)
 			.then((response) => {
-				setUserData(response.data);
+				return response.data;
 			})
 			.catch((error) => {
 				//console.error(error);
 			});
+	}
+
+	function fetchCalendars() {
+		axios.get(`${SERVER_URL}/calendars`)
+			.then((response) => {
+				const calendars = response.data.value;
+
+				// Filter out unwanted calendars
+				const keep = calendars.filter(calendar => calendar.name !== 'Birthdays');
+
+				// Save to component state
+				setCalendars(keep);
+			})
+			.catch((error) => {
+				console.warn('Error in fetchCalendars on front end');
+				// console.error(error);
+			});
+	}
+
+	useEffect(() => {
+		fetchProfile().then((data) => {
+			setUserData(data);
+		});
 	}, []);
 
 	useEffect(() => {
-		if(userData.id) {
-			setLoggedIn(true);
-		}
-		else {
-			setLoggedIn(false);
-		}
+		setLoggedIn(userData?.id ? true : false);
 	}, [userData]);
 
-	useEffect( () => {
-		if (loggedIn && userData) {
-			axios.get(`${SERVER_URL}/calendar`, { params: { user: userData } })
-				.then((response) => {
-					console.log(response);
-				})
-				.catch((error) => {
-					console.error(error);
-				});
+	const CalendarList = () => {
+		if(calendars) {
+			return <ul>
+				{calendars.map(item => (
+					<li>
+						<input type="checkbox" name={item.name}/>
+						<label key={item.id} htmlFor={item.name}>{item.name}</label>
+					</li>
+				))}
+			</ul>;
 		}
-	}, [loggedIn, userData]);
+	};
 
 	return (
 		<div className="app">
@@ -54,6 +74,19 @@ function App() {
 					</div>
 				</div>
 			</header>
+			<main>
+				{loggedIn &&
+					<>
+						<div className="container">
+							<button onClick={fetchCalendars}>Fetch calendars</button>
+							<button onClick={fetchProfile}>Re-fetch profile</button>
+						</div>
+						<div className="container">
+							<CalendarList/>
+						</div>
+					</>
+				}
+			</main>
 		</div>
 	);
 }

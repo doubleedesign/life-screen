@@ -14,7 +14,7 @@ module.exports = {
 	getCalendars: async function (msalClient, userId) {
 		const client = getAuthenticatedClient(msalClient, userId);
 
-		return client
+		return await client
 			.api('/me/calendars')
 			.get();
 	},
@@ -22,7 +22,7 @@ module.exports = {
 	getCalendarView: async function (msalClient, userId, start, end, timeZone) {
 		const client = getAuthenticatedClient(msalClient, userId);
 
-		return client
+		return await client
 			.api('/me/calendarview')
 			// Add Prefer header to get back times in user's timezone
 			.header('Prefer', `outlook.timezone="${timeZone}"`)
@@ -43,12 +43,11 @@ module.exports = {
 
 function getAuthenticatedClient(msalClient, userId) {
 	if (!msalClient || !userId) {
-		throw new Error(
-			`Invalid MSAL state. Client: ${msalClient ? 'present' : 'missing'}, User ID: ${userId ? 'present' : 'missing'}`);
+		throw new Error(`Invalid MSAL state. Client: ${msalClient ? 'present' : 'missing'}, User ID: ${userId ? 'present' : 'missing'}`);
 	}
 
 	// Initialize Graph client
-	const client = graph.Client.init({
+	return graph.Client.init({
 		// Implement an auth provider that gets a token
 		// from the app's MSAL instance
 		authProvider: async (done) => {
@@ -58,8 +57,7 @@ function getAuthenticatedClient(msalClient, userId) {
 
 				if (account) {
 					// Attempt to get the token silently
-					// This method uses the token cache and
-					// refreshes expired tokens as needed
+					// This method uses the token cache and refreshes expired tokens as needed
 					const response = await msalClient.acquireTokenSilent({
 						scopes: process.env.OAUTH_SCOPES.split(','),
 						redirectUri: process.env.OAUTH_REDIRECT_URI,
@@ -72,11 +70,10 @@ function getAuthenticatedClient(msalClient, userId) {
 				}
 			}
 			catch (err) {
+				console.error('Error in getAuthenticatedClient');
 				console.log(JSON.stringify(err, Object.getOwnPropertyNames(err)));
 				done(err, null);
 			}
 		}
 	});
-
-	return client;
 }

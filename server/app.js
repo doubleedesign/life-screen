@@ -5,6 +5,7 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const msal = require('@azure/msal-node');
 const cors = require('cors');
+const nodeCache = require('node-cache');
 require('dotenv').config();
 
 // Start server
@@ -15,11 +16,11 @@ app.use(cors()); // Note: Use CORS browser plugin if having CORS issues
 const indexRouter = require('./routes');
 const profileRouter = require('./routes/me');
 const authRouter = require('./routes/auth');
-const calendarRouter = require('./routes/calendar');
+const calendarRouter = require('./routes/calendars');
 
-// In-memory storage of logged-in users
-// For demo purposes only, production apps should store this in a reliable storage
-app.locals.users = {};
+// Set up cache for logged-in user data
+app.locals.cache = new nodeCache({ stdTTL: 28800 });
+app.locals.cache.users = {};
 
 // MSAL config
 const msalConfig = {
@@ -28,6 +29,7 @@ const msalConfig = {
 		authority: process.env.OAUTH_AUTHORITY,
 		clientSecret: process.env.OAUTH_CLIENT_SECRET
 	},
+	cache: app.locals.cache,
 	system: {
 		loggerOptions: {
 			loggerCallback(loglevel, message, containsPii) {
@@ -39,12 +41,14 @@ const msalConfig = {
 	}
 };
 
-// Create msal application object
-app.locals.msalClient = new msal.ConfidentialClientApplication(msalConfig);
+// Create msal application object and store it in the cache
+app.locals.cache.msalClient = new msal.ConfidentialClientApplication(msalConfig);
 
+app.locals.cache.test = 'test';
 
 // Session middleware
 // NOTE: Uses default in-memory session store, which is not suitable for production
+// TODO: Do I really need this as well as the cache?
 app.use(session({
 	secret: 'THIS_CAN_BE_ANYTHING_LOCALLY', // https://github.com/microsoftgraph/msgraph-sample-nodeexpressapp/issues/66
 	resave: false,
@@ -62,9 +66,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+// API routes
 app.use('/', indexRouter);
 app.use('/me', profileRouter);
 app.use('/auth', authRouter);
-app.use('/calendar', calendarRouter);
+app.use('/calendars', calendarRouter);
 
 module.exports = app;
