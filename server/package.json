@@ -3,7 +3,8 @@
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
-		"start": "node bin/www"
+		"start": "node bin/www",
+		"start:local": "set NODE_ENV=LOCAL && ./node_modules/.bin/nodemon  --watch"
 	},
 	"dependencies": {
 		"@azure/msal-node": "^1.1.0",
@@ -29,6 +30,7 @@
 		"windows-iana": "^5.0.2"
 	},
 	"devDependencies": {
+		"nodemon": "^2.0.20",
 		"prettier": "^2.3.2"
 	}
 }

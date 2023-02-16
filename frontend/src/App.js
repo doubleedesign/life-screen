@@ -50,8 +50,8 @@ function App() {
 	const CalendarList = () => {
 		if(calendars) {
 			return <ul>
-				{calendars.map(item => (
-					<li>
+				{calendars.map((item, index) => (
+					<li key={index}>
 						<input type="checkbox" name={item.name}/>
 						<label key={item.id} htmlFor={item.name}>{item.name}</label>
 					</li>
