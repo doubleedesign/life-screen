@@ -44,8 +44,6 @@ const msalConfig = {
 // Create msal application object and store it in the cache
 app.locals.cache.msalClient = new msal.ConfidentialClientApplication(msalConfig);
 
-app.locals.cache.test = 'test';
-
 // Session middleware
 // NOTE: Uses default in-memory session store, which is not suitable for production
 // TODO: Do I really need this as well as the cache?
