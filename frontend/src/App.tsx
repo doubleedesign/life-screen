@@ -1,7 +1,14 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './_App.scss';
 import { User, Calendar } from '../types';
+import { ThemeProvider } from 'styled-components';
+import { theme } from './theme';
+import CalendarMenu from './components/CalendarMenu/CalendarMenu';
+import Button from './components/Button/Button';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/pro-solid-svg-icons';
+import { faRotateRight } from '@fortawesome/pro-solid-svg-icons';
+library.add(fas, faRotateRight);
 
 function App() {
 	const [userData, setUserData] = useState<User>();
@@ -46,50 +53,40 @@ function App() {
 
 	useEffect(() => {
 		// @ts-ignore
-		setLoggedIn(userData.id ? true : false);
+		setLoggedIn(userData?.id ? true : false);
 	}, [userData]);
 
-	const CalendarList = () => {
-		if(calendars) {
-			return <ul>
-				{calendars.map((item, index) => (
-					<li key={index}>
-						<input type="checkbox" name={item.name}/>
-						<label key={item.id} htmlFor={item.name}>{item.name}</label>
-					</li>
-				))}
-			</ul>;
-		}
-	};
 
 	return (
-		<div className="app">
-			<header className="app__header">
-				<div className="container">
-					<div className="app__header__name">
-						<h1>LifeScreen</h1>
-					</div>
-					<div className="app__header__user">
-						<span>{userData?.displayName}</span>
-						<span>{userData?.mail}</span>
-						{loggedIn ? <a href={LOGOUT_URL}>Log out</a> : <a href={LOGIN_URL}>Log in</a>}
-					</div>
-				</div>
-			</header>
-			<main>
-				{loggedIn &&
-					<>
-						<div className="container">
-							<button onClick={fetchCalendars}>Fetch calendars</button>
-							<button onClick={fetchProfile}>Re-fetch profile</button>
+		<ThemeProvider theme={theme}>
+			<div className="app">
+				<header className="app__header">
+					<div className="container">
+						<div className="app__header__name">
+							<h1>LifeScreen</h1>
 						</div>
-						<div className="container">
-							<CalendarList/>
+						<div className="app__header__user">
+							<span>{userData?.displayName}</span>
+							<span>{userData?.mail}</span>
+							{loggedIn ? <a href={LOGOUT_URL}>Log out</a> : <a href={LOGIN_URL}>Log in</a>}
 						</div>
-					</>
-				}
-			</main>
-		</div>
+					</div>
+				</header>
+				<main>
+					{loggedIn &&
+						<>
+							<div className="container">
+								<Button onClick={fetchCalendars} label="Re-fetch calendars" icon={['fas', 'rotate-right']}/>
+								<Button onClick={fetchProfile} label="Re-fetch profile" icon={['fas', 'rotate-right']}/>
+							</div>
+							<div className="container">
+								<CalendarMenu calendars={calendars}/>
+							</div>
+						</>
+					}
+				</main>
+			</div>
+		</ThemeProvider>
 	);
 }
 
