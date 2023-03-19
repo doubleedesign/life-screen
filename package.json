@@ -9,8 +9,8 @@
 		"server"
 	],
 	"scripts": {
-		"lint": "yarn workspaces foreach run lint",
-		"commit": "yarn lint && git-cz"
+		"lint": "npm run lint --workspaces",
+		"commit": "npm run lint && git-cz"
 	},
 	"dependencies": {
 		"@typescript-eslint/eslint-plugin": "^5.42.1",
@@ -24,6 +24,5 @@
 		"commitizen": {
 			"path": "./node_modules/cz-conventional-changelog"
 		}
-	},
-	"packageManager": "yarn@3.4.1"
+	}
 }
