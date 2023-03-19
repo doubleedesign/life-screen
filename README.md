@@ -1,5 +1,7 @@
 # Life Screen
 
+Using the Microsoft Graph API, Node/Express, and React to bring my calendars together.  **A work-in-progress.**
+
 ## Key references:
 * https://github.com/microsoftgraph/msgraph-sample-nodeexpressapp
 * https://learn.microsoft.com/en-us/azure/active-directory/develop/tutorial-v2-nodejs-console
