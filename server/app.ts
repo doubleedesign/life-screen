@@ -1,23 +1,24 @@
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const session = require('express-session');
-const flash = require('connect-flash');
-const msal = require('@azure/msal-node');
-const cors = require('cors');
-const nodeCache = require('node-cache');
-require('dotenv').config();
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
+import session from 'express-session';
+import flash from 'connect-flash';
+import msal from '@azure/msal-node';
+import cors from 'cors';
+import nodeCache from 'node-cache';
+import { config } from 'dotenv';
+config();
+
+// Routes
+// Note: Use CORS browser plugin if having CORS issues
+import indexRouter from './routes';
+import profileRouter from './routes/me';
+import authRouter from './routes/auth';
+import calendarRouter from './routes/calendars';
 
 // Start server
 const app = express();
-app.use(cors()); // Note: Use CORS browser plugin if having CORS issues
-
-// Routes
-const indexRouter = require('./routes');
-const profileRouter = require('./routes/me');
-const authRouter = require('./routes/auth');
-const calendarRouter = require('./routes/calendars');
-
+app.use(cors());
 // Set up cache for logged-in user data
 app.locals.cache = new nodeCache({ stdTTL: 28800 });
 app.locals.cache.users = {};
@@ -70,4 +71,6 @@ app.use('/me', profileRouter);
 app.use('/auth', authRouter);
 app.use('/calendars', calendarRouter);
 
-module.exports = app;
+app.listen(4000, () => {
+	console.log('Server running on port 4000');
+});

@@ -1,7 +1,7 @@
-const graph = require('@microsoft/microsoft-graph-client');
-require('isomorphic-fetch');
+import graph from '@microsoft/microsoft-graph-client';
+import isomorphic_fetch from 'isomorphic-fetch';
 
-module.exports = {
+const graphFunctions = {
 	getUserDetails: async function (msalClient, userId) {
 		const client = getAuthenticatedClient(msalClient, userId);
 
@@ -71,9 +71,11 @@ function getAuthenticatedClient(msalClient, userId) {
 			}
 			catch (err) {
 				console.error('Error in getAuthenticatedClient');
-				console.log(JSON.stringify(err, Object.getOwnPropertyNames(err)));
+				//console.log(JSON.stringify(err, Object.getOwnPropertyNames(err)));
 				done(err, null);
 			}
 		}
 	});
 }
+
+export default graphFunctions;

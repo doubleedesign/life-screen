@@ -1,5 +1,5 @@
-const express = require('express');
-const router = express.Router();
+import Router from 'express-promise-router';
+const router = Router();
 
 router.get('/', function(req, res) {
 
@@ -12,4 +12,4 @@ router.get('/', function(req, res) {
 });
 
 
-module.exports = router;
+export default router;

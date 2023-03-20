@@ -1,5 +1,6 @@
-const graph = require('../graph');
-const router = require('express-promise-router').default();
+import graph from '../graph';
+import Router from 'express-promise-router';
+const router = Router();
 
 /* GET auth callback. */
 router.get('/login', async function (req, res) {
@@ -81,4 +82,4 @@ router.get('/logout', async function (req, res) {
 	});
 });
 
-module.exports = router;
+export default router;
