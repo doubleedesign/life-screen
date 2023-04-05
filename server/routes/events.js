@@ -7,8 +7,9 @@ import graph from '../graph.js';
 import iana from 'windows-iana';
 const router = Router();
 
-router.get('/', async function (req, res) {
+router.get('/:calendarId', async function (req, res) {
 	const userId = Object.keys(req.app.locals.cache.users)[0];
+	console.log(req.params.calendarId);
 
 	if(!userId) {
 		res.status(404).send('User not found');
@@ -29,20 +30,12 @@ router.get('/', async function (req, res) {
 	const weekStart = zonedTimeToUtc(startOfWeek(new Date()), timezoneId.valueOf()[0]);
 	const weekEnd = addDays(weekStart, 7);
 
-	// Get events
-	// This only gets the primary calendar.
-	// TODO: Get IDs of currently open/selected calendars and get their events
+	// Get events from the calendar specified by ID in the request
 	// GET https://graph.microsoft.com/v1.0/me/calendars/{id}/events
 	// https://learn.microsoft.com/en-us/graph/outlook-get-shared-events-calendars
-	/*
-	const events = await graph.getCalendarView(
-		req.app.locals.cache.msalClient,
-		userId,
-		formatISO(weekStart),
-		formatISO(weekEnd),
-		timezone);
+	//const events = await graph.getCalendarEvents(req.app.locals.cache.msalClient, userId, req.params.calendarId);
 
-	console.log(events); */
+	//console.log(events);
 
 	res.status(200).send(response);
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { CalendarContextProvider } from './CalendarContext';
 import axios from 'axios';
 import { User, Calendar } from '../types';
 import { ThemeProvider } from 'styled-components';
@@ -24,7 +25,7 @@ function App() {
 				return response.data;
 			})
 			.catch((error) => {
-				//console.error(error);
+				console.error(error);
 			});
 	}
 
@@ -32,60 +33,56 @@ function App() {
 		axios.get(`${SERVER_URL}/calendars`)
 			.then((response) => {
 				const calendars: Calendar[] = response.data.value;
-
-				// Filter out unwanted calendars
+				// Filter out unwanted calendars before saving to state
 				const keep = calendars.filter(calendar => calendar.name !== 'Birthdays');
-
-				// Save to component state
 				setCalendars(keep);
 			})
 			.catch((error) => {
-				console.warn('Error in fetchCalendars on front end');
-				// console.error(error);
+				console.error(error);
 			});
 	}
 
+
 	useEffect(() => {
+		setLoggedIn(!!userData?.id);
 		fetchProfile().then((data) => {
 			setUserData(data);
 		});
-	}, []);
-
-	useEffect(() => {
-		// @ts-ignore
-		setLoggedIn(userData?.id ? true : false);
+		fetchCalendars();
 	}, [userData]);
 
 
 	return (
 		<ThemeProvider theme={theme}>
-			<div className="app">
-				<header className="app__header">
-					<div className="container">
-						<div className="app__header__name">
-							<h1>LifeScreen</h1>
+			<CalendarContextProvider calendars={calendars}>
+				<div className="app">
+					<header className="app__header">
+						<div className="container">
+							<div className="app__header__name">
+								<h1>LifeScreen</h1>
+							</div>
+							<div className="app__header__user">
+								<span>{userData?.displayName}</span>
+								<span>{userData?.mail}</span>
+								{loggedIn ? <a href={LOGOUT_URL}>Log out</a> : <a href={LOGIN_URL}>Log in</a>}
+							</div>
 						</div>
-						<div className="app__header__user">
-							<span>{userData?.displayName}</span>
-							<span>{userData?.mail}</span>
-							{loggedIn ? <a href={LOGOUT_URL}>Log out</a> : <a href={LOGIN_URL}>Log in</a>}
-						</div>
-					</div>
-				</header>
-				<main>
-					{loggedIn &&
+					</header>
+					<main>
+						{loggedIn &&
 						<>
 							<div className="container">
 								<Button onClick={fetchCalendars} label="Re-fetch calendars" icon={['fas', 'rotate-right']}/>
 								<Button onClick={fetchProfile} label="Re-fetch profile" icon={['fas', 'rotate-right']}/>
 							</div>
 							<div className="container">
-								<CalendarMenu calendars={calendars}/>
+								<CalendarMenu />
 							</div>
 						</>
-					}
-				</main>
-			</div>
+						}
+					</main>
+				</div>
+			</CalendarContextProvider>
 		</ThemeProvider>
 	);
 }

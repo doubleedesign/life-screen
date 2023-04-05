@@ -5,7 +5,7 @@ import './_Button.scss';
 
 export interface ButtonProps {
 	label: string,
-	onClick: any;
+	onClick: () => any,
 	color?: string,
 	icon?: IconProp
 }
@@ -13,7 +13,7 @@ export interface ButtonProps {
 export const Button: React.FC<ButtonProps> = function({ label, onClick, color, icon }) {
 
 	return (
-		<button onClick={onClick()}>
+		<button onClick={onClick}>
 			{label}
 			{icon && <FontAwesomeIcon icon={icon}/>}
 		</button>

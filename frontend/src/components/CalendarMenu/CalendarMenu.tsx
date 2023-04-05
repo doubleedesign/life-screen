@@ -1,17 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { Calendar } from '../../../types';
+import React, { useContext } from 'react';
+import { CalendarContext } from '../../CalendarContext';
 
-export interface CalendarMenuProps {
-	calendars: Calendar[]
-}
-export const CalendarMenu: React.FC<CalendarMenuProps> = function({ calendars }) {
-	const [selected, setSelected] = useState<Calendar[]>(calendars);
+export const CalendarMenu: React.FC=  function() {
+	const { calendars, selectedCalendars, setSelectedCalendars } = useContext(CalendarContext);
+
+	const handleChange = (id: string) => {
+		if(selectedCalendars.includes(id)) {
+			setSelectedCalendars(selectedCalendars.filter(calendar_id => calendar_id !== id));
+		}
+		else {
+			setSelectedCalendars([...selectedCalendars, id]);
+		}
+	};
 
 	return (
 		<ul>
 			{calendars.map((calendar) => (
 				<li key={calendar.id}>
-					<input type="checkbox" name={calendar.name}/>
+					<input type="checkbox" name={calendar.name} checked={selectedCalendars.includes(calendar.id)} onChange={() => handleChange(calendar.id)} />
 					<label key={calendar.id} htmlFor={calendar.name}>{calendar.name}</label>
 				</li>
 			))}

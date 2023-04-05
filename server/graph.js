@@ -39,6 +39,14 @@ const graphFunctions = {
 			.top(50)
 			.get();
 	},
+
+	getCalendarEvents: async function (msalClient, userId, calendarId) {
+		const client = getAuthenticatedClient(msalClient, userId);
+
+		return await client
+			.api(`/me/calendars/${calendarId}/events`)
+			.get();
+	},
 };
 
 function getAuthenticatedClient(msalClient, userId) {
