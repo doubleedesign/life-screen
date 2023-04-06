@@ -42,19 +42,25 @@ function App() {
 			});
 	}
 
-
 	useEffect(() => {
-		setLoggedIn(!!userData?.id);
 		fetchProfile().then((data) => {
 			setUserData(data);
 		});
-		fetchCalendars();
+	}, []);
+
+	useEffect(() => {
+		setLoggedIn(!!userData?.id);
 	}, [userData]);
 
+	useEffect(() => {
+		if(loggedIn) {
+			fetchCalendars();
+		}
+	}, [loggedIn]);
 
 	return (
 		<ThemeProvider theme={theme}>
-			<CalendarContextProvider calendars={calendars}>
+			{loggedIn ? <CalendarContextProvider calendars={calendars}>
 				<div className="app">
 					<header className="app__header">
 						<div className="container">
@@ -83,6 +89,9 @@ function App() {
 					</main>
 				</div>
 			</CalendarContextProvider>
+				:
+				<a href={LOGIN_URL}>Log in</a>
+			}
 		</ThemeProvider>
 	);
 }

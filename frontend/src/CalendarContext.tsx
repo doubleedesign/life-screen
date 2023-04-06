@@ -1,6 +1,5 @@
 import React, { createContext, Dispatch, PropsWithChildren, SetStateAction, useEffect, useState } from 'react';
 import { Calendar } from '../types';
-import axios from 'axios';
 
 interface CalendarContextProps {
 	calendars: Calendar[]
@@ -20,8 +19,7 @@ export const CalendarContextProvider: React.FC<PropsWithChildren<CalendarContext
 
 	useEffect(() => {
 		setSelectedCalendars(calendars.map(calendar => calendar.id));
-		console.log(calendars);
-	}, []);
+	}, [calendars]);
 
 	return (
 		<CalendarContext.Provider value={{ calendars, selectedCalendars, setSelectedCalendars }}>
