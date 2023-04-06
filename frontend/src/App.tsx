@@ -5,19 +5,22 @@ import { User, Calendar } from '../types';
 import { ThemeProvider } from 'styled-components';
 import { theme } from './theme';
 import CalendarMenu from './components/CalendarMenu/CalendarMenu';
-import Button from './components/Button/Button';
+import { faRotateRight } from '@fortawesome/pro-solid-svg-icons';
+import { LOGIN_URL, SERVER_URL } from './constants';
+import GlobalHeader from './components/GlobalHeader/GlobalHeader';
+import GlobalStyle from './GlobalStyle';
+import DialogBox from './components/DialogBox/DialogBox';
+import { StyledButtonLink } from './components/ButtonLink/ButtonLink.styled';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/pro-solid-svg-icons';
-import { faRotateRight } from '@fortawesome/pro-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { StyledButton } from './components/Button/Button.styled';
 library.add(fas, faRotateRight);
 
 function App() {
-	const [userData, setUserData] = useState<User>();
+	const [userData, setUserData] = useState<User | null>(null);
 	const [loggedIn, setLoggedIn] = useState<boolean>(false);
 	const [calendars, setCalendars] = useState<Calendar[]>([]);
-	const SERVER_URL = 'http://localhost:4000';
-	const LOGIN_URL = `${SERVER_URL}/auth/login`;
-	const LOGOUT_URL = `${SERVER_URL}/auth/logout`;
 
 	function fetchProfile() {
 		return axios.get(`${SERVER_URL}/me`)
@@ -60,37 +63,20 @@ function App() {
 
 	return (
 		<ThemeProvider theme={theme}>
+			<GlobalStyle />
 			{loggedIn ? <CalendarContextProvider calendars={calendars}>
-				<div className="app">
-					<header className="app__header">
-						<div className="container">
-							<div className="app__header__name">
-								<h1>LifeScreen</h1>
-							</div>
-							<div className="app__header__user">
-								<span>{userData?.displayName}</span>
-								<span>{userData?.mail}</span>
-								{loggedIn ? <a href={LOGOUT_URL}>Log out</a> : <a href={LOGIN_URL}>Log in</a>}
-							</div>
-						</div>
-					</header>
-					<main>
-						{loggedIn &&
-						<>
-							<div className="container">
-								<Button onClick={fetchCalendars} label="Re-fetch calendars" icon={['fas', 'rotate-right']}/>
-								<Button onClick={fetchProfile} label="Re-fetch profile" icon={['fas', 'rotate-right']}/>
-							</div>
-							<div className="container">
-								<CalendarMenu />
-							</div>
-						</>
-						}
-					</main>
-				</div>
+				<GlobalHeader userData={userData} />
+				{loggedIn &&
+				<>
+					<StyledButton onClick={fetchCalendars}>Re-fetch calendars <FontAwesomeIcon icon={['fas', 'rotate-right']}/></StyledButton>
+					<CalendarMenu />
+				</>
+				}
 			</CalendarContextProvider>
 				:
-				<a href={LOGIN_URL}>Log in</a>
+				<DialogBox size="md" title="Access">
+					<StyledButtonLink href={LOGIN_URL}>Log in</StyledButtonLink>
+				</DialogBox>
 			}
 		</ThemeProvider>
 	);
