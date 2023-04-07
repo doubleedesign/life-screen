@@ -1,5 +1,5 @@
 import React, { createContext, Dispatch, PropsWithChildren, SetStateAction, useEffect, useState } from 'react';
-import { Calendar } from '../types';
+import { Calendar } from './types';
 
 interface CalendarContextProps {
 	calendars: Calendar[]

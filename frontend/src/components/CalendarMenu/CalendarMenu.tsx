@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 import { CalendarContext } from '../../CalendarContext';
+import { CalendarMenuList, CalendarMenuListItem } from './CalendarMenu.styled';
+import Checkbox from '../Checkbox/Checkbox';
 
 export const CalendarMenu: React.FC=  function() {
 	const { calendars, selectedCalendars, setSelectedCalendars } = useContext(CalendarContext);
@@ -14,14 +16,13 @@ export const CalendarMenu: React.FC=  function() {
 	};
 
 	return (
-		<ul>
+		<CalendarMenuList>
 			{calendars.map((calendar) => (
-				<li key={calendar.id}>
-					<input type="checkbox" name={calendar.name} checked={selectedCalendars.includes(calendar.id)} onChange={() => handleChange(calendar.id)} />
-					<label key={calendar.id} htmlFor={calendar.name}>{calendar.name}</label>
-				</li>
+				<CalendarMenuListItem key={calendar.id}>
+					<Checkbox label={calendar.name} checked={selectedCalendars.includes(calendar.id)} onChange={() => handleChange(calendar.id)} />
+				</CalendarMenuListItem>
 			))}
-		</ul>
+		</CalendarMenuList>
 	);
 };
 

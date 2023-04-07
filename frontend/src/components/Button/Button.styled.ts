@@ -1,23 +1,45 @@
-import styled from 'styled-components';
-import { darken, meetsContrastGuidelines } from 'polished';
+import styled, { css } from 'styled-components';
+import { darken } from 'polished';
+import { ThemeColor } from '../../types';
+import { contrastTextColour } from '../../theme-utils';
 
-export const StyledButton = styled.button`
+interface ButtonProps {
+	color: ThemeColor
+	size?: 'sm' | 'md'
+}
+
+export const StyledButton = styled.button<ButtonProps>`
 	font-family: ${({ theme }): string => theme.fonts.body};
 	font-weight: ${({ theme }): string => theme.fontWeights.semibold};
     display: inline-block;
     appearance: none;
     border: 0;
-	background: ${({ theme }): string => theme.colors.primary};
-	color: ${({ theme }): string => meetsContrastGuidelines(theme.colors.primary, '#fff') ? '#fff' : '#000'};
-	padding: ${({ theme }): string => theme.spacing.sm} ${({ theme }): string => theme.spacing.lg};;
+	background: ${({ theme, color }): string => theme.colors[color]};
+    color: ${({ theme, color }): string => contrastTextColour(theme.colors[color])};
     border-radius: 0.25rem;
 	text-decoration: underline;
 	text-decoration-color: transparent;
 	transition: all 0.3s ease;
 	cursor: pointer;
+    ${props => {
+		if(props.size === 'sm') {
+			return css`
+				padding: ${props.theme.spacing.xs} ${props.theme.spacing.md};
+				font-size: ${props.theme.fontSizes.sm};
+				line-height: 1.5`;
+		}
+		else {
+			return css`
+				padding: ${props.theme.spacing.sm} ${props.theme.spacing.lg};
+				font-size: ${props.theme.fontSizes.default}`;
+		}
+	}};
+    
 	
 	&:hover, &:focus, &:active {
-        background: ${({ theme }): string => darken(0.1, theme.colors.primary)};
+        // theme.colors[color] may initially be "undefined" briefly when the component first loads, 
+		// and we need to account for that when calling polished colour functions
+        background: ${({ theme, color }): string => theme.colors[color] && darken(0.1, theme.colors[color])};
 	};
 	
 	&:focus {

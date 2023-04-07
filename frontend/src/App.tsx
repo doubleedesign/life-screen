@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { CalendarContextProvider } from './CalendarContext';
 import axios from 'axios';
-import { User, Calendar } from '../types';
+import { User, Calendar } from './types';
 import { ThemeProvider } from 'styled-components';
 import { theme } from './theme';
 import CalendarMenu from './components/CalendarMenu/CalendarMenu';
-import { faRotateRight } from '@fortawesome/pro-solid-svg-icons';
 import { LOGIN_URL, SERVER_URL } from './constants';
 import GlobalHeader from './components/GlobalHeader/GlobalHeader';
 import GlobalStyle from './GlobalStyle';
 import DialogBox from './components/DialogBox/DialogBox';
 import { StyledButtonLink } from './components/ButtonLink/ButtonLink.styled';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fas } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { StyledButton } from './components/Button/Button.styled';
-library.add(fas, faRotateRight);
 
 function App() {
 	const [userData, setUserData] = useState<User | null>(null);
@@ -68,14 +62,14 @@ function App() {
 				<GlobalHeader userData={userData} />
 				{loggedIn &&
 				<>
-					<StyledButton onClick={fetchCalendars}>Re-fetch calendars <FontAwesomeIcon icon={['fas', 'rotate-right']}/></StyledButton>
+					{ /* <StyledButton color="secondary" onClick={fetchCalendars}>Re-fetch calendars <FontAwesomeIcon icon={['fas', 'rotate-right']}/></StyledButton> */ }
 					<CalendarMenu />
 				</>
 				}
 			</CalendarContextProvider>
 				:
 				<DialogBox size="md" title="Access">
-					<StyledButtonLink href={LOGIN_URL}>Log in</StyledButtonLink>
+					<StyledButtonLink color="accent" href={LOGIN_URL}>Log in</StyledButtonLink>
 				</DialogBox>
 			}
 		</ThemeProvider>

@@ -3,10 +3,17 @@ export const theme = {
 		primary: '#B48FFF',
 		secondary: '#87D9FF',
 		tertiary: '#F3A2E0',
-		accent: '#9EFFC1',
-		dark: '#221b44',
+		accent: '#00c9a7',
+		dark: '#1a1a1a',
 		light: '#E6E6FA',
 		body: '#444',
+	},
+	breakpoints: {
+		sm: 576,
+		md: 768,
+		lg: 992,
+		xl: 1200,
+		xxl: 1440
 	},
 	fonts: {
 		body: '"Inter Tight", sans-serif',
@@ -22,8 +29,8 @@ export const theme = {
 		sm: '0.875rem',
 		default: '1rem',
 		md: '1.125rem',
-		lg: '2rem',
-		xl: '3rem'
+		lg: '1.5rem',
+		xl: '2rem'
 	},
 	spacing: {
 		xs: '0.25rem',
