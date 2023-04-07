@@ -1,9 +1,13 @@
+import { theme } from './theme';
+
+export type ThemeColor = keyof typeof theme.colors;
+
 export type User = {
 	id: string;
 	displayName: string;
 	mail: string;
 	userPrincipalName: string;
-	mailboxSettings: {
+	mailboxSettings?: {
 		timeZone: string;
 		dateFormat?: string;
 		timeFormat?: string;
