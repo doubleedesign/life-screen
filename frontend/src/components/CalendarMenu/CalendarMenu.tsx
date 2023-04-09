@@ -19,7 +19,11 @@ export const CalendarMenu: React.FC=  function() {
 		<CalendarMenuList>
 			{calendars.map((calendar) => (
 				<CalendarMenuListItem key={calendar.id}>
-					<Checkbox label={calendar.name} checked={selectedCalendars.includes(calendar.id)} onChange={() => handleChange(calendar.id)} />
+					<Checkbox label={calendar.displayName || calendar.name}
+						image={calendar.logo}
+						color={calendar?.colors?.background || calendar.hexColor}
+						checked={selectedCalendars.includes(calendar.id)}
+						onChange={() => handleChange(calendar.id)} />
 				</CalendarMenuListItem>
 			))}
 		</CalendarMenuList>

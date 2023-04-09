@@ -27,4 +27,11 @@ export type Calendar = {
 		name: string;
 		address: string;
 	}
+	displayName?: string;
+	logo?: string;
+	sortPosition: number;
+	hexColor: string; // from Outlook, so limited choices
+	colors: {
+		background: string; // set in this app
+	}
 }
