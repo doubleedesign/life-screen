@@ -1,15 +1,15 @@
 // globalStyles.js
 import { createGlobalStyle, ThemeProps } from 'styled-components';
 
-const GlobalStyle = createGlobalStyle`
-    body {
+const GlobalStyle = createGlobalStyle`\
+	* {
         margin: 0;
         padding: 0;
+		box-sizing: border-box;
+	}
+	
+    body {
         font-family: ${(props: ThemeProps<any>) => props.theme.fonts.body}; 
-    }
-    
-    h1 {
-	    margin: 0;
     }
 `;
 

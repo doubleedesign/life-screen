@@ -7,11 +7,11 @@ export const FlexRow = styled.div`
 `;
 
 export const Block = styled.div`
-	padding-left: ${props => props.theme.spacing.xs};
-	padding-right: ${props => props.theme.spacing.xs};
+	padding-left: ${props => props.theme.spacing.sm};
+	padding-right: ${props => props.theme.spacing.sm};
 
     ${props => breakpointUp(props.theme.breakpoints.lg, css`
-        padding-left: ${props => props.theme.spacing.sm};
-        padding-right: ${props => props.theme.spacing.sm};
+        padding-left: ${props => props.theme.spacing.md};
+        padding-right: ${props => props.theme.spacing.md};
     `)};
 `;

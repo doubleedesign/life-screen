@@ -8,12 +8,9 @@ interface CheckboxWrapperProps {
 }
 
 export const CheckboxWrapper = styled.div<CheckboxWrapperProps>`
-	width: 6rem;
-	display: flex;
-	justify-content: center;
-	align-items: flex-end;
-    padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
-    margin: 0 ${props => props.theme.spacing.xs};
+	width: 100%;
+    padding: ${props => props.theme.spacing.sm};
+    margin: ${props => props.theme.spacing.xs} 0;
     background: ${props => props.checked ? props.color : props.theme.colors.light};
     border: 2px solid ${props => props.checked ? darken(0.2, props.color) : props.theme.colors.light};
     border-radius: 0.25rem;
@@ -28,7 +25,10 @@ export const CheckboxWrapper = styled.div<CheckboxWrapperProps>`
     }
 
     label {
-        display: block;
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-items: center;
         font-size: ${props => props.theme.fontSizes.sm};
         font-weight: ${props => props.theme.fontWeights.light};
         cursor: pointer;
@@ -39,21 +39,28 @@ export const CheckboxWrapper = styled.div<CheckboxWrapperProps>`
         &:hover, &:focus-within, &:active {
             opacity: 1;
         }
+	    
+	    span {
+		    display: inline-flex;
+		    align-items: center;
+		    justify-content: center;
+		    width: 2rem;
+		    padding-right: ${props => props.theme.spacing.sm};
+	    }
 
-        img, svg.fa-calendar-star {
-            display: block;
-            width: 3rem;
-            height: 3rem;
-            margin: 0 auto ${({ theme }): string => theme.spacing.sm};
+        img {
+            height: 2rem;
+	        width: auto;
         }
-
-        svg.fa-calendar-star {
-	        width: 2.8rem;
-	        height: 2.8rem;
-        }
-
-        svg {
-            margin-right: ${props => props.theme.spacing.xs};
+	    
+	    .fa-calendar-star,
+	    .icon-rmit {
+		    height: 1.8rem;
+	    }
+	    
+        .fa-circle-check {
+	        order: 3;
+	        margin-left: auto;
         }
     }
 `;

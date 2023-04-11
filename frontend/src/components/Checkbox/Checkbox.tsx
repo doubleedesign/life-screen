@@ -14,7 +14,9 @@ const Checkbox: FC<CheckboxProps> = ({ label, image, color, checked, onChange })
 	<CheckboxWrapper data-testid="Checkbox" checked={checked} color={color}>
 		<input type="checkbox" id={label} name={label} checked={checked} onChange={onChange} />
 		<label htmlFor={label}>
-			{image ? <img src={`/images/${image}`} alt="" /> : <FontAwesomeIcon icon={['fas', 'calendar-star']} /> }
+			<span>
+				{image ? <img src={`/images/${image}`} alt="" className={`icon-${image.replace('.svg', '')}`} /> : <FontAwesomeIcon icon={['fas', 'calendar-star']} /> }
+			</span>
 			{checked ? <FontAwesomeIcon icon={['fas', 'circle-check']} /> : <FontAwesomeIcon icon={['fal', 'circle-check']} />}
 			{label}
 		</label>

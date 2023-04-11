@@ -13,7 +13,7 @@ export interface MyAppContext {
 
 export const CalendarContext = createContext({} as MyAppContext);
 
-export const CalendarContextProvider: React.FC<PropsWithChildren<CalendarContextProps>> = function({ calendars, children }) {
+const CalendarContextProvider: React.FC<PropsWithChildren<CalendarContextProps>> = function({ calendars, children }) {
 	const [selectedCalendars, setSelectedCalendars] = useState<string[]>([]);
 
 	useEffect(() => {
@@ -78,3 +78,5 @@ export const CalendarContextProvider: React.FC<PropsWithChildren<CalendarContext
 		</CalendarContext.Provider>
 	);
 };
+
+export default CalendarContextProvider;

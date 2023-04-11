@@ -4,7 +4,8 @@ import { breakpointUp } from '@doubleedesign/styled-media-queries';
 
 export const GlobalHeaderWrapper = styled.header`
 	background: ${({ theme }): string => theme.colors.dark};
-	padding: ${({ theme }): string => theme.spacing.md};
+	padding-top: ${({ theme }): string => theme.spacing.md};
+	padding-bottom: ${({ theme }): string => theme.spacing.md};
 	color: white;
 	
 	${FlexRow} {

@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { CalendarContextProvider } from './CalendarContext';
 import axios from 'axios';
-import { User, Calendar } from './types';
-import { ThemeProvider } from 'styled-components';
-import { theme } from './theme';
-import CalendarMenu from './components/CalendarMenu/CalendarMenu';
 import { LOGIN_URL, SERVER_URL } from './constants';
-import GlobalHeader from './components/GlobalHeader/GlobalHeader';
+import { User, Calendar } from './types';
 import GlobalStyle from './GlobalStyle';
+import { theme } from './theme';
+import { ThemeProvider } from 'styled-components';
+import CalendarContextProvider from './CalendarContext';
+import GlobalHeader from './components/GlobalHeader/GlobalHeader';
+import CalendarMenu from './components/CalendarMenu/CalendarMenu';
+import CalendarContent from './components/CalendarContent/CalendarContent';
 import DialogBox from './components/DialogBox/DialogBox';
 import { StyledButtonLink } from './components/ButtonLink/ButtonLink.styled';
+import { Block, FlexRow } from './components/CommonLayout';
 
 function App() {
 	const [userData, setUserData] = useState<User | null>(null);
@@ -61,10 +63,10 @@ function App() {
 			{loggedIn ? <CalendarContextProvider calendars={calendars}>
 				<GlobalHeader userData={userData} />
 				{loggedIn &&
-				<>
-					{ /* <StyledButton color="secondary" onClick={fetchCalendars}>Re-fetch calendars <FontAwesomeIcon icon={['fas', 'rotate-right']}/></StyledButton> */ }
+				<FlexRow>
 					<CalendarMenu />
-				</>
+					<CalendarContent />
+				</FlexRow>
 				}
 			</CalendarContextProvider>
 				:
