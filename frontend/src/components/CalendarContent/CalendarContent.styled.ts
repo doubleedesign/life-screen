@@ -2,10 +2,9 @@ import styled, { css } from 'styled-components';
 import { Block } from '../CommonLayout';
 import { breakpointUp } from '@doubleedesign/styled-media-queries';
 
-export const CalendarContentWrapper = styled(Block)`
+export const CalendarContentWrapper = styled(Block).attrs({ as: 'ul' })`
     padding-top: ${props => props.theme.spacing.md};
-    width: 100%;
-    flex-basis: 100%;
+    flex-grow: 1;
 
     ${props => breakpointUp(props.theme.breakpoints.md, css`
         width: 75%;

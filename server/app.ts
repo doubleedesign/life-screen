@@ -15,6 +15,7 @@ import indexRouter from './routes';
 import profileRouter from './routes/me';
 import authRouter from './routes/auth';
 import calendarRouter from './routes/calendars';
+import eventsRouter from './routes/events';
 
 // Start server
 const app = express();
@@ -70,6 +71,7 @@ app.use('/', indexRouter);
 app.use('/me', profileRouter);
 app.use('/auth', authRouter);
 app.use('/calendars', calendarRouter);
+app.use('/events', eventsRouter);
 
 app.listen(4000, () => {
 	console.log('Server running on port 4000');

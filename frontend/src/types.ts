@@ -31,7 +31,27 @@ export type Calendar = {
 	logo?: string;
 	sortPosition: number;
 	hexColor: string; // from Outlook, so limited choices
-	colors: {
-		background: string; // set in this app
+	colors: { // set in this app
+		primary: string;
+		secondary: string;
 	}
+}
+
+type CalendarDate = {
+	dateTime: Date;
+	timeZone: string;
+}
+
+export type CalendarEvent = {
+	what: string;
+	when: { start: CalendarDate, end?: CalendarDate };
+	where: {
+		displayName: string;
+		locationType: string;
+		address: object,
+		coordinates: object
+	}
+	type: 'singleInstance' | 'occurrence' | 'exception';
+	categories: string[];
+	calendar_id: string
 }

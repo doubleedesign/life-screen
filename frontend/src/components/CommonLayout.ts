@@ -3,7 +3,10 @@ import { breakpointUp } from '@doubleedesign/styled-media-queries';
 
 export const FlexRow = styled.div`
 	display: flex;
+	align-items: flex-start;
 	flex-wrap: wrap;
+	max-width: ${props => props.theme.breakpoints.xxl}px;
+	margin: 0 auto;
 `;
 
 export const Block = styled.div`

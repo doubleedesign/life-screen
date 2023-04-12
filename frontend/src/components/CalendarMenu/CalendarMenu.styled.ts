@@ -17,8 +17,8 @@ export const CalendarMenuList = styled(Block).attrs({ as: 'ul' })`
 	`)};
 	
 	${props => breakpointUp(props.theme.breakpoints.lg, css`
-		min-width: 12rem;
-		flex-basis: 12rem;
+		min-width: 15rem;
+		flex-basis: 15rem;
 	`)};
 `;
 

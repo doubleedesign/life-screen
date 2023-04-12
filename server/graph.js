@@ -1,5 +1,6 @@
 import graph from '@microsoft/microsoft-graph-client';
 import isomorphic_fetch from 'isomorphic-fetch';
+import * as iana from 'windows-iana';
 
 const graphFunctions = {
 	getUserDetails: async function (msalClient, userId) {
@@ -19,32 +20,32 @@ const graphFunctions = {
 			.get();
 	},
 
-	getCalendarView: async function (msalClient, userId, start, end, timeZone) {
+	getCalendarEvents: async function (msalClient, userId, calendarId, weeks) {
 		const client = getAuthenticatedClient(msalClient, userId);
+		function getEndDate() {
+			const date = new Date();
+			date.setDate(date.getDate() + 7 * weeks);
+
+			return date;
+		}
+
+		// Get user data for timezone and figure out start and end date
+		const user = await this.getUserDetails(msalClient, userId);
+		const timezoneName = user.mailboxSettings.timeZone;
+		const timezone = iana.findIana(timezoneName)[0];
+		const now = new Date().toISOString();
+		const end = getEndDate().toISOString();
 
 		return await client
-			.api('/me/calendarview')
-			// Add Prefer header to get back times in user's timezone
-			.header('Prefer', `outlook.timezone="${timeZone}"`)
-			// Add the begin and end of the calendar window
+			.api(`/me/calendars/${calendarId}/calendarView`)
+			.header('Prefer', `outlook.timezone="${timezone}"`)
+			.select('subject,isAllDay,start,end,location,type,categories')
 			.query({
-				startDateTime: encodeURIComponent(start),
+				startDateTime: encodeURIComponent(now),
 				endDateTime: encodeURIComponent(end)
 			})
-			// Get just the properties used by the app
-			.select('subject,organizer,start,end')
-			// Order by start time
 			.orderby('start/dateTime')
-			// Get at most 50 results
 			.top(50)
-			.get();
-	},
-
-	getCalendarEvents: async function (msalClient, userId, calendarId) {
-		const client = getAuthenticatedClient(msalClient, userId);
-
-		return await client
-			.api(`/me/calendars/${calendarId}/events`)
 			.get();
 	},
 };

@@ -1,16 +1,39 @@
-import React, { FC, useContext } from 'react';
+import React, { FC, useContext, useState, useEffect } from 'react';
 import { CalendarContentWrapper } from './CalendarContent.styled';
 import { CalendarContext } from '../../CalendarContext';
+import axios from 'axios';
+import { SERVER_URL } from '../../constants';
+import { CalendarEvent } from '../../types';
+import CalendarItem from './CalendarItem/CalendarItem';
 
 interface CalendarContentProps {
+	weeks: number
 }
 
-const CalendarContent: FC<CalendarContentProps> = () => {
+const CalendarContent: FC<CalendarContentProps> = ({ weeks }) => {
 	const { selectedCalendars } = useContext(CalendarContext);
+	const [events, setEvents] = useState<CalendarEvent[]>([]);
+
+	function fetchEvents() {
+		setEvents([]);
+
+		selectedCalendars.forEach(async (calendar_id) => {
+			const response = await axios.get(`${SERVER_URL}/events/${calendar_id}?weeks=${weeks}`);
+			setEvents((prevState) => [...prevState, ...response.data].sort((a, b) => {
+				return Number(a.when.start.dateTime) - Number(b.when.start.dateTime);
+			}));
+		});
+	}
+
+	useEffect(() => {
+		fetchEvents();
+	}, [selectedCalendars]);
 
 	return (
 		<CalendarContentWrapper data-testid="CalendarContent">
-			CalendarContent Component
+			{events.map((event, key) => {
+				return <CalendarItem key={key} event={event} />;
+			})}
 		</CalendarContentWrapper>
 	);
 };
