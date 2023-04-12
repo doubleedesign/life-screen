@@ -11,7 +11,7 @@ export const CheckboxWrapper = styled.div<CheckboxWrapperProps>`
 	width: 100%;
     padding: ${props => props.theme.spacing.sm};
     margin: ${props => props.theme.spacing.xs} 0;
-    background: ${props => props.checked ? props.color : props.theme.colors.light};
+    background: ${props => props.checked ? props.color : darken(0.03, props.theme.colors.light)};
     border: 2px solid ${props => props.checked ? darken(0.2, props.color) : props.theme.colors.light};
     border-radius: 0.25rem;
     cursor: pointer;
@@ -33,11 +33,12 @@ export const CheckboxWrapper = styled.div<CheckboxWrapperProps>`
         font-weight: ${props => props.theme.fontWeights.light};
         cursor: pointer;
         color: ${props => props.checked ? contrastTextColour(props.color) : props.color};
-        opacity: ${props => props.checked ? '1' : '0.25'};
+        filter: ${props => props.checked ? 'none' : 'grayscale(1)'};
         transition: all 0.3s ease;
 
         &:hover, &:focus-within, &:active {
             opacity: 1;
+	        filter: grayscale(0);
         }
 	    
 	    span {

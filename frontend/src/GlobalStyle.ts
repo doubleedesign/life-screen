@@ -1,5 +1,6 @@
 // globalStyles.js
 import { createGlobalStyle, ThemeProps } from 'styled-components';
+import { lighten } from 'polished';
 
 const GlobalStyle = createGlobalStyle`\
 	* {
@@ -9,7 +10,8 @@ const GlobalStyle = createGlobalStyle`\
 	}
 	
     body {
-        font-family: ${(props: ThemeProps<any>) => props.theme.fonts.body}; 
+        background: ${props => lighten(0.03, props.theme.colors.light)};
+        font-family: ${(props: ThemeProps<any>) => props.theme.fonts.body};
     }
 `;
 

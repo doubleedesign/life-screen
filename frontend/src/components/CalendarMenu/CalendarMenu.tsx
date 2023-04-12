@@ -21,7 +21,7 @@ export const CalendarMenu: React.FC=  function() {
 				<CalendarMenuListItem key={calendar.id}>
 					<Checkbox label={calendar.displayName || calendar.name}
 						image={calendar.logo}
-						color={calendar?.colors?.background || calendar.hexColor}
+						color={calendar?.colors?.secondary || calendar.hexColor}
 						checked={selectedCalendars.includes(calendar.id)}
 						onChange={() => handleChange(calendar.id)} />
 				</CalendarMenuListItem>

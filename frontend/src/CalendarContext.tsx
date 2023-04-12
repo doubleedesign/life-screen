@@ -24,7 +24,8 @@ const CalendarContextProvider: React.FC<PropsWithChildren<CalendarContextProps>>
 				calendar.displayName = 'General';
 				calendar.sortPosition = 1;
 				calendar.colors = {
-					background: '#845ec2'
+					primary: '#845ec2',
+					secondary: '#845ec2'
 				};
 				break;
 			case 'Deakin':
@@ -32,7 +33,8 @@ const CalendarContextProvider: React.FC<PropsWithChildren<CalendarContextProps>>
 				calendar.logo = 'deakin.svg';
 				calendar.sortPosition = 2;
 				calendar.colors = {
-					background: '#0B7161'
+					primary: '#0B7161',
+					secondary: '#c74298',
 				};
 				break;
 			case 'RMIT':
@@ -40,7 +42,8 @@ const CalendarContextProvider: React.FC<PropsWithChildren<CalendarContextProps>>
 				calendar.logo = 'rmit.svg';
 				calendar.sortPosition = 4;
 				calendar.colors = {
-					background: '#070758'
+					primary: '#e60028',
+					secondary: '#070758'
 				};
 				break;
 			case 'NAB':
@@ -48,13 +51,15 @@ const CalendarContextProvider: React.FC<PropsWithChildren<CalendarContextProps>>
 				calendar.logo = 'nab.svg';
 				calendar.sortPosition = 3;
 				calendar.colors = {
-					background: '#000'
+					primary: '#be0d00',
+					secondary: '#000'
 				};
 				break;
 			default:
 				calendar.sortPosition = 10;
 				calendar.colors = {
-					background: '#E6E6FA'
+					primary: '',
+					secondary: '#E6E6FA'
 				};
 			}
 
@@ -68,8 +73,8 @@ const CalendarContextProvider: React.FC<PropsWithChildren<CalendarContextProps>>
 			return 0;
 		});
 
-		// Initially load all calendars as selected
-		setSelectedCalendars(calendars.map(calendar => calendar.id));
+		// Initially load all calendars except work as selected
+		setSelectedCalendars(calendars.filter((calendar) => calendar.name !== 'NAB').map(calendar => calendar.id));
 	}, [calendars]);
 
 	return (

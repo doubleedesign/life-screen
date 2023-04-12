@@ -63,9 +63,9 @@ function App() {
 			{loggedIn ? <CalendarContextProvider calendars={calendars}>
 				<GlobalHeader userData={userData} />
 				{loggedIn &&
-				<FlexRow>
+				<FlexRow style={{ alignItems: 'flex-start' }}>
 					<CalendarMenu />
-					<CalendarContent />
+					<CalendarContent weeks={1} />
 				</FlexRow>
 				}
 			</CalendarContextProvider>
