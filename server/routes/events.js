@@ -15,10 +15,7 @@ router.get('/:calendar_id', async function (req, res) {
 
 	// Compile events data into the desired response format
 	// Note: To retrieve more fields, edit the getCalendarEvents function
-	// TODO: This gets the next 3 weeks, update to get option from front-end to load more/less
 	const events = response.value.map((event) => {
-
-		console.log(events);
 
 		return {
 			what: event.subject,

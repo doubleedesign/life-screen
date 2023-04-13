@@ -20,7 +20,7 @@ const CalendarContent: FC<CalendarContentProps> = ({ weeks }) => {
 		selectedCalendars.forEach(async (calendar_id) => {
 			const response = await axios.get(`${SERVER_URL}/events/${calendar_id}?weeks=${weeks}`);
 			setEvents((prevState) => [...prevState, ...response.data].sort((a, b) => {
-				return Number(a.when.start.dateTime) - Number(b.when.start.dateTime);
+				return new Date(a.when.start.dateTime).getDate() - new Date(b.when.start.dateTime).getDate();
 			}));
 		});
 	}
