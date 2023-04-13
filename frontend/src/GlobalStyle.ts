@@ -2,7 +2,11 @@
 import { createGlobalStyle, ThemeProps } from 'styled-components';
 import { lighten } from 'polished';
 
-const GlobalStyle = createGlobalStyle`\
+const GlobalStyle = createGlobalStyle`
+	:root {
+        --rt-opacity: 1.0;
+	}
+	
 	* {
         margin: 0;
         padding: 0;

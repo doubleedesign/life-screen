@@ -24,7 +24,7 @@ const CalendarContextProvider: React.FC<PropsWithChildren<CalendarContextProps>>
 				calendar.displayName = 'General';
 				calendar.sortPosition = 1;
 				calendar.colors = {
-					primary: '#845ec2',
+					primary: '#4e317e',
 					secondary: '#845ec2'
 				};
 				break;
@@ -33,7 +33,7 @@ const CalendarContextProvider: React.FC<PropsWithChildren<CalendarContextProps>>
 				calendar.logo = 'deakin.svg';
 				calendar.sortPosition = 2;
 				calendar.colors = {
-					primary: '#0B7161',
+					primary: '#ffd923',
 					secondary: '#c74298',
 				};
 				break;

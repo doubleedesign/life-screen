@@ -2,6 +2,13 @@ import styled, { css } from 'styled-components';
 import { Block } from '../CommonLayout';
 import { breakpointUp } from '@doubleedesign/styled-media-queries';
 
+export interface CalendarItemStyleProps {
+	colors?: {
+		primary: string;
+		secondary: string;
+	}
+}
+
 export const CalendarContentWrapper = styled(Block).attrs({ as: 'ul' })`
     padding-top: ${props => props.theme.spacing.md};
     flex-grow: 1;

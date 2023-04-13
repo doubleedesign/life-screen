@@ -6,7 +6,7 @@ export const theme = {
 		accent: '#00c9a7',
 		dark: '#1a1a1a',
 		light: '#E6E6FA',
-		body: '#444',
+		body: '#4d4d4d',
 	},
 	breakpoints: {
 		sm: 576,

@@ -7,6 +7,10 @@ export const FlexRow = styled.div`
 	flex-wrap: wrap;
 	max-width: ${props => props.theme.breakpoints.xxl}px;
 	margin: 0 auto;
+	
+    ${props => breakpointUp(props.theme.breakpoints.lg, css`
+        flex-wrap: nowrap;
+    `)};
 `;
 
 export const Block = styled.div`

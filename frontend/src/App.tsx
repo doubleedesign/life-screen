@@ -12,6 +12,7 @@ import CalendarContent from './components/CalendarContent/CalendarContent';
 import DialogBox from './components/DialogBox/DialogBox';
 import { StyledButtonLink } from './components/ButtonLink/ButtonLink.styled';
 import { Block, FlexRow } from './components/CommonLayout';
+import 'react-tooltip/dist/react-tooltip.css';
 
 function App() {
 	const [userData, setUserData] = useState<User | null>(null);
