@@ -22,3 +22,12 @@ export const Block = styled.div`
         padding-right: ${props => props.theme.spacing.md};
     `)};
 `;
+
+export const ScreenReaderText = styled.span`
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+`;

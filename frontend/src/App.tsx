@@ -11,7 +11,7 @@ import CalendarMenu from './components/CalendarMenu/CalendarMenu';
 import CalendarContent from './components/CalendarContent/CalendarContent';
 import DialogBox from './components/DialogBox/DialogBox';
 import { StyledButtonLink } from './components/ButtonLink/ButtonLink.styled';
-import { Block, FlexRow } from './components/CommonLayout';
+import { Block, FlexRow } from './components/common';
 import 'react-tooltip/dist/react-tooltip.css';
 
 function App() {
@@ -61,12 +61,12 @@ function App() {
 	return (
 		<ThemeProvider theme={theme}>
 			<GlobalStyle />
-			{loggedIn ? <CalendarContextProvider calendars={calendars}>
+			{loggedIn ? <CalendarContextProvider calendars={calendars} weeks={1}>
 				<GlobalHeader userData={userData} />
 				{loggedIn &&
 				<FlexRow style={{ alignItems: 'flex-start' }}>
 					<CalendarMenu />
-					<CalendarContent weeks={1} />
+					<CalendarContent />
 				</FlexRow>
 				}
 			</CalendarContextProvider>

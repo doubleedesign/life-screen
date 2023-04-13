@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
-import { Block, FlexRow } from '../CommonLayout';
+import { Block, FlexRow } from '../common';
 import { breakpointUp } from '@doubleedesign/styled-media-queries';
+import { StyledButton } from '../Button/Button.styled';
 
 export const GlobalHeaderWrapper = styled.header`
 	background: ${({ theme }): string => theme.colors.dark};
@@ -33,6 +34,10 @@ export const GlobalHeaderWrapper = styled.header`
             h1 {
                 font-size: ${({ theme }): string => theme.fontSizes.lg};
             }
+		}
+		
+		${StyledButton} {
+			border: 1px solid ${props => props.theme.colors.light};
 		}
 	}
 `;

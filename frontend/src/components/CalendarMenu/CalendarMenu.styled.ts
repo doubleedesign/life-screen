@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { Block } from '../CommonLayout';
+import { Block } from '../common';
 import { breakpointUp } from '@doubleedesign/styled-media-queries';
 export const CalendarMenuList = styled(Block).attrs({ as: 'ul' })`
 	padding-top: ${props => props.theme.spacing.md};

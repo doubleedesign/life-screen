@@ -1,39 +1,54 @@
-import React, { FC, useContext, useState, useEffect } from 'react';
-import { CalendarContentWrapper } from './CalendarContent.styled';
+import React, { FC, useContext, useEffect, useCallback } from 'react';
+import {
+	CalendarContentWrapper,
+	CalendarItemList,
+	CalendarUtilityBar,
+	CalendarWeekCount
+} from './CalendarContent.styled';
 import { CalendarContext } from '../../CalendarContext';
-import axios from 'axios';
-import { SERVER_URL } from '../../constants';
-import { CalendarEvent } from '../../types';
 import CalendarItem from './CalendarItem/CalendarItem';
+import { StyledButton } from '../Button/Button.styled';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Tooltip } from 'react-tooltip';
 
-interface CalendarContentProps {
-	weeks: number
-}
+const CalendarContent: FC = () => {
+	const { events, refreshEvents, weeks, setWeeks } = useContext(CalendarContext);
 
-const CalendarContent: FC<CalendarContentProps> = ({ weeks }) => {
-	const { selectedCalendars } = useContext(CalendarContext);
-	const [events, setEvents] = useState<CalendarEvent[]>([]);
-
-	function fetchEvents() {
-		setEvents([]);
-
-		selectedCalendars.forEach(async (calendar_id) => {
-			const response = await axios.get(`${SERVER_URL}/events/${calendar_id}?weeks=${weeks}`);
-			setEvents((prevState) => [...prevState, ...response.data].sort((a, b) => {
-				return new Date(a.when.start.dateTime).getDate() - new Date(b.when.start.dateTime).getDate();
-			}));
-		});
-	}
+	// @ts-ignore
+	const updateWeeks = useCallback((event) => {
+		setWeeks(event.currentTarget.value);
+	}, [setWeeks]);
 
 	useEffect(() => {
-		fetchEvents();
-	}, [selectedCalendars]);
+		refreshEvents({ unhide: false });
+	}, [weeks]);
 
 	return (
 		<CalendarContentWrapper data-testid="CalendarContent">
-			{events.map((event, key) => {
-				return <CalendarItem key={key} event={event} />;
-			})}
+			<CalendarUtilityBar>
+				<CalendarWeekCount>
+					<label htmlFor="CalendarWeekCount">Weeks</label>
+					<input id="CalendarWeekCount" type="number" value={weeks} onChange={updateWeeks}/>
+				</CalendarWeekCount>
+
+				<StyledButton color="dark" onClick={() => refreshEvents({ unhide: true })}>
+					<span className="react-tooltip-trigger"
+						data-tooltip-id={'RefreshButtonTooltip'}
+						data-tooltip-content="Reload current calendars and un-hide hidden items"
+						data-tooltip-place="bottom"
+						data-tooltip-delay-hide={200}
+					>
+						<FontAwesomeIcon icon={['fas', 'arrow-rotate-right']} />
+							Refresh
+					</span>
+					<Tooltip id={'RefreshButtonTooltip'} />
+				</StyledButton>
+			</CalendarUtilityBar>
+			<CalendarItemList>
+				{events.map((event, key) => {
+					return <CalendarItem key={key} event={event} />;
+				})}
+			</CalendarItemList>
 		</CalendarContentWrapper>
 	);
 };

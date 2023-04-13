@@ -23,7 +23,8 @@ router.get('/:calendar_id', async function (req, res) {
 			where: event.location,
 			type: event.type,
 			categories: event.categories,
-			calendar_id: req.params.calendar_id
+			calendarId: req.params.calendar_id,
+			seriesMasterId: event.seriesMasterId || ''
 		};
 	});
 

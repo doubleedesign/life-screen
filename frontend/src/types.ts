@@ -53,5 +53,6 @@ export type CalendarEvent = {
 	}
 	type: 'singleInstance' | 'occurrence' | 'exception';
 	categories: string[];
-	calendar_id: string
+	calendarId: string;
+	seriesMasterId: string;
 }

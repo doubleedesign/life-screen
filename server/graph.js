@@ -24,7 +24,7 @@ const graphFunctions = {
 		const client = getAuthenticatedClient(msalClient, userId);
 		function getEndDate() {
 			const date = new Date();
-			date.setDate(date.getDate() + 7 * weeks);
+			date.setDate(date.getDate() + (weeks * 7));
 
 			return date;
 		}
@@ -39,13 +39,13 @@ const graphFunctions = {
 		return await client
 			.api(`/me/calendars/${calendarId}/calendarView`)
 			.header('Prefer', `outlook.timezone="${timezone}"`)
-			.select('subject,isAllDay,start,end,location,type,categories')
+			.select('subject,isAllDay,start,end,location,type,categories,seriesMasterId')
 			.query({
 				startDateTime: encodeURIComponent(now),
 				endDateTime: encodeURIComponent(end)
 			})
 			.orderby('start/dateTime')
-			.top(50)
+			.top(100)
 			.get();
 	},
 };
