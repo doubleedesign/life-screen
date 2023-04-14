@@ -14,7 +14,7 @@ interface SortedEvents {
 }
 
 const CalendarContent: FC = () => {
-	const { calendars, events, refreshEvents, weeks, setWeeks } = useContext(CalendarContext);
+	const { calendars, events, refreshEvents, weeks } = useContext(CalendarContext);
 	const [sortedEvents, setSortedEvents] = useState<SortedEvents>({
 		due_dates: [],
 		other: []

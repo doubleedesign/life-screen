@@ -27,7 +27,7 @@ const GlobalSubheader: FC = () => {
 						<label htmlFor="CalendarWeekCount">Weeks</label>
 						<input id="CalendarWeekCount" type="number" value={weeks} onChange={updateWeeks}/>
 					</CalendarWeekCount>
-					<StyledButton color="dark" onClick={() => refreshEvents({ unhide: true })}>
+					<StyledButton color="primary" onClick={() => refreshEvents({ unhide: true })}>
 						<span className="react-tooltip-trigger"
 							data-tooltip-id={'RefreshButtonTooltip'}
 							data-tooltip-content="Reload current calendars and un-hide hidden items"

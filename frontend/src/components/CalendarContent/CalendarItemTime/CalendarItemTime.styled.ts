@@ -3,7 +3,8 @@ import { CalendarItemStyleProps } from '../CalendarContent.styled';
 
 // @ts-ignore
 export const CalendarItemTimeWrapper = styled.div<CalendarItemStyleProps>`
-    min-width: 95px;
+    min-width: 110px;
+	width: 110px;
     flex-shrink: 0;
     padding: ${props => props.theme.spacing.md};
     padding-left: ${props => props.theme.spacing.xl};

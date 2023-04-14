@@ -15,7 +15,12 @@ export const StyledButton = styled.button<ButtonProps>`
     appearance: none;
     border: 0;
 	background: ${({ theme, color }): string => theme.colors[color]};
-    color: ${({ theme, color }): string => contrastTextColour(theme.colors[color])};
+    color: ${({ theme, color }): string => {
+		if(color === 'accent') {
+			return 'white';
+		}
+		return contrastTextColour(theme.colors[color]);
+	}};
     border-radius: 0.25rem;
 	text-decoration: underline;
 	text-decoration-color: transparent;

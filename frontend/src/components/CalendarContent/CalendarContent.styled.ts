@@ -10,25 +10,16 @@ export interface CalendarItemStyleProps {
 }
 
 export const CalendarContentWrapper = styled(FlexRow).attrs({ as: 'main' })`
-    padding-top: ${props => props.theme.spacing.md};
-    flex-grow: 1;
-
-    ${props => breakpointUp(props.theme.breakpoints.md, css`
-        width: 75%;
-        flex-basis: 75%;
-	`)};
-	
-	${props => breakpointUp(props.theme.breakpoints.lg, css`
-		width: auto;
-		flex-basis: auto;
-	`)};
-	
-	h2 {
-		color: ${props => props.theme.colors.body};
-		margin-bottom: ${props => props.theme.spacing.sm};
-	}
+    padding-top: ${props => props.theme.spacing.lg};
+    padding-bottom: ${props => props.theme.spacing.lg};
 	
 	${Block} {
+		
+        h2 {
+            color: ${props => props.theme.colors.body};
+            margin-bottom: ${props => props.theme.spacing.sm};
+        }
+		
         ${props => breakpointUp(props.theme.breakpoints.lg, css`
 		        width: 30%;
 		        flex-basis: 30%;

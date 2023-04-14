@@ -1,15 +1,12 @@
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import { GlobalHeaderWrapper } from './GlobalHeader.styled';
 import { LOGOUT_URL } from '../../constants';
-import { User } from '../../types';
 import { StyledButtonLink } from '../ButtonLink/ButtonLink.styled';
 import { Block, FlexRow } from '../common';
+import { CalendarContext } from '../../CalendarContext';
 
-interface GlobalHeaderProps {
-	userData: User | null
-}
-
-const GlobalHeader: FC<GlobalHeaderProps> = ({ userData }) => {
+const GlobalHeader: FC = () => {
+	const { user } = useContext(CalendarContext);
 
 	return (
 		<GlobalHeaderWrapper data-testid="GlobalHeader">
@@ -18,7 +15,7 @@ const GlobalHeader: FC<GlobalHeaderProps> = ({ userData }) => {
 					<h1>LifeScreen</h1>
 				</Block>
 				<Block>
-					<span>{userData?.mail} &nbsp;</span>
+					<span>{user?.mail} &nbsp;</span>
 					<StyledButtonLink size="sm" color="dark" href={LOGOUT_URL}>Log out</StyledButtonLink>
 				</Block>
 			</FlexRow>

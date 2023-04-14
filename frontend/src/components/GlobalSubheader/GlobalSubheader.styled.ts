@@ -4,7 +4,9 @@ import { FlexRow, Block } from '../common';
 export const GlobalSubheaderWrapper = styled.div`
 	padding: ${props => props.theme.spacing.md} 0;
 	background: white;
-    box-shadow: 0 0 0.5rem 0 #B8B8B8;
+    box-shadow: 0 0 0.5rem 0 ${props => props.theme.colors.dark};
+	position: relative;
+	z-index: 10;
 `;
 
 export const CalendarUtilityBar = styled(FlexRow)`

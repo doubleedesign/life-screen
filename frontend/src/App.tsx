@@ -8,12 +8,11 @@ import { ThemeProvider } from 'styled-components';
 import CalendarContextProvider from './CalendarContext';
 import GlobalHeader from './components/GlobalHeader/GlobalHeader';
 import GlobalSubheader from './components/GlobalSubheader/GlobalSubheader';
+import Summary from './components/Summary/Summary';
 import CalendarContent from './components/CalendarContent/CalendarContent';
 import DialogBox from './components/DialogBox/DialogBox';
 import { StyledButtonLink } from './components/ButtonLink/ButtonLink.styled';
-import { FlexRow } from './components/common';
 import 'react-tooltip/dist/react-tooltip.css';
-
 
 function App() {
 	const [userData, setUserData] = useState<User | null>(null);
@@ -62,14 +61,16 @@ function App() {
 	return (
 		<ThemeProvider theme={theme}>
 			<GlobalStyle />
-			{loggedIn ? <CalendarContextProvider calendars={calendars} >
-				<GlobalHeader userData={userData} />
-				<GlobalSubheader/>
-				<CalendarContent />
-			</CalendarContextProvider>
+			{loggedIn ?
+				<CalendarContextProvider calendars={calendars} user={userData}>
+					<GlobalHeader />
+					<GlobalSubheader/>
+					<Summary />
+					<CalendarContent />
+				</CalendarContextProvider>
 				:
 				<DialogBox size="md" title="Access">
-					<StyledButtonLink color="accent" href={LOGIN_URL}>Log in</StyledButtonLink>
+					<StyledButtonLink color="tertiary" href={LOGIN_URL}>Log in</StyledButtonLink>
 				</DialogBox>
 			}
 		</ThemeProvider>

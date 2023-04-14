@@ -1,14 +1,15 @@
 import React, { FC, PropsWithChildren } from 'react';
-import { DialogBoxHeader, DialogBoxWrapper } from './DialogBox.styled';
+import { DialogBoxWrapper } from './DialogBox.styled';
 
 interface DialogBoxProps {
 	size: string;
-	title: string;
+	title?: string;
+	color?: string
 }
 
-const DialogBox: FC<PropsWithChildren<DialogBoxProps>> = ({  size, title, children }) => (
-	<DialogBoxWrapper size={size} data-testid="DialogBox">
-		{title && <DialogBoxHeader>{title}</DialogBoxHeader>}
+const DialogBox: FC<PropsWithChildren<DialogBoxProps>> = ({  size, title, color, children }) => (
+	<DialogBoxWrapper size={size} data-testid="DialogBox" color={color}>
+		{title && <header>{title}</header>}
 		{children}
 	</DialogBoxWrapper>
 );

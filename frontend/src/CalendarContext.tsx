@@ -1,13 +1,15 @@
 import React, { createContext, Dispatch, PropsWithChildren, SetStateAction, useEffect, useState } from 'react';
-import { Calendar, CalendarEvent } from './types';
+import { Calendar, CalendarEvent, User } from './types';
 import axios from 'axios';
 import { SERVER_URL } from './constants';
 
 interface CalendarContextProps {
 	calendars: Calendar[];
+	user: User | null
 }
 
 export interface MyAppContext {
+	user: User | null;
 	calendars: Calendar[];
 	selectedCalendars: string[];
 	events: CalendarEvent[];
@@ -42,7 +44,7 @@ const fetchEvents = async (selectedCalendars: string[], hiddenSeries: string[], 
 
 export const CalendarContext = createContext({} as MyAppContext);
 
-const CalendarContextProvider: React.FC<PropsWithChildren<CalendarContextProps>> = function({ calendars, children }) {
+const CalendarContextProvider: React.FC<PropsWithChildren<CalendarContextProps>> = function({ calendars, user, children }) {
 	const [selectedCalendars, setSelectedCalendars] = useState<string[]>([]);
 	const [events, setEvents] = useState<CalendarEvent[]>([]);
 	const [hiddenSeries, setHiddenSeries] = useState<string[]>([]);
@@ -139,7 +141,7 @@ const CalendarContextProvider: React.FC<PropsWithChildren<CalendarContextProps>>
 	}, [hiddenSeries]);
 
 	return (
-		<CalendarContext.Provider value={{ calendars, selectedCalendars, events, weeks, setSelectedCalendars, setHiddenSeries, refreshEvents, setWeeks }}>
+		<CalendarContext.Provider value={{ user, calendars, selectedCalendars, events, weeks, setSelectedCalendars, setHiddenSeries, refreshEvents, setWeeks }}>
 			{children}
 		</CalendarContext.Provider>
 	);
