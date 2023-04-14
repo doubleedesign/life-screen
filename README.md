@@ -26,6 +26,6 @@ You will need to configure your own [Font Awesome access](https://fontawesome.co
 * [How to register your app to use Azure auth](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app)
 * [MS Graph API homepage](https://developer.microsoft.com/en-us/graph/rest-api)
 * [Tutorial: Calling an Azure AD secured API with Postman](https://dev.to/425show/calling-an-azure-ad-secured-api-with-postman-22co)
-* [Tutorial: Call MS Graph in a console app](https://learn.microsoft.com/en-us/azure/active-directory/develop/tutorial-v2-nodejs-console)\
+* [Tutorial: Call MS Graph in a console app](https://learn.microsoft.com/en-us/azure/active-directory/develop/tutorial-v2-nodejs-console)
 * [Tutorial: Node.js & Express web app calling Microsoft Graph using MSAL Node](https://github.com/Azure-Samples/ms-identity-javascript-nodejs-tutorial/blob/main/2-Authorization/1-call-graph/README.md)
 
