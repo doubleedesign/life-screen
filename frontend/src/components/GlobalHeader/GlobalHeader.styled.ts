@@ -8,6 +8,7 @@ export const GlobalHeaderWrapper = styled.header`
 	padding-top: ${({ theme }): string => theme.spacing.md};
 	padding-bottom: ${({ theme }): string => theme.spacing.md};
 	color: white;
+	position: relative;
 	
 	${FlexRow} {
 		align-items: center;

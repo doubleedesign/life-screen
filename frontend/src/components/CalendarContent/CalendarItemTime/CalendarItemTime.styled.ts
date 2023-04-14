@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { CalendarItemStyleProps } from '../CalendarContent.styled';
-import { transparentize } from 'polished';
 
 // @ts-ignore
 export const CalendarItemTimeWrapper = styled.div<CalendarItemStyleProps>`
@@ -9,6 +8,7 @@ export const CalendarItemTimeWrapper = styled.div<CalendarItemStyleProps>`
     padding: ${props => props.theme.spacing.md};
     padding-left: ${props => props.theme.spacing.xl};
     margin-right: ${props => props.theme.spacing.sm};
+    margin-left: -${props => props.theme.spacing.lg};
     text-align: center;
 	display: flex;
 	flex-direction: column;

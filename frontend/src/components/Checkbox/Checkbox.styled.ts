@@ -10,7 +10,6 @@ interface CheckboxWrapperProps {
 export const CheckboxWrapper = styled.div<CheckboxWrapperProps>`
 	width: 100%;
     padding: ${props => props.theme.spacing.sm};
-    margin: ${props => props.theme.spacing.xs} 0;
     background: ${props => props.checked ? props.color : darken(0.03, props.theme.colors.light)};
     border: 2px solid ${props => props.checked ? darken(0.2, props.color) : props.theme.colors.light};
     border-radius: 0.25rem;
@@ -49,15 +48,10 @@ export const CheckboxWrapper = styled.div<CheckboxWrapperProps>`
 		    padding-right: ${props => props.theme.spacing.sm};
 	    }
 
-        img {
+        img, .fa-calendar-star {
             height: 2rem;
 	        width: auto;
         }
-	    
-	    .fa-calendar-star,
-	    .icon-rmit {
-		    height: 1.8rem;
-	    }
 	    
         .fa-circle-check {
 	        order: 3;

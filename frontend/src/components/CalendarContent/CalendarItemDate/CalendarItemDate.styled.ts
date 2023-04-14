@@ -16,6 +16,7 @@ export const CalendarItemDateWrapper = styled.div<CalendarItemStyleProps>`
 	align-items: center;
 	align-content: center;
 	justify-content: center;
+	margin-right: ${props => props.theme.spacing.sm};
 	
 	.day {
 		flex-basis: 100%;

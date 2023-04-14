@@ -1,54 +1,65 @@
-import React, { FC, useContext, useEffect, useCallback } from 'react';
+import React, { FC, useContext, useState, useEffect, useCallback } from 'react';
 import {
 	CalendarContentWrapper,
-	CalendarItemList,
-	CalendarUtilityBar,
-	CalendarWeekCount
+	CalendarItemList
 } from './CalendarContent.styled';
 import { CalendarContext } from '../../CalendarContext';
 import CalendarItem from './CalendarItem/CalendarItem';
-import { StyledButton } from '../Button/Button.styled';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Tooltip } from 'react-tooltip';
+import { CalendarEvent } from '../../types';
+import { Block } from '../common';
+
+interface SortedEvents {
+	due_dates: CalendarEvent[];
+	other: CalendarEvent[];
+}
 
 const CalendarContent: FC = () => {
-	const { events, refreshEvents, weeks, setWeeks } = useContext(CalendarContext);
-
-	// @ts-ignore
-	const updateWeeks = useCallback((event) => {
-		setWeeks(event.currentTarget.value);
-	}, [setWeeks]);
+	const { calendars, events, refreshEvents, weeks, setWeeks } = useContext(CalendarContext);
+	const [sortedEvents, setSortedEvents] = useState<SortedEvents>({
+		due_dates: [],
+		other: []
+	});
 
 	useEffect(() => {
 		refreshEvents({ unhide: false });
 	}, [weeks]);
 
+	useEffect(() => {
+		const sorted: SortedEvents = { due_dates: [], other: [] };
+		const onTrackCalendar = calendars.find((calendar) => calendar.name.includes('OnTrack'));
+		events.map((event: CalendarEvent) => {
+			if(onTrackCalendar && event.calendarId === onTrackCalendar.id || event.categories.includes('Due dates')) {
+				sorted.due_dates.push(event);
+			}
+			else {
+				sorted.other.push(event);
+			}
+		});
+
+		setSortedEvents(sorted);
+	}, [events]);
+
 	return (
 		<CalendarContentWrapper data-testid="CalendarContent">
-			<CalendarUtilityBar>
-				<CalendarWeekCount>
-					<label htmlFor="CalendarWeekCount">Weeks</label>
-					<input id="CalendarWeekCount" type="number" value={weeks} onChange={updateWeeks}/>
-				</CalendarWeekCount>
 
-				<StyledButton color="dark" onClick={() => refreshEvents({ unhide: true })}>
-					<span className="react-tooltip-trigger"
-						data-tooltip-id={'RefreshButtonTooltip'}
-						data-tooltip-content="Reload current calendars and un-hide hidden items"
-						data-tooltip-place="bottom"
-						data-tooltip-delay-hide={200}
-					>
-						<FontAwesomeIcon icon={['fas', 'arrow-rotate-right']} />
-							Refresh
-					</span>
-					<Tooltip id={'RefreshButtonTooltip'} />
-				</StyledButton>
-			</CalendarUtilityBar>
-			<CalendarItemList>
-				{events.map((event, key) => {
-					return <CalendarItem key={key} event={event} />;
-				})}
-			</CalendarItemList>
+			<Block>
+				<h2>Places to go, things to do</h2>
+				<CalendarItemList>
+					{sortedEvents.other.map((event, key) => {
+						return <CalendarItem key={key} event={event} showTime={true} />;
+					})}
+				</CalendarItemList>
+			</Block>
+
+			<Block>
+				<h2>Due dates</h2>
+				<CalendarItemList>
+					{sortedEvents.due_dates.map((event, key) => {
+						return <CalendarItem key={key} event={event} showTime={false} />;
+					})}
+				</CalendarItemList>
+			</Block>
+
 		</CalendarContentWrapper>
 	);
 };

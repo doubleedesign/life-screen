@@ -78,10 +78,19 @@ const CalendarContextProvider: React.FC<PropsWithChildren<CalendarContextProps>>
 					secondary: '#c74298',
 				};
 				break;
+			case 'Deakin - OnTrack':
+				calendar.displayName = 'Uni - OnTrack';
+				calendar.logo = 'deakin.svg';
+				calendar.sortPosition = 3;
+				calendar.colors = {
+					primary: '#ffd923',
+					secondary: '#0b7161',
+				};
+				break;
 			case 'RMIT':
 				calendar.displayName = 'Teaching';
 				calendar.logo = 'rmit.svg';
-				calendar.sortPosition = 4;
+				calendar.sortPosition = 5;
 				calendar.colors = {
 					primary: '#e60028',
 					secondary: '#070758'
@@ -90,7 +99,7 @@ const CalendarContextProvider: React.FC<PropsWithChildren<CalendarContextProps>>
 			case 'NAB':
 				calendar.displayName = 'Work';
 				calendar.logo = 'nab.svg';
-				calendar.sortPosition = 3;
+				calendar.sortPosition = 4;
 				calendar.colors = {
 					primary: '#be0d00',
 					secondary: '#000'

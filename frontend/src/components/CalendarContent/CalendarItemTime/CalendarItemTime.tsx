@@ -24,6 +24,7 @@ const CalendarItemTime: FC<CalendarItemTimeProps> = ({ start, end, colors }) => 
 	if(end) {
 		// @ts-ignore
 		iconName = hours > 11 ? `clock-${words[hours - 12]}` : `clock-${words[hours]}`;
+		// @ts-ignore
 		iconName = minutes === 30 ? `${iconName}-thirty` : iconName;
 		// @ts-ignore
 		difference = new Date(end) - new Date(start);

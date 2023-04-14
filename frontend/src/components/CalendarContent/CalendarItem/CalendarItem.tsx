@@ -10,10 +10,11 @@ import { ScreenReaderText } from '../../common';
 import CalendarItemTime from '../CalendarItemTime/CalendarItemTime';
 
 interface CalendarItemProps {
-	event: CalendarEvent
+	event: CalendarEvent,
+	showTime: boolean
 }
 
-const CalendarItem: FC<CalendarItemProps> = ({ event }) => {
+const CalendarItem: FC<CalendarItemProps> = ({ event, showTime }) => {
 	const { calendars, setHiddenSeries }  = useContext(CalendarContext);
 	// Find which calendar this event belongs to
 	const calendar = calendars.find((calendar) => calendar.id === event.calendarId);
@@ -25,7 +26,7 @@ const CalendarItem: FC<CalendarItemProps> = ({ event }) => {
 	return (
 		<CalendarItemWrapper data-testid="CalendarItem" colors={calendar?.colors}>
 			<CalendarItemDate date={event.when.start.dateTime} colors={calendar?.colors}/>
-			<CalendarItemTime start={event.when.start.dateTime} end={event.when?.end?.dateTime} colors={calendar?.colors} />
+			{showTime && <CalendarItemTime start={event.when.start.dateTime} end={event.when?.end?.dateTime} colors={calendar?.colors} /> }
 			<CalendarItemImage colors={calendar?.colors}>
 				{calendar?.logo ? <img src={`/images/${calendar.logo}`} alt="" className={`icon-${calendar.logo.replace('.svg', '')}`} /> : <FontAwesomeIcon icon={['fas', 'calendar-star']} /> }
 			</CalendarItemImage>

@@ -18,9 +18,7 @@ const GlobalHeader: FC<GlobalHeaderProps> = ({ userData }) => {
 					<h1>LifeScreen</h1>
 				</Block>
 				<Block>
-					<span>{userData?.mail}</span>
-				</Block>
-				<Block>
+					<span>{userData?.mail} &nbsp;</span>
 					<StyledButtonLink size="sm" color="dark" href={LOGOUT_URL}>Log out</StyledButtonLink>
 				</Block>
 			</FlexRow>

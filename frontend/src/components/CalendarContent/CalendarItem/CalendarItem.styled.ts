@@ -50,8 +50,7 @@ export const CalendarItemContent = styled.div<CalendarItemStyleProps>`
 		font-size: ${props => props.theme.fontSizes.md};
 		font-weight: ${props => props.theme.fontWeights.semibold};
 		color: ${props => props?.colors?.secondary};
-		margin: 0;
-		line-height: 30px;
+		margin: ${props => props.theme.spacing.xs} 0;
 		
 		.react-tooltip-trigger {
 			line-height: 1;

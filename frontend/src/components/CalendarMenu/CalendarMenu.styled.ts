@@ -2,14 +2,11 @@ import styled, { css } from 'styled-components';
 import { Block } from '../common';
 import { breakpointUp } from '@doubleedesign/styled-media-queries';
 export const CalendarMenuList = styled(Block).attrs({ as: 'ul' })`
-	padding-top: ${props => props.theme.spacing.md};
+	padding: 0;
 	list-style: none;
 	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	flex-basis: 100%;
+	flex-grow: 1;
+	justify-content: flex-start;
 	
 	${props => breakpointUp(props.theme.breakpoints.md, css`
         width: 25%;
@@ -23,5 +20,8 @@ export const CalendarMenuList = styled(Block).attrs({ as: 'ul' })`
 `;
 
 export const CalendarMenuListItem = styled.li`
-	width: 100%;
+	min-width: 160px;
+	flex-basis: 160px;
+	margin-right: ${props => props.theme.spacing.sm};
+	display: flex;
 `;

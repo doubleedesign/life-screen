@@ -12,8 +12,8 @@ export const theme = {
 		sm: 576,
 		md: 768,
 		lg: 992,
-		xl: 1200,
-		xxl: 1440
+		xl: 1140,
+		xxl: 1600
 	},
 	fonts: {
 		body: '"Inter Tight", sans-serif',
