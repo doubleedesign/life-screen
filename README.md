@@ -2,7 +2,8 @@
 
 Using the Microsoft Graph API, Node/Express, and React with TypeScript and Styled Components to bring my calendars together (and other things eventually, e.g., weather forecast is next on the agenda).  
 
-![Screenshot 2023-04-14 at 19-32-48 LifeScreen](https://user-images.githubusercontent.com/563583/232006885-1b5698fa-6e40-466e-82c0-66a8eb676506.png)
+![Screenshot 2023-04-14 at 19-57-56 LifeScreen](https://user-images.githubusercontent.com/563583/232013384-300d0c7b-8956-4f7c-856a-514af839a146.png)
+
 
 Some of the code is specific to my calendars, e.g., exclusions, renaming, categorisation, front-end styling; but this could all easily be adjusted for use by other individuals. So please feel free to fork the repo and have a go (insert standard disclaimer about no warranty etc etc). 
 
