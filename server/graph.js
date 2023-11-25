@@ -1,5 +1,4 @@
 import graph from '@microsoft/microsoft-graph-client';
-import isomorphic_fetch from 'isomorphic-fetch';
 import * as iana from 'windows-iana';
 
 const graphFunctions = {

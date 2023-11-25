@@ -3,7 +3,7 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import session from 'express-session';
 import flash from 'connect-flash';
-import msal from '@azure/msal-node';
+import * as msal from '@azure/msal-node';
 import cors from 'cors';
 import nodeCache from 'node-cache';
 import { config } from 'dotenv';
@@ -34,7 +34,7 @@ const msalConfig = {
 	cache: app.locals.cache,
 	system: {
 		loggerOptions: {
-			loggerCallback(loglevel, message, containsPii) {
+			loggerCallback(loglevel, message) {
 				console.log(message);
 			},
 			piiLoggingEnabled: false,

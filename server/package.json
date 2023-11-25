@@ -1,39 +1,35 @@
 {
 	"name": "lifescreen-server",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"start": "node bin/www",
 		"local": "set NODE_ENV=LOCAL && nodemon --watch",
 		"lint": "eslint"
 	},
+	"engines": {
+		"node": "^20.10.0"
+	},
 	"dependencies": {
-		"@azure/msal-node": "^1.1.0",
+		"@azure/msal-node": "^2.5.1",
 		"@microsoft/microsoft-graph-client": "^3.0.0",
-		"@types/node": "^18.11.9",
+		"@types/node": "^20.10.0",
 		"connect-flash": "^0.1.1",
 		"cookie-parser": "~1.4.4",
 		"cors": "^2.8.5",
 		"date-fns": "^2.22.1",
-		"date-fns-tz": "^1.1.6",
+		"date-fns-tz": "^2.0.0",
 		"debug": "^4.3.2",
-		"dotenv": "^10.0.0",
+		"dotenv": "^16.3.1",
 		"express": "^4.17.1",
 		"express-promise-router": "^4.1.0",
 		"express-session": "^1.17.2",
-		"express-validator": "^6.12.0",
-		"hbs": "^4.1.2",
-		"http-errors": "^1.8.0",
-		"isomorphic-fetch": "^3.0.0",
 		"morgan": "^1.10.0",
 		"node-cache": "^5.1.2",
-		"nodemon": "^2.0.20",
 		"ts-node": "^10.9.1",
-		"typescript": "^5.0.2",
 		"windows-iana": "^5.0.2"
 	},
 	"devDependencies": {
-		"nodemon": "^2.0.20"
+		"nodemon": "^3.0.1"
 	}
 }
