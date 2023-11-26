@@ -27,9 +27,9 @@ app.locals.cache.users = {};
 // MSAL config
 const msalConfig = {
 	auth: {
-		clientId: process.env.OAUTH_CLIENT_ID,
-		authority: process.env.OAUTH_AUTHORITY,
-		clientSecret: process.env.OAUTH_CLIENT_SECRET
+		clientId: process.env.MS_OAUTH_CLIENT_ID,
+		authority: process.env.MS_OAUTH_AUTHORITY,
+		clientSecret: process.env.MS_OAUTH_CLIENT_SECRET
 	},
 	cache: app.locals.cache,
 	system: {

@@ -67,7 +67,7 @@ function getAuthenticatedClient(msalClient, userId) {
 					// Attempt to get the token silently
 					// This method uses the token cache and refreshes expired tokens as needed
 					const response = await msalClient.acquireTokenSilent({
-						scopes: process.env.OAUTH_SCOPES.split(','),
+						scopes: process.env.MS_OAUTH_SCOPES.split(','),
 						redirectUri: process.env.OAUTH_REDIRECT_URI,
 						account: account
 					});

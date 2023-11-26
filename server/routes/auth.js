@@ -4,7 +4,7 @@ const router = Router();
 
 /* GET auth callback. */
 router.get('/login', async function (req, res) {
-	const scopes = process.env.OAUTH_SCOPES || 'https://graph.microsoft.com/.default';
+	const scopes = process.env.MS_OAUTH_SCOPES || 'https://graph.microsoft.com/.default';
 	const urlParameters = {
 		scopes: scopes.split(','),
 		redirectUri: process.env.OAUTH_REDIRECT_URI // /auth/callback
@@ -27,7 +27,7 @@ router.get('/login', async function (req, res) {
 
 
 router.get('/callback', async function (req, res) {
-	const scopes = process.env.OAUTH_SCOPES || 'https://graph.microsoft.com/.default';
+	const scopes = process.env.MS_OAUTH_SCOPES || 'https://graph.microsoft.com/.default';
 	const tokenRequest = {
 		code: req.query.code,
 		scopes: scopes.split(','),
