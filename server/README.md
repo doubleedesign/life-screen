@@ -1,8 +1,20 @@
 # Life Screen server app
 
-## O365 Outlook Calendar - Microsoft Graph
+[Setup](#setup)
+- [Microsoft Graph](#microsoft-graph)
+  - [Azure authentication](#azure-authentication)
+  - [Testing with Postman](#testing-with-postman)
+  - [Useful links](#useful-links)
+- [Google Calendar](#google-calendar)
+  - [Google OAuth](#google-oauth)
+  - [Useful links](#useful-links-1)
 
-### Azure Authentication
+[Development](#development)
+- [Using the WebStorm debugger](#using-the-webstorm-debugger)
+
+### Microsoft Graph
+
+#### Azure Authentication
 
 This application requires an app in Azure Active Directory to handle authentication. Then add OAuth, URL, callback, etc details in `server/.env` (all the required keys are listed in that file).
 
@@ -12,7 +24,7 @@ This application requires an app in Azure Active Directory to handle authenticat
 - MS_OAUTH_AUTHORITY is `https://login.microsoftonline.com/organizations/` if you are using Office 365; it's different if you're using a personal @outlook.com account.
 - Required scopes for me are `user.read,mailboxsettings.read,Calendars.Read,Calendars.Read.Shared`. YMMV, you may not need `Calendars.Read.Shared` if you, well, don't need to read any shared calendars.
 
-### Testing with Postman
+#### Testing with Postman
 
 1. In the Azure portal > Authentication, ensure you have two web redirect URIs:
     - Your application, e.g., `http://localhost:4000/auth/callback`
@@ -22,7 +34,7 @@ This application requires an app in Azure Active Directory to handle authenticat
    - For multiple scopes, separate them with a space.
 3. To then query your own endpoint, untick "authorize using browser" and update the callback URL to the one for your application (e.g., `http://localhost:4000/auth/callback`).
 
-### Useful links
+#### Useful links
 
 * [MS Graph Explorer](https://developer.microsoft.com/en-us/graph/graph-explorer) - find and test sample queries; can be used to get an auth token to use in Postman
 * [MS Graph API homepage](https://developer.microsoft.com/en-us/graph/rest-api)
@@ -32,7 +44,9 @@ This application requires an app in Azure Active Directory to handle authenticat
 * [Tutorial: Call MS Graph in a console app](https://learn.microsoft.com/en-us/azure/active-directory/develop/tutorial-v2-nodejs-console)
 * [Tutorial: Node.js & Express web app calling Microsoft Graph using MSAL Node](https://github.com/Azure-Samples/ms-identity-javascript-nodejs-tutorial/blob/main/2-Authorization/1-call-graph/README.md)
 
-## Google Calendar
+### Google Calendar
+
+#### Google OAuth
 
 1. [Create a Google Cloud project](https://developers.google.com/workspace/guides/create-project) and enable the Calendar API within it.
 2. In Google APIs and Services, go to [OAuth consent screen](https://console.cloud.google.com/apis/credentials/consent?project=life-screen). As I am using a personal account, not a Workspace account, I have to choose "external". 
@@ -45,8 +59,17 @@ This application requires an app in Azure Active Directory to handle authenticat
     - If you're going to test with Postman, also add the Postman redirect URL `https://oauth.pstmn.io/v1/callback`.
 6. Click "create" and copy the client ID and secret that appear into your server `.env` file.
 
-### Useful links
+#### Useful links
 
 * Calendars in [Google APIs Explorer](https://developers.google.com/calendar/api/v3/reference/calendars/get?apix_params=%7B%22calendarId%22%3A%22primary%22%7D)
 * Calendars in [Google APIs library for NodeJS](https://googleapis.dev/nodejs/googleapis/latest/calendar/index.html)
 * [How to access Google APIs using OAuth 2.0 in Postman](https://blog.postman.com/how-to-access-google-apis-using-oauth-in-postman/)
+* [Google APIs Node.js client](https://www.npmjs.com/package/googleapis) on NPM
+
+## Development
+
+### Using the WebStorm debugger
+- Node parameters: `-r dotenv/config --require ts-node/register  --loader ts-node/esm --experimental-specifier-resolution=node`
+- Working directory: `path\to\life-screen\server`
+- JavaScript file: `src\app.ts`
+- Environment variables: `DOTENV_CONFIG_PATH=./.env`

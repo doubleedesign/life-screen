@@ -1,9 +1,8 @@
-import graph from './graph';
+import graph from './graph.js';
 import Router from 'express-promise-router';
 const router = Router();
 
-/* GET auth callback. */
-router.get('/login', async function (req, res) {
+router.get('/auth/login', async function (req, res) {
 	const scopes = process.env.MS_OAUTH_SCOPES || 'https://graph.microsoft.com/.default';
 	const urlParameters = {
 		scopes: scopes.split(','),
@@ -37,25 +36,22 @@ router.get('/auth/callback', async function (req, res) {
 		if(req.session) {
 			const response = await req.app.locals.cache.msalClient.acquireTokenByCode(tokenRequest);
 
-			// Save the user's homeAccountId in their session
-			req.session.userId = response.account.homeAccountId;
-
 			// Get user object
-			const user = await graph.getUserDetails(req.app.locals.cache.msalClient, req.session.userId);
+			const user = await graph.getUserDetails(req.app.locals.cache.msalClient, response.account.homeAccountId);
 
-			// Add the user object to the cache
-			req.app.locals.cache.users[req.session.userId] = {
+			// Add the user object to the session
+			req.session.msgraph = {
+				userId: response.account.homeAccountId,
 				displayName: user.displayName,
 				email: user.mail || user.userPrincipalName,
 				timeZone: user.mailboxSettings.timeZone,
 				token: response.accessToken
 			};
 
-			console.log(req.app.locals.cache.users[req.session.userId]);
-
 			res.status(200).json({
 				status: 200,
-				message: 'Microsoft account login successful'
+				message: 'Microsoft account login successful',
+				data: req.session.msgraph
 			});
 		}
 		else {
@@ -77,12 +73,12 @@ router.get('/auth/callback', async function (req, res) {
 });
 
 
-router.get('/logout', async function (req, res) {
+router.get('/auth/logout', async function (req, res) {
 	try {
-		if (req?.session?.userId) {
+		if (req?.session?.msgraph?.userId) {
 			// Look up the user's account in the cache
 			const accounts = await req.app.locals.cache.msalClient.getTokenCache().getAllAccounts();
-			const userAccount = accounts.find(a => a.homeAccountId === req.session.userId);
+			const userAccount = accounts.find(a => a.homeAccountId === req.session.msgraph.userId);
 
 			// Remove the account
 			if (userAccount) {
@@ -90,14 +86,12 @@ router.get('/logout', async function (req, res) {
 			}
 
 			// Clear from the session
-			req.session.userId = undefined;
+			req.session.msgraph = undefined;
 
 			res.status(200).json({
 				status: 200,
 				message: 'Logged out of Microsoft account'
 			});
-
-			console.log(req.session);
 		}
 		else {
 			throw new Error({
