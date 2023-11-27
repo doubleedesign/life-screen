@@ -2,7 +2,7 @@ import express from 'express';
 import session from 'express-session';
 import { ConfidentialClientApplication } from '@azure/msal-node';
 import { google } from 'googleapis';
-import { MyCache } from './types';
+import { GCalUser, MSGraphUser, MyCache } from './types';
 import cors from 'cors';
 import nodeCache from 'node-cache';
 import msAuthRouter from './msgraph/auth.js';
@@ -12,8 +12,8 @@ config();
 
 declare module 'express-session' {
 	interface SessionData {
-		msgraph: unknown;
-		gcal: unknown;
+		msgraph: MSGraphUser | undefined;
+		gcal: GCalUser | undefined;
 	}
 }
 

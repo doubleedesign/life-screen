@@ -1,5 +1,6 @@
 import Router from 'express-promise-router';
 const router = Router();
+import { google } from 'googleapis';
 
 router.get('/auth/login', async function(req, res) {
 	try {
@@ -24,8 +25,17 @@ router.get('/auth/callback', async function (req, res) {
 
 		if(tokens) {
 			req.app.locals.cache.googleClient.setCredentials(tokens);
+			const gcal = google.calendar({ version: 'v3', auth: req.app.locals.cache.googleClient });
+			const calendarList = await gcal.calendarList.list();
+			const calendars = calendarList.data.items;
+			const settings = await gcal.settings.list();
+
+			const userId = calendars.find(calendar => calendar.primary).id;
 			req.session.gcal = {
-				// TODO: More user data e.g., name
+				userId: userId,
+				displayName: userId,
+				email: userId,
+				timeZone: String(Object.values(settings).find(setting => setting.id === 'timezone')?.value),
 				tokens: tokens
 			};
 
