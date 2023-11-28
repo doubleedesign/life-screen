@@ -5,6 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"local": "set NODE_ENV=LOCAL && nodemon --watch",
+		"lifx": "node --experimental-specifier-resolution=node --loader ts-node/esm src/lifx/index.ts --watch",
 		"lint": "eslint"
 	},
 	"engines": {
@@ -23,6 +24,8 @@
 		"express-promise-router": "^4.1.0",
 		"express-session": "^1.17.3",
 		"googleapis": "^128.0.0",
+		"lifx-lan-client": "^2.1.0",
+		"lodash": "^4.17.21",
 		"node-cache": "^5.1.2",
 		"ts-node": "^10.9.1",
 		"windows-iana": "^5.0.2"
@@ -31,6 +34,7 @@
 		"@types/cors": "^2.8.17",
 		"@types/express": "^4.17.21",
 		"@types/express-session": "^1.17.10",
-		"nodemon": "^3.0.1"
+		"nodemon": "^3.0.1",
+		"require-from-esm": "https://github.com/doubleedesign/require-from-esm#0.0.4"
 	}
 }

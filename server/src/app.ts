@@ -9,11 +9,15 @@ import msAuthRouter from './msgraph/auth.js';
 import googleAuthRouter from './gcal/auth.js';
 import { config } from 'dotenv';
 config();
+import require from 'require-from-esm';
+import { LightNetwork } from './lifx';
+const LifxClient = require('lifx-lan-client').Client;
 
 declare module 'express-session' {
 	interface SessionData {
 		msgraph: MSGraphUser | undefined;
 		gcal: GCalUser | undefined;
+		lights: object
 	}
 }
 
@@ -34,9 +38,8 @@ app.use(session({
 	cookie: {
 		secure: false, // set this to true on production
 	},
-	unset: 'destroy',
+	unset: 'destroy'
 }));
-
 
 // Set up cache for application-level stuff
 app.locals.cache = new nodeCache({ stdTTL: 28800 });
@@ -62,7 +65,11 @@ app.use('/msgraph', msAuthRouter);
 app.use('/gcal', googleAuthRouter);
 
 app.get('/', async function(req, res) {
-	res.json(req.session);
+	const lights = new LightNetwork();
+	const test = lights.fetchLights();
+	console.log(test);
+
+	//res.json(req.session.lights);
 });
 
 // Start server
