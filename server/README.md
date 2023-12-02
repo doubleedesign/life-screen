@@ -62,6 +62,7 @@ This application requires an app in Azure Active Directory to handle authenticat
 #### Useful links
 
 * Calendars in [Google APIs Explorer](https://developers.google.com/calendar/api/v3/reference/calendars/get?apix_params=%7B%22calendarId%22%3A%22primary%22%7D)
+* [Node.js Quickstart](https://developers.google.com/calendar/api/quickstart/nodejs) for Google Calendar
 * Calendars in [Google APIs library for NodeJS](https://googleapis.dev/nodejs/googleapis/latest/calendar/index.html)
 * [How to access Google APIs using OAuth 2.0 in Postman](https://blog.postman.com/how-to-access-google-apis-using-oauth-in-postman/)
 * [Google APIs Node.js client](https://www.npmjs.com/package/googleapis) on NPM
