@@ -7,7 +7,7 @@ const router = Router();
 
 const network = new LightNetwork();
 
-router.get('/setup', async (req, res) => {
+router.patch('/setup', async (req, res) => {
 	try {
 		const lights: FancyLight[] = await network.getLights();
 		res.status(201).json(lights);
@@ -57,7 +57,7 @@ router.get('/:id', (req, res) => {
 	}
 });
 
-router.get('/:id/state', async (req, res) => {
+router.patch('/:id/state', async (req, res) => {
 	try {
 		const data: LightState = await network.getLightState(req.params.id);
 		res.status(200).json(data);
@@ -68,7 +68,7 @@ router.get('/:id/state', async (req, res) => {
 	}
 });
 
-router.get('/:id/device', async (req, res) => {
+router.patch('/:id/device', async (req, res) => {
 	try {
 		const data: Pick<FancyLight, 'hardware' | 'type'> = await network.getLightHardware(req.params.id);
 		res.status(200).json(data);
