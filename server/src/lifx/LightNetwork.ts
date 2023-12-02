@@ -42,9 +42,9 @@ export class LightNetwork {
 	async getLights(): Promise<FancyLight[]> {
 		const lights: {[key:string]: Light} = {};
 		const result: {[id: string]: FancyLight} = {};
-		console.log(chalk.cyan('Discovering lights...'));
 
 		this.client.startDiscovery();
+		console.log(chalk.cyan('Discovering lights...'));
 
 		this.client.on('light-new', async (light: Light) => {
 			lights[light.id] = light;
@@ -54,23 +54,25 @@ export class LightNetwork {
 			};
 		});
 
-		// TODO: This times out if fewer than ALL known lights are found; need a way to return the ones that are
-		await pWaitFor(() => Object.keys(lights).length >= this.knownAddresses.length, { timeout: 15000 });
+		try {
+			await pWaitFor(() => Object.keys(lights).length >= this.knownAddresses.length, { timeout: 15000 });
+		}
+		catch(error) {
+			console.log(chalk.yellow(error.message));
+		}
+		finally {
+			console.log(`Light discovery process finished. Found ${Object.keys(lights).length} lights.`);
+			console.log(chalk.cyan('Fetching groups...'));
+			for (const [id, light] of Object.entries(lights)) {
+				result[id].group = await light.getGroup();
+			}
+			console.log('Group data populated.');
 
-		this.client.stopDiscovery();
-		console.log('Light discovery process finished.');
-		console.log(chalk.cyan('Fetching groups...'));
-
-		for (const [id, light] of Object.entries(lights)) {
-			result[id].group = await light.getGroup();
+			this.client.stopDiscovery();
+			this.lights = Object.values(result);
 		}
 
-		console.log('Light data populated.');
-
-		const data: FancyLight[] = Object.values(result);
-		this.lights = data;
-
-		return data;
+		return this.lights;
 	}
 
 
