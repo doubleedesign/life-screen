@@ -7,11 +7,9 @@ import cors from 'cors';
 import nodeCache from 'node-cache';
 import msAuthRouter from './msgraph/auth.js';
 import googleAuthRouter from './gcal/auth.js';
+import lifxRouter from './lifx/routes';
 import { config } from 'dotenv';
 config();
-import require from 'require-from-esm';
-import { LightNetwork } from './lifx';
-const LifxClient = require('lifx-lan-client').Client;
 
 declare module 'express-session' {
 	interface SessionData {
@@ -63,14 +61,8 @@ app.locals.cache = {
 // API routes
 app.use('/msgraph', msAuthRouter);
 app.use('/gcal', googleAuthRouter);
+app.use('/lifx', lifxRouter);
 
-app.get('/', async function(req, res) {
-	const lights = new LightNetwork();
-	const test = lights.fetchLights();
-	console.log(test);
-
-	//res.json(req.session.lights);
-});
 
 // Start server
 app.listen(4000, () => {
