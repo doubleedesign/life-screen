@@ -2,7 +2,7 @@ import graph from './graph.js';
 import Router from 'express-promise-router';
 const router = Router();
 
-router.get('/auth/login', async function (req, res) {
+router.get('/login', async function (req, res) {
 	const scopes = process.env.MS_OAUTH_SCOPES || 'https://graph.microsoft.com/.default';
 	const urlParameters = {
 		scopes: scopes.split(','),
@@ -24,7 +24,7 @@ router.get('/auth/login', async function (req, res) {
 });
 
 
-router.get('/auth/callback', async function (req, res) {
+router.get('/callback', async function (req, res) {
 	const scopes = process.env.MS_OAUTH_SCOPES || 'https://graph.microsoft.com/.default';
 	const tokenRequest = {
 		code: req.query.code,
@@ -73,7 +73,7 @@ router.get('/auth/callback', async function (req, res) {
 });
 
 
-router.get('/auth/logout', async function (req, res) {
+router.get('/logout', async function (req, res) {
 	try {
 		if (req?.session?.msgraph?.userId) {
 			// Look up the user's account in the cache

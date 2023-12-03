@@ -2,7 +2,7 @@ import Router from 'express-promise-router';
 const router = Router();
 import { google } from 'googleapis';
 
-router.get('/auth/login', async function(req, res) {
+router.get('/login', async function(req, res) {
 	try {
 		const url = req.app.locals.cache.googleClient.generateAuthUrl({
 			scope: process.env.GOOGLE_OAUTH_SCOPES
@@ -19,7 +19,7 @@ router.get('/auth/login', async function(req, res) {
 });
 
 
-router.get('/auth/callback', async function (req, res) {
+router.get('/callback', async function (req, res) {
 	try {
 		const  { tokens } = await req.app.locals.cache.googleClient.getToken(req.query.code);
 
@@ -73,7 +73,7 @@ router.get('/auth/callback', async function (req, res) {
 });
 
 
-router.get('/auth/logout', async function(req, res) {
+router.get('/logout', async function(req, res) {
 	try {
 		// Revoke credentials in Google APIs client
 		await req.app.locals.cache.googleClient.revokeCredentials();

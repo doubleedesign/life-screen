@@ -11,6 +11,8 @@ enum ResponseCodes {
 }
 
 export const ResponseCode = {
+	Unauthorized: ResponseCodes.UNAUTHORIZED,
+	Forbidden: ResponseCodes.FORBIDDEN,
 	SuccessFound: ResponseCodes.OK,
 	SuccessCreated: ResponseCodes.CREATED,
 	InternalError: ResponseCodes.INTERNAL_ERROR,
@@ -26,7 +28,7 @@ export const ResponseCode = {
 export class NotFoundError extends Error {
 	name: string;
 
-	constructor(props) {
+	constructor(props: string) {
 		super(props);
 		this.message = props;
 		this.name = 'NotFoundError';

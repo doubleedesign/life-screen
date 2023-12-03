@@ -5,9 +5,9 @@ import { google } from 'googleapis';
 import { GCalUser, MSGraphUser, MyCache } from './types';
 import cors from 'cors';
 import nodeCache from 'node-cache';
-import msAuthRouter from './msgraph/auth.js';
-import googleAuthRouter from './gcal/auth.js';
-import lifxRouter from './lifx/routes';
+import msGraphRouter from './msgraph';
+import googleRouter from './gcal';
+import lifxRouter from './lifx';
 import { config } from 'dotenv';
 config();
 
@@ -59,8 +59,8 @@ app.locals.cache = {
 } as MyCache;
 
 // API routes
-app.use('/msgraph', msAuthRouter);
-app.use('/gcal', googleAuthRouter);
+app.use('/msgraph', msGraphRouter);
+app.use('/gcal', googleRouter);
 app.use('/lifx', lifxRouter);
 
 
