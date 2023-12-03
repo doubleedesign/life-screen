@@ -9,8 +9,8 @@ import isEqual from 'lodash/isEqual';
 import chalk from 'chalk';
 import productRegistry from './products.json' assert { type: 'json' };
 import { FancyLight, LightState, Product } from './types';
+import { NotFoundError } from '../responses';
 import { config } from 'dotenv';
-
 config();
 
 
@@ -29,8 +29,30 @@ export class LightNetwork {
 	/**
 	 * Get all currently saved light data
 	 */
-	getLightCache(): FancyLight[] {
-		return this.lights;
+	getCache(): FancyLight[] {
+		if(this.lights && this.lights.length > 0) {
+			return this.lights;
+		}
+
+		throw new NotFoundError('No lights found, maybe you need to run setup again');
+	}
+
+
+	/**
+	 * Get saved data about a specific light
+	 * @param id
+	 */
+	getCachedLight(id: string): FancyLight {
+		if(this.lights && this.lights.length > 0) {
+			const found = this.lights.find(light => light.id === id);
+			if(!found) {
+				throw new NotFoundError(`Light ${id} not found in the cache`);
+			}
+
+			return found;
+		}
+
+		throw new NotFoundError('No lights found, maybe you need to run setup again');
 	}
 
 
@@ -83,7 +105,11 @@ export class LightNetwork {
 	 */
 	getGroups(): Group[] {
 		const groups = this.lights.map(light => light.group);
-		return uniqWith(groups, isEqual);
+		if(groups.length > 0) {
+			return uniqWith(groups, isEqual);
+		}
+
+		throw new NotFoundError('No saved groups found');
 	}
 
 
