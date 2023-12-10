@@ -24,3 +24,7 @@ export type FancyLight = {
 	hardware?: Version;
 	type?: Product
 }
+
+export type FancyGroup = Group & {
+	lights: Pick<FancyLight, 'label' | 'id' | 'address'>
+}

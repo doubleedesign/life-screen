@@ -1,14 +1,14 @@
 import pWaitFor from 'p-wait-for';
 import { Light } from 'lifxware/dist/light';
-import { Group } from 'lifxware/dist/packets/group/group';
 import { Version } from 'lifxware/dist/packets/version/version';
 import { Client } from 'lifxware';
 import pick from 'lodash/pick';
 import uniqWith from 'lodash/uniqWith';
 import isEqual from 'lodash/isEqual';
+import compact from 'lodash/compact';
 import chalk from 'chalk';
 import productRegistry from './products.json' assert { type: 'json' };
-import { FancyLight, LightState, Product } from './types';
+import { FancyGroup, FancyLight, LightState, Product } from './types';
 import { NotFoundError } from '../responses';
 import { config } from 'dotenv';
 config();
@@ -77,7 +77,7 @@ export class LightNetwork {
 		});
 
 		try {
-			await pWaitFor(() => Object.keys(lights).length >= this.knownAddresses.length, { timeout: 15000 });
+			await pWaitFor(() => Object.keys(lights).length >= this.knownAddresses.length, { timeout: 20000 });
 		}
 		catch(error) {
 			console.log(chalk.yellow(error.message));
@@ -101,12 +101,24 @@ export class LightNetwork {
 	/**
 	 * Get all currently saved light groups
 	 *
-	 * @return Group[]
+	 * @return FancyGroup[]
 	 */
-	getGroups(): Group[] {
-		const groups = this.lights.map(light => light.group);
-		if(groups.length > 0) {
-			return uniqWith(groups, isEqual);
+	getGroups(): FancyGroup[] {
+		if(!this.lights) {
+			throw new NotFoundError('No lights found, maybe you need to run setup again');
+		}
+		const groupList = this.lights.map(light => light.group);
+		if(groupList.length > 0 && this.lights.length > 0) {
+			const groups = uniqWith(groupList, isEqual);
+			groups.forEach(group => {
+				group.lights = compact(this.lights.map(light => {
+					if(light.group.label === group.label) {
+						return pick(light, ['label', 'id', 'address']);
+					}
+				}));
+			});
+
+			return groups;
 		}
 
 		throw new NotFoundError('No saved groups found');
