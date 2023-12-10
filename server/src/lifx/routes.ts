@@ -56,7 +56,7 @@ router.get('/cache/groups', (req, res) => {
 /**
  * Get the cached summary of a light
  */
-router.get('/:id', (req, res) => {
+router.get('/cache/:id', (req, res) => {
 	try {
 		const cached = network.getCachedLight(req.params.id);
 		res.status(ResponseCode.SuccessFound).json(cached);
