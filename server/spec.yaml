@@ -5,10 +5,16 @@ info:
   version: 2.0.0
 servers:
   - url: 'http://localhost:4000'
+tags:
+  - name: Lifx Lights
+  - name: Microsoft Graph
+  - name: Google Calendar
 paths:
   /lifx/setup:
     patch:
       summary: Discover lights on the local network and cache them.
+      tags:
+        - Lifx Lights
       responses:
         201:
           description: Array of light data objects.
@@ -17,6 +23,8 @@ paths:
   /lifx/cache:
     get:
       summary: Get summary of lights that have been discovered and cached in this session.
+      tags:
+        - Lifx Lights
       responses:
         200:
           description: Array of light data objects.
@@ -25,14 +33,18 @@ paths:
   /lifx/cache/groups:
     get:
       summary: Get summary of light groups that have been discovered and cached in this session.
+      tags:
+        - Lifx Lights
       responses:
         200:
           description: Array of group data objects.
         404:
           description: No groups found in the cache.
-  /lifx/:id:
+  /lifx/cache/:id:
     get:
       summary: Get saved details of a specific light.
+      tags:
+        - Lifx Lights
       parameters:
         - name: id
           in: path
@@ -48,6 +60,8 @@ paths:
   /lifx/:id/state:
     patch:
       summary: Fetch/update and cache the current state of a light.
+      tags:
+        - Lifx Lights
       parameters:
         - name: id
           in: path
@@ -63,6 +77,8 @@ paths:
   /lifx/:id/device:
     patch:
       summary: Fetch/update and cache the hardware information about a light.
+      tags:
+        - Lifx Lights
       parameters:
         - name: id
           in: path
