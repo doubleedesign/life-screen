@@ -9,7 +9,7 @@ import compact from 'lodash/compact';
 import chalk from 'chalk';
 import productRegistry from './products.json' assert { type: 'json' };
 import { FancyGroup, FancyLight, LightState, Product } from './types';
-import { NotFoundError } from '../responses';
+import { NotFoundError, ResponseMessage } from '../responses';
 import { config } from 'dotenv';
 config();
 
@@ -34,7 +34,7 @@ export class LightNetwork {
 			return this.lights;
 		}
 
-		throw new NotFoundError('No lights found, maybe you need to run setup again');
+		throw new NotFoundError(ResponseMessage.NotFound.Lights);
 	}
 
 
@@ -52,7 +52,7 @@ export class LightNetwork {
 			return found;
 		}
 
-		throw new NotFoundError('No lights found, maybe you need to run setup again');
+		throw new NotFoundError(ResponseMessage.NotFound.Lights);
 	}
 
 
@@ -105,7 +105,7 @@ export class LightNetwork {
 	 */
 	getGroups(): FancyGroup[] {
 		if(!this.lights) {
-			throw new NotFoundError('No lights found, maybe you need to run setup again');
+			throw new NotFoundError(ResponseMessage.NotFound.Lights);
 		}
 		const groupList = this.lights.map(light => light.group);
 		if(groupList.length > 0 && this.lights.length > 0) {

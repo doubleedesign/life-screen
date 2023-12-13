@@ -27,6 +27,12 @@ export const ResponseCode = {
 	Error: ResponseCodes.UNKNOWN_ERROR
 };
 
+export const ResponseMessage = {
+	NotFound: {
+		Lights: 'No lights found, maybe you need to run setup again'
+	}
+};
+
 export class NotFoundError extends Error {
 	name: string;
 

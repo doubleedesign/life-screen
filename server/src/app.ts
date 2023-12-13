@@ -1,5 +1,6 @@
 import express from 'express';
 import session from 'express-session';
+import listEndpoints from 'express-list-endpoints';
 import { ConfidentialClientApplication } from '@azure/msal-node';
 import { google } from 'googleapis';
 import { GCalUser, MSGraphUser, MyCache } from './types';
@@ -66,4 +67,5 @@ app.use('/lifx', lifxRouter);
 // Start server
 app.listen(4000, () => {
 	console.log('Server running on port 4000');
+	console.log(listEndpoints(app));
 });
