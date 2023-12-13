@@ -1,6 +1,7 @@
 import Router from 'express-promise-router';
 const router = Router();
 import { google } from 'googleapis';
+import chalk from 'chalk';
 
 router.get('/login', async function(req, res) {
 	try {
@@ -63,7 +64,7 @@ router.get('/callback', async function (req, res) {
 		});
 	}
 	catch(error) {
-		console.error(error);
+		console.log(chalk.red(`${error.name}: ${error.message}`));
 
 		res.status(error.status).json({
 			status: error.status,

@@ -14,8 +14,7 @@ config();
 declare module 'express-session' {
 	interface SessionData {
 		msgraph: MSGraphUser | undefined;
-		gcal: GCalUser | undefined;
-		lights: object
+		gcal: GCalUser | undefined
 	}
 }
 

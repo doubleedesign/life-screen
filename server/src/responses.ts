@@ -7,7 +7,8 @@ enum ResponseCodes {
 	NOT_FOUND = 404,
 	TIMEOUT = 408,
 	INTERNAL_ERROR = 500,
-	NOT_IMPLEMENTED = 501
+	NOT_IMPLEMENTED = 501,
+	UNKNOWN_ERROR = 502
 }
 
 export const ResponseCode = {
@@ -22,7 +23,8 @@ export const ResponseCode = {
 	NotFoundError: ResponseCodes.NOT_FOUND,
 	TimeoutError: ResponseCodes.TIMEOUT,
 	NotImplemented: ResponseCodes.NOT_IMPLEMENTED,
-	NodeError: ResponseCodes.INTERNAL_ERROR
+	NodeError: ResponseCodes.INTERNAL_ERROR,
+	Error: ResponseCodes.UNKNOWN_ERROR
 };
 
 export class NotFoundError extends Error {
