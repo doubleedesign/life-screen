@@ -63,9 +63,14 @@ app.use('/msgraph', msGraphRouter);
 app.use('/gcal', googleRouter);
 app.use('/lifx', lifxRouter);
 
+// Session info - for dev only
+app.get('/', (req, res) => {
+	res.status(200).json(req.session);
+});
+
 
 // Start server
 app.listen(4000, () => {
 	console.log('Server running on port 4000');
-	console.log(listEndpoints(app));
+	//console.log(listEndpoints(app));
 });

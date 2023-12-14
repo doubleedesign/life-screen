@@ -13,7 +13,7 @@ router.get('/', async function(req, res) {
 		res.status(ResponseCode.NotImplemented).json('Feature not yet implemented');
 	}
 	catch(error) {
-		res.redirect('/gcal/auth/login');
+		res.status(ResponseCode[error.name]).json(`${error.message}. Please try logging in again.`);
 	}
 });
 

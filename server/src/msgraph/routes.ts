@@ -13,7 +13,7 @@ router.get('/', async function(req, res) {
 		res.status(200).json(pick(user, ['id', 'displayName', 'email']));
 	}
 	catch(error) {
-		res.redirect('/msgraph/auth/login');
+		res.status(ResponseCode[error.name]).json(`${error.message}. Please try logging in again.`);
 	}
 });
 
