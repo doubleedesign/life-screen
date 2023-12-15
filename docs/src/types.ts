@@ -14,7 +14,7 @@ type Parameter = {
 	in: string;
 	required: boolean;
 	schema?: {
-		[key: string]: any
+		[key: string]: unknown
 	}
 }
 

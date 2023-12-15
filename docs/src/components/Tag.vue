@@ -1,15 +1,20 @@
 <script lang="ts">
+import data from '../../../server/spec.yaml';
+import { Spec } from '../types.ts';
+const spec: Spec = data as Spec;
 export default {
-	props: {
-		heading: String,
-	}
+	computed: {
+		route() {
+			return this.$route.path;
+		},
+	},
 };
 </script>
 
 <template>
     <section class="tag-content">
         <header class="tag-content__header">
-            <h1>{{heading}}</h1>
+            <h1>{{route}}</h1>
         </header>
     </section>
 </template>

@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Life Screen
-  description: This is me trying to document my API.
+  description: This is me trying to document my application.
   version: 2.0.0
 servers:
   - url: 'http://localhost:4000'

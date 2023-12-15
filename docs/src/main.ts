@@ -1,5 +1,19 @@
-import { createApp } from 'vue'
-import './style.css'
-import App from './App.vue'
+import { createApp } from 'vue';
+import './style.css';
+import App from './App.vue';
+import { createRouter, createWebHistory } from 'vue-router';
+import Tag from './components/Tag.vue';
 
-createApp(App).mount('#app')
+const router = createRouter({
+	history: createWebHistory(),
+	routes: [
+		{ path: '/msgraph', component: Tag },
+		{ path: '/gcal', component: Tag },
+		{ path: '/lifx', component: Tag },
+	]
+});
+
+const app = createApp(App);
+app.use(router);
+
+app.mount('#app');
