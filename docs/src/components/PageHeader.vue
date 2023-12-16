@@ -1,9 +1,17 @@
 <script lang="ts">
+import Menu from './Menu.vue';
+import { useSpecStore } from '../state/store.ts';
+
 export default {
+	components: {
+		Menu
+	},
 	props: {},
 	data() {
+		const spec = useSpecStore();
 		return {
-			content: 'PageHeader component',
+			title: spec.info.title,
+			tagline: spec.info.description
 		};
 	},
 	computed: {},
@@ -12,13 +20,21 @@ export default {
 </script>;
 
 <template>
-	<div class="page-header">
-		{{ content }}
-	</div>
+	<header class="page-header">
+        <h1><router-link to="/">{{ title }}</router-link></h1>
+        <p>{{ tagline }}</p>
+		<Menu/>
+	</header>
 </template>;
 
 <style scoped lang="scss">
 	.page-header {
+        background: #EFEFEF;
+        height: 100%;
+        padding: 1rem;
 
+        h1 {
+            margin: 0;
+        }
 	}
 </style>;

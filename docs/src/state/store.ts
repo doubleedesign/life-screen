@@ -10,7 +10,7 @@ export const useSpecStore = defineStore('spec', {
 		routes: () => spec.tags.map(tag => {
 			return {
 				label: tag.name,
-				path: tag.name.toLowerCase().replace(' ', '-')
+				path: '/' + tag.name.toLowerCase().replace(' ', '-')
 			};
 		})
 	},
