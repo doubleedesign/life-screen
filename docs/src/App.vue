@@ -11,7 +11,7 @@ const spec = useSpecStore();
     </header>
     <Menu/>
     <!-- route outlet -->
-    <router-view></router-view>
+    <router-view :key="$route.path"></router-view>
 </template>
 
 <style scoped lang="scss">

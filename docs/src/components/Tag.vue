@@ -1,24 +1,22 @@
 <script lang="ts">
-import { mapState } from 'pinia';
 import { useSpecStore } from '../state/store';
+import { useRoute } from 'vue-router';
+
 export default {
-	name: 'Tag',
 	data() {
+		const spec = useSpecStore();
 		return {
+			title: spec.routes.find(item => item.path === useRoute().path)?.label,
+			route: useRoute().path
 		};
-	},
-	computed: {
-		...mapState(useSpecStore, {
-			//name: (store) => store.routes.find(route => route.path === this.$route.path)?.label
-		}),
-	},
+	}
 };
 </script>
 
 <template>
     <section class="tag-content">
         <header class="tag-content__header">
-            <h1>{{ name }}</h1>
+            <h1>{{ title }}</h1>
         </header>
     </section>
 </template>

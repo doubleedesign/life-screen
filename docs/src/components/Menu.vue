@@ -7,7 +7,7 @@ const spec = useSpecStore();
     <nav>
         <ul>
             <li v-for="item in spec.routes">
-                <router-link :to="item.path">{{item.label}}</router-link>
+                <router-link :key="item.path" :to="item.path">{{item.label}}</router-link>
             </li>
         </ul>
     </nav>
