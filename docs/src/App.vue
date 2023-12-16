@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import Menu from './components/Menu.vue';
-import data from '../../server/spec.yaml';
-import { Spec } from './types.ts';
-const spec: Spec = data as Spec;
+import { useSpecStore } from './state/store';
+const spec = useSpecStore();
 </script>
 
 <template>

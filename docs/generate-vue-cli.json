@@ -2,8 +2,8 @@
   "component": {
     "default": {
       "path": "src/components",
-      "withTest": true,
-      "withStory": true
+      "withTest": false,
+      "withStory": false
     }
   }
 }
