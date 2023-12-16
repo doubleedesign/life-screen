@@ -1,14 +1,14 @@
-<script lang="ts">
-export default {
-};
+<script setup lang="ts">
+import { useSpecStore } from '../state/store';
+const spec = useSpecStore();
 </script>
 
 <template>
     <nav>
         <ul>
-            <li><router-link to="/msgraph">Microsoft Graph</router-link></li>
-            <li><router-link to="/gcal">Google Calendar</router-link></li>
-            <li><router-link to="/lifx">Lifx Lights</router-link></li>
+            <li v-for="item in spec.routes">
+                <router-link :to="item.path">{{item.label}}</router-link>
+            </li>
         </ul>
     </nav>
 </template>

@@ -1,12 +1,16 @@
 <script lang="ts">
-import data from '../../../server/spec.yaml';
-import { Spec } from '../types.ts';
-const spec: Spec = data as Spec;
+import { mapState } from 'pinia';
+import { useSpecStore } from '../state/store';
 export default {
+	name: 'Tag',
+	data() {
+		return {
+		};
+	},
 	computed: {
-		route() {
-			return this.$route.path;
-		},
+		...mapState(useSpecStore, {
+			//name: (store) => store.routes.find(route => route.path === this.$route.path)?.label
+		}),
 	},
 };
 </script>
@@ -14,7 +18,7 @@ export default {
 <template>
     <section class="tag-content">
         <header class="tag-content__header">
-            <h1>{{route}}</h1>
+            <h1>{{ name }}</h1>
         </header>
     </section>
 </template>
