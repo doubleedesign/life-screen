@@ -7,6 +7,7 @@ import './style.css';
 import data from '../../server/spec.yaml';
 import { Spec } from './types';
 const spec: Spec = data as Spec;
+import devtools from '@vue/devtools';
 
 const endpointPaths = spec.tags.map(tag => {
 	return {
@@ -28,3 +29,7 @@ app.use(router);
 app.use(store);
 
 app.mount('#app');
+
+if (process.env.NODE_ENV === 'development') {
+	devtools.connect(/* host, port */);
+}
