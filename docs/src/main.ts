@@ -7,7 +7,12 @@ import './style.css';
 import data from '../../server/spec.yaml';
 import { Spec } from './types';
 const spec: Spec = data as Spec;
-import devtools from '@vue/devtools';
+//import devtools from '@vue/devtools';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faArrowRight);
 
 const endpointPaths = spec.tags.map(tag => {
 	return {
@@ -24,12 +29,11 @@ const router = createRouter({
 });
 
 const store = createPinia();
-const app = createApp(App);
+const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon);
 app.use(router);
 app.use(store);
-
 app.mount('#app');
 
-if (process.env.NODE_ENV === 'development') {
-	devtools.connect(/* host, port */);
-}
+// if (process.env.NODE_ENV === 'development') {
+// 	devtools.connect(/* host, port */);
+// }

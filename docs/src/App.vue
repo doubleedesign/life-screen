@@ -1,6 +1,17 @@
-<script setup lang="ts">
+<script lang="ts">
 import Drawer from './components/Drawer.vue';
 import PageHeader from './components/PageHeader.vue';
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+	components: {
+		Drawer,
+		PageHeader
+	},
+	data() {
+		// TODO: Share drawer's open state and adjust the content width accordingly
+	}
+});
 </script>
 
 <template>
@@ -8,7 +19,7 @@ import PageHeader from './components/PageHeader.vue';
         <Drawer position="left" :open="true" as="header">
             <PageHeader as="div"/>
         </Drawer>
-        <main class="page-content">
+        <main :class="['page-content']">
             <!-- route outlet -->
             <RouterView :key="$route.path"></RouterView>
 		</main>
@@ -28,8 +39,9 @@ import PageHeader from './components/PageHeader.vue';
     .page-content {
         padding: 1rem;
         scroll-behavior: smooth;
+		flex-grow: 1;
 
-        @container wrapper (min-width: 1000px) {
+        @container wrapper (min-width: 1100px) {
             padding: 1rem 2rem;
         }
     }
