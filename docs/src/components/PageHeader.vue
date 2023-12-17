@@ -1,37 +1,41 @@
 <script lang="ts">
-import Menu from './Menu.vue';
 import { useSpecStore } from '../state/store.ts';
+import { defineComponent, PropType } from 'vue';
+import Menu from './Menu.vue';
 
-export default {
+export default defineComponent({
 	components: {
 		Menu
 	},
-	props: {},
+	props: {
+		as: String as PropType<keyof HTMLElementTagNameMap>
+	},
 	data() {
 		const spec = useSpecStore();
 		return {
 			title: spec.info.title,
-			tagline: spec.info.description
+			tagline: spec.info.description,
+			as: this.as ?? 'header'
 		};
 	},
 	computed: {},
 	methods: {}
-};
+});
 </script>;
 
 <template>
-	<header class="page-header">
+	<component :is="as" class="page-header">
         <h1><router-link to="/">{{ title }}</router-link></h1>
         <p>{{ tagline }}</p>
 		<Menu/>
-	</header>
+	</component>
 </template>;
 
 <style scoped lang="scss">
 	.page-header {
         background: #EFEFEF;
-        height: 100%;
         padding: 1rem;
+		height: 100%;
 
         h1 {
             margin: 0;

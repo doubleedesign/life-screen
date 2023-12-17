@@ -5,13 +5,13 @@ import PageHeader from './components/PageHeader.vue';
 
 <template>
     <div class="app-wrapper">
-        <Drawer>
-            <PageHeader/>
+        <Drawer position="left" :open="true" as="header">
+            <PageHeader as="div"/>
         </Drawer>
         <main class="page-content">
             <!-- route outlet -->
             <RouterView :key="$route.path"></RouterView>
-        </main>
+		</main>
     </div>
 </template>
 
@@ -19,16 +19,14 @@ import PageHeader from './components/PageHeader.vue';
     .app-wrapper {
         width: 100vw;
         min-height: 100vh;
-        overflow: hidden;
         display: flex;
         flex-wrap: nowrap;
         container-name: wrapper;
-        container-type: inline-size;
+        container-type: size;
+		overflow-y: scroll;
     }
     .page-content {
-        flex-grow: 1;
         padding: 1rem;
-        overflow: scroll;
         scroll-behavior: smooth;
 
         @container wrapper (min-width: 1000px) {
