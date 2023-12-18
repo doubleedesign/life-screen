@@ -1,4 +1,4 @@
-type Tag = {
+export type Tag = {
 	name: string;
 	description?: string;
 	externalDocs?: {
@@ -6,9 +6,9 @@ type Tag = {
 	}
 }
 
-type Operation = 'get' | 'post' | 'patch' | 'put' | 'delete';
+export type Operation = 'get' | 'post' | 'patch' | 'put' | 'delete';
 
-type Parameter = {
+export type Parameter = {
 	name: string;
 	description: string;
 	in: string;
@@ -18,7 +18,7 @@ type Parameter = {
 	}
 }
 
-type Responses = {
+export type Responses = {
 	[code: number]: {
 		description: string;
 	}
@@ -37,7 +37,7 @@ export type Spec = {
 		[path: string]: {
 			[key in Operation]: {
 				summary: string;
-				tags: Pick<Tag, 'name'>[];
+				tags: string[];
 				parameters: Parameter[];
 				responses: Responses
 			}
