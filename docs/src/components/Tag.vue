@@ -1,5 +1,5 @@
 <script lang="ts">
-import { useSpecStore } from '../state/store';
+import { useSpecStore } from '../state/spec.ts';
 import { useRoute } from 'vue-router';
 
 export default {

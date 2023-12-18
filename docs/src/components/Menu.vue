@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useSpecStore } from '../state/store';
+import { useSpecStore } from '../state/spec.ts';
 const spec = useSpecStore();
 </script>
 

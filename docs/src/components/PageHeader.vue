@@ -1,5 +1,5 @@
 <script lang="ts">
-import { useSpecStore } from '../state/store.ts';
+import { useSpecStore } from '../state/spec.ts';
 import { defineComponent, PropType } from 'vue';
 import Menu from './Menu.vue';
 

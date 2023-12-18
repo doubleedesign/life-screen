@@ -1,0 +1,6 @@
+@use "sass:map";
+$drawer: (
+	closed: 2rem,
+	open: 12rem,
+	openLg: 18rem
+);

@@ -1,5 +1,6 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
+import { pageState } from '../state/page';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import IconButton from './IconButton.vue';
 
@@ -7,20 +8,21 @@ export default defineComponent({
 	components: { IconButton, FontAwesomeIcon },
 	props: {
 		position: String as PropType<'left' | 'right'>,
-		open: Boolean,
 		as: String as PropType<keyof HTMLElementTagNameMap>
 	},
 	data() {
 		return {
-			isOpen: pageState.drawerOpen,
 			element: this.as ?? 'div',
 		};
 	},
 	computed: {
+		isOpen() {
+			return  pageState.drawerOpen;
+		}
 	},
 	methods: {
 		toggle() {
-			this.isOpen = !this.isOpen;
+			pageState.drawerOpen = !pageState.drawerOpen;
 		}
 	}
 });
@@ -41,19 +43,21 @@ export default defineComponent({
 
 
 <style scoped lang="scss">
+	@import 'tokens';
+
 	.drawer {
 		height: 100vh;
-		position: sticky;
+		position: fixed;
 		z-index: 100;
 		top: 0;
 		transition: all 0.3s ease;
-		width: 12rem;
-		transform: translateX(-10rem); // TODO: Put these values somewhere common
+		width: map-get($drawer, 'open');
+		transform: translateX(-(calc(map-get($drawer, 'open') - map-get($drawer, 'closed'))));
 		box-shadow: 0 0 0.5rem 0 rgba(0,0,0,0.3);
 
 		@container (min-width: 1100px) {
-			width: 18rem;
-			transform: translateX(-16rem);
+			width: map-get($drawer, 'openLg');
+			transform: translateX(-(calc(map-get($drawer, 'openLg') - map-get($drawer, 'closed'))));
 		}
 
 		.content-wrapper {
