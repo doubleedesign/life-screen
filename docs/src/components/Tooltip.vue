@@ -5,11 +5,10 @@ export default defineComponent({
 	name: 'Tooltip',
 	props: {
 		label: String,
-		active: Boolean
+		active: Boolean // passed in and controlled by the parent component
 	},
 	data() {
 		return {
-			active: this.active ?? false, // passed in and controlled by the parent component
 			visible: false, // whether the tooltip should be in the DOM
 			status: 'inactive', // append to CSS class to use for transition
 		};

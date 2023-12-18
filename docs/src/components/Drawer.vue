@@ -12,9 +12,8 @@ export default defineComponent({
 	},
 	data() {
 		return {
-			position: this.position ?? 'left',
-			isOpen: this.open ?? false,
-			as: this.as ?? 'div',
+			isOpen: pageState.drawerOpen,
+			element: this.as ?? 'div',
 		};
 	},
 	computed: {
@@ -28,7 +27,7 @@ export default defineComponent({
 </script>;
 
 <template>
-	<component :is="as" :class="['drawer',`drawer--${position}`, isOpen && 'drawer--open']">
+	<component :is="element" :class="['drawer',`drawer--${position}`, isOpen && 'drawer--open']">
 		<div class="content-wrapper">
 			<slot></slot>
 		</div>

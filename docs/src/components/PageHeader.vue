@@ -15,7 +15,7 @@ export default defineComponent({
 		return {
 			title: spec.info.title,
 			tagline: spec.info.description,
-			as: this.as ?? 'header'
+			element: this.as ?? 'header'
 		};
 	},
 	computed: {},
@@ -24,7 +24,7 @@ export default defineComponent({
 </script>;
 
 <template>
-	<component :is="as" class="page-header">
+	<component :is="element" class="page-header">
         <h1><router-link to="/">{{ title }}</router-link></h1>
         <p>{{ tagline }}</p>
 		<Menu/>
