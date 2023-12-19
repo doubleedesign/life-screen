@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import data from '../../../server/spec.yaml';
+import data from '../content/spec.yaml';
 const spec: Spec = data as Spec;
 import { Endpoint, Spec } from '../types';
 import groupBy from 'lodash/groupBy';

@@ -4,7 +4,7 @@ import { createPinia } from 'pinia';
 import App from './App.vue';
 import Tag from './components/Tag.vue';
 import './style.css';
-import data from '../../server/spec.yaml';
+import data from './content/spec.yaml';
 import { Spec } from './types';
 const spec: Spec = data as Spec;
 //import devtools from '@vue/devtools';
