@@ -24,6 +24,15 @@ export type Responses = {
 	}
 }
 
+export type Endpoint = {
+	operation: Operation;
+	path: string;
+	summary: string;
+	tags: string[];
+	parameters: Parameter[];
+	responses: Responses
+}
+
 export type Spec = {
 	info: {
 		title: string;
@@ -35,12 +44,7 @@ export type Spec = {
 	tags: Tag[];
 	paths: {
 		[path: string]: {
-			[key in Operation]: {
-				summary: string;
-				tags: string[];
-				parameters: Parameter[];
-				responses: Responses
-			}
+			[key in Operation]: Pick<Endpoint, 'summary' | 'tags' | 'parameters' | 'responses'>
 		}
 	}
 }

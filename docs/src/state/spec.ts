@@ -1,7 +1,9 @@
 import { defineStore } from 'pinia';
 import data from '../../../server/spec.yaml';
-import { Spec } from '../types';
 const spec: Spec = data as Spec;
+import { Endpoint, Spec } from '../types';
+import groupBy from 'lodash/groupBy';
+import flatten from 'lodash/flatten';
 
 function getTagNamesAndSlugs(spec: Spec) {
 	return spec.tags.map(tag => {
@@ -12,14 +14,35 @@ function getTagNamesAndSlugs(spec: Spec) {
 	});
 }
 
+function getPathsByTag(spec: Spec) {
+	const transformed = Object.entries(spec.paths).map(([path, item]) => {
+		return Object.entries(item).map(([operation, details]) => {
+			return {
+				path: path,
+				operation: operation,
+				...details
+			};
+		});
+	});
+
+	const flattened: Endpoint[] = flatten(transformed) as Endpoint[];
+
+	return groupBy(flattened, 'tags'); // TODO: account for items having more than one tag
+}
+
 export const useSpecStore = defineStore('spec', {
-	state: () => spec,
+	state: () => {
+		return {
+			...spec,
+			pathsByTag: getPathsByTag(spec)
+		};
+	},
 	getters: {
 		routes: () => getTagNamesAndSlugs(spec),
-		endpointsForTag: () => (tag: string) => {
-			return Object.values(spec.paths).filter(item => {
-				return Object.values(item)[0].tags.includes(tag);
-			});
+		endpointsForTag: (state) => (tag: string) => {
+			const result: Endpoint[] = state.pathsByTag[tag];
+			console.log(result);
+			return result;
 		}
 	},
 	actions: {
