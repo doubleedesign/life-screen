@@ -27,12 +27,12 @@ export default defineComponent({
 
 <style scoped lang="scss">
     .app-wrapper {
-        min-width: 100vw;
-        min-height: 100vh;
         display: flex;
         flex-wrap: nowrap;
         container-name: wrapper;
         container-type: size;
-		overflow-y: scroll;
+		width: 100vw;
+		height: 100vh;
+		overflow: hidden;
     }
 </style>

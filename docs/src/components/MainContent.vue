@@ -27,6 +27,7 @@ export default defineComponent({
 		transition: all 0.3s ease;
 		flex-grow: 1;
 		padding: 1rem 1rem 1rem calc(map-get($drawer, 'open') + 1rem);
+		overflow-y: scroll;
 
 		@container wrapper (min-width: 1100px) {
 			padding-left: calc(map-get($drawer, 'openLg') + 2rem);
