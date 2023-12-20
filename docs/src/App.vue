@@ -8,7 +8,7 @@ export default defineComponent({
 	components: {
 		MainContent,
 		Drawer,
-		PageHeader
+		PageHeader,
 	},
 });
 </script>
