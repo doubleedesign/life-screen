@@ -41,7 +41,6 @@ export const useSpecStore = defineStore('spec', {
 		routes: () => getTagNamesAndSlugs(spec),
 		endpointsForTag: (state) => (tag: string) => {
 			const result: Endpoint[] = state.pathsByTag[tag];
-			console.log(result);
 			return result;
 		}
 	},

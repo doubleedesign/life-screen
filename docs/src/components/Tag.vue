@@ -1,22 +1,13 @@
 <script lang="ts">
 import { useSpecStore } from '../state/spec.ts';
-import { useRoute } from 'vue-router';
 
 export default {
 	data() {
-		const spec = useSpecStore();
-		console.log(useRoute().path);
-		const path = useRoute().path.replace('/api/', '');
-		const route = spec.routes.find(item => item.path === path);
-		return {
-			title: route?.label ?? '',
-			route: path
-		};
 	},
 	computed: {
 		endpoints() {
 			const spec = useSpecStore();
-			return spec.endpointsForTag(this.title);
+			return spec.endpointsForTag(this.$route.name as string);
 		}
 	}
 };
@@ -24,9 +15,6 @@ export default {
 
 <template>
     <section class="tag-content">
-        <header class="tag-content__header">
-            <h1>{{ title }}</h1>
-		</header>
 		<div class="tag-content__items">
 			<div class="item" v-for="item in endpoints" :key="item.operation">
 				<div class="item__endpoint">
