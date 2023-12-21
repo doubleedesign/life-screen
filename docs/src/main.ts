@@ -64,10 +64,16 @@ const router = createRouter({
 			path: '/development',
 			name: 'Development',
 			components: {
-				default: Page,
-				content: DevGeneralText
+				default: Page
 			},
 			children: [
+				{
+					path: '',
+					name: 'Development',
+					components: {
+						default: DevGeneralText
+					}
+				},
 				{
 					path: 'postman-lifescreen',
 					name: 'Testing the REST API in Postman',

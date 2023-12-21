@@ -2,7 +2,6 @@
 import { defineComponent } from 'vue';
 export default defineComponent({
 	data() {
-		console.log(this.$route);
 		return {
 			title: this.$route.name,
 			path: this.$route.path
