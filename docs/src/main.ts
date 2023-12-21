@@ -36,6 +36,11 @@ const router = createRouter({
 			},
 			children: [
 				{
+					path: '/',
+					name: '',
+					components: {}
+				},
+				{
 					path: 'integrations',
 					name: 'Integrations',
 					components: {
@@ -50,15 +55,21 @@ const router = createRouter({
 			components: {
 				default: Page
 			},
-			children: spec.tags.map(tag => {
-				return {
-					name: tag.name,
-					path: tag.name.toLowerCase().replace(' ', '-'),
-					components: {
-						default: Tag
-					}
-				};
-			})
+			children: [
+				{
+					path: '/',
+					name: '',
+					components: {}
+				},
+				...spec.tags.map(tag => {
+					return {
+						name: tag.name,
+						path: tag.name.toLowerCase().replace(' ', '-'),
+						components: {
+							default: Tag
+						}
+					};
+				})]
 		},
 		{
 			path: '/development',
@@ -69,24 +80,31 @@ const router = createRouter({
 			children: [
 				{
 					path: '',
-					name: 'Development',
+					name: '',
 					components: {
-						default: DevGeneralText
+						content: DevGeneralText
 					}
 				},
 				{
-					path: 'postman-lifescreen',
-					name: 'Testing the REST API in Postman',
-					components: {
-						content: DevPostmanText1
-					}
-				},
-				{
-					path: 'postman-integrations',
-					name: 'Working with integrated services in Postman',
-					components: {
-						content: DevPostmanText2
-					}
+					path: 'postman',
+					name: 'Testing in Postman',
+					components: {},
+					children: [
+						{
+							path: 'lifescreen',
+							name: 'This app\'s REST API',
+							components: {
+								content: DevPostmanText1
+							}
+						},
+						{
+							path: 'integrations',
+							name: 'Integrated services',
+							components: {
+								content: DevPostmanText2
+							}
+						},
+					]
 				},
 				{
 					path: 'links',

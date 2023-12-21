@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+import compact from 'lodash/compact';
 const router = useRouter();
-const topLevelItems = router.getRoutes().filter(route => route.children.length > 0);
+const topLevelItems = router.getRoutes().filter(route => {
+	const level = compact(route.path.split('/')).length;
+	return level === 1 && route.name !== '';
+});
 console.log(topLevelItems);
 </script>
 
