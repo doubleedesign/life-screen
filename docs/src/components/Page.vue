@@ -1,6 +1,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
+import SectionMenu from './SectionMenu.vue';
+
 export default defineComponent({
+	components: {
+		SectionMenu
+	},
 	data() {
 		return {
 			title: this.$route.name !== '' ? this.$route.name : this.$route.matched[0].name,
@@ -8,19 +13,20 @@ export default defineComponent({
 		};
 	}
 });
-</script>;
+</script>
 
 <template>
-	<div class="page">
+	<main class="page">
 		<h1>{{ title }}</h1>
 		<!-- Nested route outlets -->
 		<RouterView :key="path"></RouterView>
 		<RouterView name="content" :key="path"></RouterView>
-	</div>
-</template>;
+	</main>
+	<SectionMenu/>
+</template>
 
 <style scoped lang="scss">
 	.page {
 
 	}
-</style>;
+</style>

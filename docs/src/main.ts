@@ -8,7 +8,6 @@ import Tag from './components/Tag.vue';
 import data from './content/spec.yaml';
 import { Spec } from './types';
 const spec: Spec = data as Spec;
-//import devtools from '@vue/devtools';
 // @ts-ignore
 import SetupIntroText from './content/setup/intro.md';
 // @ts-ignore
@@ -26,6 +25,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 library.add(faArrowRight);
 import './style.css';
+//import devtools from '@vue/devtools';
 
 const router = createRouter({
 	history: createWebHistory(),
@@ -61,7 +61,7 @@ const router = createRouter({
 			},
 			children: [
 				{
-					path: '/',
+					path: '',
 					name: '',
 					components: {}
 				},
@@ -95,15 +95,15 @@ const router = createRouter({
 					components: {},
 					children: [
 						{
-							path: 'lifescreen',
 							name: 'This app\'s REST API',
+							path: 'lifescreen',
 							components: {
 								content: DevPostmanText1
 							}
 						},
 						{
-							path: 'integrations',
 							name: 'Integrated services',
+							path: 'integrations',
 							components: {
 								content: DevPostmanText2
 							}

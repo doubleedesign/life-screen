@@ -14,9 +14,9 @@ export default defineComponent({
 </script>
 
 <template>
-	<main :class="['page-content', fullwidth && 'page-content--fullwidth']">
+	<div :class="['page-content', fullwidth && 'page-content--fullwidth']">
 		<slot></slot>
-	</main>
+	</div>
 </template>
 
 <style scoped lang="scss">
