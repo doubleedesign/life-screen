@@ -3,7 +3,7 @@ import { defineComponent } from 'vue';
 export default defineComponent({
 	data() {
 		return {
-			title: this.$route.name,
+			title: this.$route.name !== '' ? this.$route.name : this.$route.matched[0].name,
 			path: this.$route.path
 		};
 	}

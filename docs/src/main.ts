@@ -10,6 +10,8 @@ import { Spec } from './types';
 const spec: Spec = data as Spec;
 //import devtools from '@vue/devtools';
 // @ts-ignore
+import SetupIntroText from './content/setup/intro.md';
+// @ts-ignore
 import SetupIntegrationsText from './content/setup/integrations.md';
 // @ts-ignore
 import DevGeneralText from './content/development/general.md';
@@ -29,16 +31,18 @@ const router = createRouter({
 	history: createWebHistory(),
 	routes: [
 		{
-			path: '/setup',
 			name: 'Setup',
+			path: '/setup',
 			components: {
 				default: Page
 			},
 			children: [
 				{
-					path: '/',
+					path: '',
 					name: '',
-					components: {}
+					components: {
+						content: SetupIntroText
+					}
 				},
 				{
 					path: 'integrations',
