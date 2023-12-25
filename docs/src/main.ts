@@ -25,7 +25,6 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 library.add(faArrowRight);
 import './style.css';
-//import devtools from '@vue/devtools';
 
 const router = createRouter({
 	history: createWebHistory(),
@@ -127,7 +126,3 @@ const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon);
 app.use(router);
 app.use(store);
 app.mount('#app');
-
-// if (process.env.NODE_ENV === 'development') {
-// 	devtools.connect(/* host, port */);
-// }
