@@ -1,16 +1,16 @@
 <script lang="ts">
 import { useSpecStore } from '../state/spec.ts';
+import { defineComponent } from 'vue';
 
-export default {
-	data() {
-	},
+export default defineComponent({
+	name: 'OpenAPISpecTag',
 	computed: {
 		endpoints() {
 			const spec = useSpecStore();
 			return spec.endpointsForTag(this.$route.name as string);
 		}
 	}
-};
+});
 </script>
 
 <template>
@@ -53,10 +53,5 @@ export default {
 
 <style scoped lang="scss">
     .tag-content {
-        &__header {
-            h1 {
-                font-size: 1.5rem;
-            }
-        }
     }
 </style>
