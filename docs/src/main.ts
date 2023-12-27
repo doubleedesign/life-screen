@@ -89,7 +89,7 @@ const openApiSpecRoutes: RouteRecordRaw[] = [{
 				name: tag.name,
 				path: tag.name.toLowerCase().replace(' ', '-'),
 				components: {
-					default: Tag
+					content: Tag
 				}
 			};
 		})]
