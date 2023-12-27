@@ -1,4 +1,4 @@
-### Microsoft Graph integration
+## Microsoft Graph integration
 
 * [MS Graph Explorer](https://developer.microsoft.com/en-us/graph/graph-explorer) - find and test sample queries; can be used to get an auth token to use in Postman
 * [MS Graph API homepage](https://developer.microsoft.com/en-us/graph/rest-api)
@@ -8,7 +8,7 @@
 * [Tutorial: Call MS Graph in a console app](https://learn.microsoft.com/en-us/azure/active-directory/develop/tutorial-v2-nodejs-console)
 * [Tutorial: Node.js & Express web app calling Microsoft Graph using MSAL Node](https://github.com/Azure-Samples/ms-identity-javascript-nodejs-tutorial/blob/main/2-Authorization/1-call-graph/README.md)
 
-### Google Calendar integration
+## Google Calendar integration
 
 * Calendars in [Google APIs Explorer](https://developers.google.com/calendar/api/v3/reference/calendars/get?apix_params=%7B%22calendarId%22%3A%22primary%22%7D)
 * [Node.js Quickstart](https://developers.google.com/calendar/api/quickstart/nodejs) for Google Calendar
