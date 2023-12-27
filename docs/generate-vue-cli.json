@@ -1,9 +1,12 @@
 {
-  "component": {
-    "default": {
-      "path": "src/components",
-      "withTest": false,
-      "withStory": false
-    }
-  }
+	"component": {
+		"default": {
+			"path": "src/components",
+			"withTest": false,
+			"withStory": false,
+			"customTemplates": {
+				"component": "templates/component/TemplateName.vue"
+			}
+		}
+	}
 }
