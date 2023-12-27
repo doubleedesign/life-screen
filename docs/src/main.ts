@@ -11,8 +11,9 @@ import Page from './components/Page.vue';
 import Tag from './components/Tag.vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-library.add(faArrowRight);
+import { faArrowRight, faHouse } from '@fortawesome/free-solid-svg-icons';
+import { faChevronRight } from '@fortawesome/pro-light-svg-icons';
+library.add(faArrowRight, faHouse, faChevronRight);
 import './style.css';
 
 const contentTree = new ContentTree().growTree();

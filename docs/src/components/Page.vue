@@ -1,9 +1,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import SectionMenu from './SectionMenu.vue';
+import Breadcrumbs from './Breadcrumbs.vue';
 
 export default defineComponent({
 	components: {
+		Breadcrumbs,
 		SectionMenu
 	},
 	data() {
@@ -17,6 +19,7 @@ export default defineComponent({
 
 <template>
 	<main class="page">
+		<Breadcrumbs />
 		<h1>{{ title }}</h1>
 		<!-- Nested route outlets -->
 		<RouterView name="content" :key="path"></RouterView>
