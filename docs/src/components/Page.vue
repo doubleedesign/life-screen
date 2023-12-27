@@ -8,7 +8,7 @@ export default defineComponent({
 	},
 	data() {
 		return {
-			title: this.$route.name !== '' ? this.$route.name : this.$route.matched[0].name,
+			title: this.$route.name !== '' ? this.$route.name : (this.$route.matched[1]?.name !== '' ? this.$route.matched[1]?.name : this.$route.matched[0]?.name),
 			path: this.$route.path
 		};
 	}
@@ -19,7 +19,6 @@ export default defineComponent({
 	<main class="page">
 		<h1>{{ title }}</h1>
 		<!-- Nested route outlets -->
-		<RouterView :key="path"></RouterView>
 		<RouterView name="content" :key="path"></RouterView>
 	</main>
 	<SectionMenu/>

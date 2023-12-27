@@ -20,7 +20,7 @@ export default defineComponent({
         </Drawer>
 		<MainContent>
 			<!-- route outlet -->
-			<RouterView :key="$route.path"></RouterView>
+			<RouterView :key="$route.fullPath"></RouterView>
 		</MainContent>
     </div>
 </template>

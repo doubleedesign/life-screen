@@ -12,6 +12,10 @@ export default defineComponent({
 		depth: {
 			type: Number,
 			default: 5
+		},
+		routePrefix: {
+			type: String,
+			default: ''
 		}
 	},
 	data() {
@@ -26,16 +30,16 @@ export default defineComponent({
 	},
 	mounted() {
 		this.incrementCount();
-	}
+	},
 });
 </script>
 
 <template>
 	<ul v-if="depth >= count" class="menu-list">
 		<li v-for="item in items" class="menu-list__item">
-			<router-link :to="item.path">{{item.name}}</router-link>
+			<router-link :to="`${routePrefix && routePrefix + '/'}${item.path}`">{{item.name}}</router-link>
 			<template v-if="item.children && item.children.length > 0">
-				<MenuList :items="item.children" :depth="depth - count"/>
+				<MenuList :items="item.children" :depth="depth - count" :route-prefix="`${routePrefix && routePrefix + '/'}${item.path}`"/>
 			</template>
 		</li>
 	</ul>

@@ -4,11 +4,11 @@ import _ from 'lodash';
 import { RouteRecordNormalized } from 'vue-router';
 
 export type Branch = Pick<RouteRecordNormalized, 'name' | 'path'> & {
-	children: Twig[] | Leaf[]
+	children: Twig[];
 }
 
 export type Twig = Pick<RouteRecordNormalized, 'name' | 'path'> & {
-	children?: Leaf[]
+	children?: Leaf[];
 }
 
 export type Leaf = {

@@ -8,8 +8,6 @@ const topLevelItems = router.getRoutes().filter(route => {
 	const level = compact(route.path.split('/')).length;
 	return level === 1 && route.name !== '';
 });
-
-console.log(router.getRoutes());
 </script>
 
 <template>
