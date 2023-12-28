@@ -13,6 +13,22 @@ export default defineComponent({
 			title: this.$route.name !== '' ? this.$route.name : (this.$route.matched[1]?.name !== '' ? this.$route.matched[1]?.name : this.$route.matched[0]?.name),
 			path: this.$route.path
 		};
+	},
+	methods: {
+		getHeadings() {
+			const headings = document.querySelectorAll('h2 a');
+			const result = Array.from(headings).map((heading) => {
+				return {
+					label: heading.textContent,
+					href: heading.getAttribute('href')
+				};
+			});
+			console.log(result);
+			return result;
+		},
+	},
+	mounted() {
+		this.getHeadings();
 	}
 });
 </script>
