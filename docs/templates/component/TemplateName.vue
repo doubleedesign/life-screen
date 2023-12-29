@@ -21,7 +21,9 @@ export default defineComponent({
 </template>
 
 <style scoped lang="scss">
-.template-name {
+	@import 'tokens';
+	@import 'utils';
+	.template-name {
 
-}
+	}
 </style>

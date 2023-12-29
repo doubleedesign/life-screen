@@ -14,6 +14,7 @@
 		"@fortawesome/free-solid-svg-icons": "^6.5.1",
 		"@fortawesome/pro-light-svg-icons": "^6.5.1",
 		"@fortawesome/vue-fontawesome": "^3.0.5",
+		"markdown-it-anchor": "^8.6.7",
 		"markdown-it-emoji": "^3.0.0",
 		"pinia": "^2.1.7",
 		"vite-plugin-md": "^0.22.5",

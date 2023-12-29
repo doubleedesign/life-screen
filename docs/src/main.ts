@@ -40,17 +40,18 @@ const markdownPageRoutes: RouteRecordRaw[] = (contentTree.map((branch: Branch) =
 			return {
 				name: twig.name,
 				path: twig.path,
-				// Empty path at "twig" level means this is the root page for a subdirectory
+				// Empty path at "twig" level means this is the root page for a directory
 				...twig.path === '' && {
 					components: {
-						content: import(`./content/${branch.path}/index.md`)
+						default: Page,
+						content: () => import(`./content/${branch.path}/index.md`)
 					}
 				},
 				// Non-empty path and no children at "twig" level means this "twig" is actually a "leaf"
 				// i.e. a content page directly in the subfolder, no third level
 				...twig.path !== '' && !twig.children && {
 					components: {
-						content: import(`./content/${branch.path}/${twig.path}.md`)
+						content: () => import(`./content/${branch.path}/${twig.path}.md`)
 					}
 				},
 				// If the "twig" has children, this is a subfolder with third-level "leaves" (child pages) that need to be mapped here
@@ -60,7 +61,7 @@ const markdownPageRoutes: RouteRecordRaw[] = (contentTree.map((branch: Branch) =
 							path: leaf.path,
 							name: leaf.name,
 							components: {
-								content: leaf.path === ''
+								content: () => leaf.path === ''
 									? import(`./content/${branch.path}/${twig.path}/index.md`)
 									: import(`./content/${branch.path}/${twig.path}/${leaf.path}.md`)
 							}

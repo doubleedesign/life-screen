@@ -1,4 +1,4 @@
-## [Postman environment variables](#env-variables)
+## Postman environment variables
 
 If using environment variables for MS Graph and/or Google Calendar testing, your Postman environment settings should look something like this:
 

@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue';
 import ViteYaml from '@modyfi/vite-plugin-yaml';
 import Markdown from 'vite-plugin-md';
 import { full as emoji } from 'markdown-it-emoji';
+import anchor from 'markdown-it-anchor';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -16,7 +17,9 @@ export default defineConfig({
 			},
 			markdownItSetup(md) {
 				md.use(emoji);
+				md.use(anchor);
 			},
+			builders: []
 		})
 	],
 });

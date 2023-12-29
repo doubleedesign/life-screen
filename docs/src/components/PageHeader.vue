@@ -32,13 +32,22 @@ export default defineComponent({
 </template>;
 
 <style scoped lang="scss">
+	@import 'tokens';
+	@import 'utils';
+
 	.page-header {
-        background: #EFEFEF;
+        background: map-get($colours, 'secondary');
         padding: 1rem;
 		height: 100%;
 
         h1 {
             margin: 0;
+			color: readableColor(map-get($colours, 'secondary'));
+
+			a {
+				color: inherit;
+				text-decoration: none;
+			}
         }
 	}
 </style>;

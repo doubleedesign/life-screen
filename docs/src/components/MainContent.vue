@@ -3,8 +3,6 @@ import { defineComponent } from 'vue';
 import { pageState } from '../state/page';
 export default defineComponent({
 	name: 'MainContent',
-	data() {
-	},
 	computed: {
 		fullwidth() {
 			return !pageState.drawerOpen;

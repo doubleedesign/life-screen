@@ -1,0 +1,38 @@
+@use "sass:math";
+
+/**
+ * Return dark or light color based on the luminance of `$color`
+ * Based on: https://github.com/ricokahler/color2k/blob/main/src/readableColorIsBlack.ts
+ */
+@function readableColor($color, $light: #fff, $dark: #000) {
+	@return if(luminance($color) > 0.179, $dark, $light);
+}
+
+/**
+ * Return the luminance of `$color` as a float (between 0 and 1)
+ * 1 is pure white, 0 is pure black
+ * Based on: https://css-tricks.com/snippets/sass/luminance-color-function/
+ */
+@function luminance($color) {
+	$colors: (
+		'red': red($color),
+		'green': green($color),
+		'blue': blue($color)
+	);
+
+	@each $name, $value in $colors {
+		$adjusted: 0;
+		$value: math.div($value, 255);
+
+		@if $value < 0.03928 {
+			$value: math.div($value, 12.92);
+		} @else {
+			$value: math.div($value + 0.055, 1.055);
+			$value: pow($value, 2.4);
+		}
+
+		$colors: map-merge($colors, ($name: $value));
+	}
+
+	@return (map-get($colors, 'red') * .2126) + (map-get($colors, 'green') * .7152) + (map-get($colors, 'blue') * .0722);
+}
