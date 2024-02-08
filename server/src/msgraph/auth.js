@@ -48,11 +48,9 @@ router.get('/callback', async function (req, res) {
 				token: response.accessToken
 			};
 
-			res.status(200).json({
-				status: 200,
-				message: 'Microsoft account login successful',
-				data: req.session.msgraph
-			});
+			res.cookie('msgraph', JSON.stringify(response.accessToken), { maxAge: 900000, httpOnly: true });
+
+			res.redirect(process.env.FRONTEND_URL);
 		}
 		else {
 			throw new Error({

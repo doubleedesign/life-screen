@@ -8,8 +8,10 @@ import cors from 'cors';
 import nodeCache from 'node-cache';
 import msGraphRouter from './msgraph';
 import googleRouter from './gcal';
-import lifxRouter from './lifx';
+//import lifxRouter from './lifx';
 import { config } from 'dotenv';
+import * as https from 'https';
+import { readFileSync } from 'node:fs';
 config();
 
 declare module 'express-session' {
@@ -19,9 +21,9 @@ declare module 'express-session' {
 	}
 }
 
-// Set up server
-// Note: Use CORS browser plugin if having CORS issues
+// Set up Express
 const app = express();
+app.options('*', cors());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -34,7 +36,7 @@ app.use(session({
 	resave: false,
 	saveUninitialized: false,
 	cookie: {
-		secure: false, // set this to true on production
+		secure: true
 	},
 	unset: 'destroy'
 }));
@@ -61,7 +63,7 @@ app.locals.cache = {
 // API routes
 app.use('/msgraph', msGraphRouter);
 app.use('/gcal', googleRouter);
-app.use('/lifx', lifxRouter);
+//app.use('/lifx', lifxRouter);
 
 // Session info - for dev only
 app.get('/', (req, res) => {
@@ -70,7 +72,9 @@ app.get('/', (req, res) => {
 
 
 // Start server
-app.listen(4000, () => {
-	console.log('Server running on port 4000');
+app.listen(3001, () => {
+	console.log('Server running on port 3001');
 	//console.log(listEndpoints(app));
 });
+
+

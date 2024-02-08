@@ -7,10 +7,14 @@ import { ResponseCode } from '../responses';
 /**
  * Get user summary
  */
-router.get('/', async function(req, res) {
+router.get('/me', async function(req, res) {
 	try {
 		const user = await graph.getUserDetails(req.app.locals.cache.msalClient, req.session.msgraph.userId);
-		res.status(200).json(pick(user, ['id', 'displayName', 'email']));
+		const profile = {
+			...pick(user, ['id', 'displayName', 'email']),
+			timeZone: user.mailboxSettings.timeZone
+		};
+		res.status(200).json(profile);
 	}
 	catch(error) {
 		res.status(ResponseCode[error.name]).json(`${error.message}. Please try logging in again.`);

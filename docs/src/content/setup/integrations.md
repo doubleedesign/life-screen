@@ -20,7 +20,7 @@ Tips:
     - To return to this screen later, go to OAuth Consent Screen, click the "Edit app" button at the top of the page (next to the app name), and re-follow the wizard to get to the Scopes screen.
 4. In the next step, add yourself as a test user.
 5. Go to [Credentials](https://console.cloud.google.com/apis/credentials?project=life-screen), click the "Create credentials" button, and choose "OAuth client ID". In the wizard that appears, choose "Web application" and enter:
-- Authorised JavaScript origins: Your front-end app URL (e.g., `http://localhost:3000`), and your server URL (e.g., `http://localhost:4000`) if you want to be able to test that directly without a front-end app.
-- Authorised redirect URIs: The server URL/endpoint that will handle the returned authorisation code (e.g., `http://localhost:4000/auth/callback`).
+- Authorised JavaScript origins: Your front-end app URL (e.g., `http://localhost:3000`), and your server URL (e.g., `http://localhost:3001`) if you want to be able to test that directly without a front-end app.
+- Authorised redirect URIs: The server URL/endpoint that will handle the returned authorisation code (e.g., `http://localhost:3001/auth/callback`).
     - If you're going to test with Postman, also add the Postman redirect URL `https://oauth.pstmn.io/v1/callback`.
 6. Click "create" and copy the client ID and secret that appear into your server `.env` file.
