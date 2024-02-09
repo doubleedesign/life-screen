@@ -48,9 +48,11 @@ router.get('/callback', async function (req, res) {
 				token: response.accessToken
 			};
 
-			res.cookie('msgraph', JSON.stringify(response.accessToken), { maxAge: 900000, httpOnly: true });
+			// Save the session
+			req.session.save((err) => err && console.error(err));
 
-			res.redirect(process.env.FRONTEND_URL);
+			// Redirect to front-end with auth data in URL fragment
+			res.redirect(`${process.env.FRONTEND_URL}/msgraph#token=${encodeURIComponent(response.accessToken)}&userId=${encodeURIComponent(response.account.homeAccountId)}`);
 		}
 		else {
 			throw new Error({

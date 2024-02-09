@@ -8,7 +8,9 @@ import { ResponseCode } from '../responses';
  * Get user summary
  */
 router.get('/me', async function(req, res) {
+	console.log(req.session);
 	try {
+		console.log(req.session.msgraph.userId);
 		const user = await graph.getUserDetails(req.app.locals.cache.msalClient, req.session.msgraph.userId);
 		const profile = {
 			...pick(user, ['id', 'displayName', 'email']),

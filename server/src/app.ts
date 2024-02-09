@@ -10,8 +10,6 @@ import msGraphRouter from './msgraph';
 import googleRouter from './gcal';
 //import lifxRouter from './lifx';
 import { config } from 'dotenv';
-import * as https from 'https';
-import { readFileSync } from 'node:fs';
 config();
 
 declare module 'express-session' {
@@ -23,8 +21,10 @@ declare module 'express-session' {
 
 // Set up Express
 const app = express();
-app.options('*', cors());
-app.use(cors());
+app.use(cors({
+	origin: 'https://localhost:3000',
+	credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -34,9 +34,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(session({
 	secret: 'THIS_CAN_BE_ANYTHING_LOCALLY',
 	resave: false,
-	saveUninitialized: false,
+	saveUninitialized: true,
 	cookie: {
-		secure: true
+		secure: false, // Set to true if using HTTPS i.e. in production
 	},
 	unset: 'destroy'
 }));
