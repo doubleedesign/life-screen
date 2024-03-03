@@ -1,34 +1,39 @@
+import { configureStore } from '@reduxjs/toolkit';
+import { createLogger } from 'redux-logger';
+import { RootState } from './types.ts';
+
+const initialState: RootState = {
+	msgraph: undefined,
+	gcal: undefined
+};
+
 // Action types
-import { combineReducers, createStore } from 'redux';
+export const SET_MICROSOFT_USER = 'SET_MICROSOFT_USER';
 
-export const SET_MS_CREDENTIALS = 'SET_MS_CREDENTIALS';
-
-type MSCredentialsAction = {
-	type: typeof SET_MS_CREDENTIALS,
+type SetUserIdAction = {
+	type: typeof SET_MICROSOFT_USER,
 	payload: {
 		userId: string,
-		token: string
 	}
 };
 
 // Action creators
-function setMsCredentials(userId: string, token: string) {
-	return {
-		type: SET_MS_CREDENTIALS,
+export const setMicrosoftUser = (userId: string) => ({
+	type: SET_MICROSOFT_USER,
+	payload: {
 		userId: userId,
-		token: token
-	};
-}
+	}
+});
 
 // Reducer
-function credentialsReducer(state = {}, action: MSCredentialsAction){
+function credentialsReducer(state: RootState = initialState, action: SetUserIdAction){
 	switch (action.type) {
-	case SET_MS_CREDENTIALS:
+	case SET_MICROSOFT_USER:
 		return {
 			...state,
 			msgraph: {
-				userId: action.payload.userId,
-				token: action.payload.token
+				...state.config?.msgraph,
+				userId: action.payload.userId
 			}
 		};
 	default:
@@ -36,6 +41,11 @@ function credentialsReducer(state = {}, action: MSCredentialsAction){
 	}
 }
 
-export const store = createStore(combineReducers({
-	credentials: credentialsReducer
-}));
+const logger = createLogger();
+
+export const store= configureStore({
+	reducer: {
+		config: credentialsReducer
+	},
+	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+});
