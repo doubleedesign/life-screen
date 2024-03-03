@@ -4,10 +4,10 @@ import {
 	createBrowserRouter,
 	RouterProvider,
 } from 'react-router-dom';
-import App from './App.tsx';
-import MicrosoftAccount from './components/Accounts/MicrosoftAccount';
 import { Provider } from 'react-redux';
 import { store } from './state/actions.ts';
+import App from './App.tsx';
+import MicrosoftAccount from './components/Accounts/MicrosoftAccount';
 
 const router = createBrowserRouter([
 	{

@@ -8,7 +8,12 @@
 			"withStyle": true,
 			"withTest": true,
 			"withStory": false,
-			"withLazy": false
+			"withLazy": false,
+			"customTemplates": {
+				"component": "templates/TemplateName.tsx",
+				"style": "templates/TemplateName.style.ts",
+				"test":  "templates/TemplateName.test.tsx"
+			}
 		}
 	}
 }

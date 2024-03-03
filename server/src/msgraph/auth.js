@@ -94,10 +94,9 @@ router.get('/logout', async function (req, res) {
 			});
 		}
 		else {
-			throw new Error({
+			res.status(404).json({
 				status: 404,
-				errorCode: 'not_found',
-				errorMessage: 'Cannot find user in session, so cannot log them out'
+				message: 'Cannot find user in session, so cannot log them out'
 			});
 		}
 	}

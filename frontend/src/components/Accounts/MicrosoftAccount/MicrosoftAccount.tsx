@@ -1,10 +1,12 @@
 import { FC, useState, useEffect } from 'react';
-import { MicrosoftAccountWrapper } from './MicrosoftAccount.styled.ts';
 import { SERVER_URL } from '../../../constants.tsx';
 import { useLocalStorage } from '../../../hooks/useLocalStorage.ts';
 import { parseHash } from '../../../utils.ts';
 import { useDispatch } from 'react-redux';
-import { setMicrosoftUser } from '../../../state/actions.ts';
+import { setUserId, setUserProfile } from '../../../state/actions.ts';
+import Message from '../../Message/Message.tsx';
+import Button from '../../Button/Button.tsx';
+import { Container } from '../../common.styled.ts';
 
 interface MicrosoftAccountProps {
 	userId?: string;
@@ -22,14 +24,17 @@ export const MicrosoftAccountComponent: FC<MicrosoftAccountProps> = ({ userId })
 
 	useEffect(() => {
 		// Just logged in and returned with URL fragment
-		const hashData: {[key: string]: string} = parseHash(window.location.hash);
-		if(hashData?.token && hashData?.userId) {
-			dispatch(setMicrosoftUser(hashData.userId));
+		const hashData: { [key: string]: string } = parseHash(window.location.hash);
+		if (hashData?.token && hashData?.userId) {
+			dispatch(setUserId({
+				id: hashData.userId,
+				idType: 'msgraph'
+			}));
 			token.setValue(hashData.token);
 		}
 
 		// If userId and token are set, attempt to fetch profile
-		if (token.value !== '' && userId !== '') {
+		if (token.value !== '' && userId) {
 			fetch(`${SERVER_URL}/msgraph/me`, {
 				method: 'GET',
 				credentials: 'include',
@@ -46,20 +51,36 @@ export const MicrosoftAccountComponent: FC<MicrosoftAccountProps> = ({ userId })
 					return response.text();
 				})
 				.then(result => {
-					setMessage(result);
+					const profileData = JSON.parse(result);
+					dispatch(setUserProfile({
+						userId: profileData.id,
+						idType: 'msgraph',
+						displayName: profileData.displayName,
+						email: profileData.mail,
+						timeZone: profileData.timeZone
+					}));
+					setMessage(`Welcome, ${profileData.displayName}`);
 				})
 				.catch(error => console.log('error', error));
 		}
-	// Only run on load; if deps are set then the server his hit with repeated requests
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// Only run on load; if deps are set then the server his hit with repeated requests
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-
 	return (
-		<MicrosoftAccountWrapper data-testid="MicrosoftAccount">
-			<div>{status.code}: {status.message} {message}</div>
-			<a href="http://localhost:3001/msgraph/auth/login">Log in to Microsoft account</a>
-		</MicrosoftAccountWrapper>
+		<Container data-testid="MicrosoftAccount">
+			{(status.code === 200 && userId) ? (
+				<Message type="success">
+					<p>{message}</p>
+					<Button appearance="primary" label="Log out of Microsoft account" href={`${SERVER_URL}/msgraph/auth/logout`}></Button>
+				</Message>
+			) : (
+				<Message type="error">
+					<p>{status.code}: {status.message}</p>
+					<Button appearance="primary" label="Log in to Microsoft account" href={`${SERVER_URL}/msgraph/auth/login`}></Button>
+				</Message>
+			)}
+		</Container>
 	);
 };
 
