@@ -1,5 +1,5 @@
 import { FC, useCallback, useState } from 'react';
-import { GlobalHeaderWrapper } from './GlobalHeader.styled';
+import { GlobalHeaderWrapper, PopupMenu } from './GlobalHeader.styled';
 import { Container, Row } from '../common.styled';
 import { useIsDarkMode } from '../../state/selectors.ts';
 import Toggle from '../Toggle/Toggle.tsx';
@@ -10,6 +10,7 @@ import LightbulbFilledIcon from '@atlaskit/icon/glyph/lightbulb-filled';
 import { Popup } from '@atlaskit/popup';
 import Button from '../Button/Button.tsx';
 import MoreIcon from '@atlaskit/icon/glyph/more';
+import { MenuGroup, Section } from '@atlaskit/menu';
 
 interface GlobalHeaderProps {
 }
@@ -23,27 +24,43 @@ const GlobalHeader: FC<GlobalHeaderProps> = () => {
 		dispatch(setUiMode(!isDarkMode));
 	}, [isDarkMode, dispatch]);
 
-	const handleMenu = useCallback(() => {
-		setMenuOpen(!menuOpen);
-	}, [menuOpen]);
-
 	return (
 		<GlobalHeaderWrapper data-testid="GlobalHeader">
 			<Container>
 				<Row>
 					<h1>Life Screen</h1>
-					<Toggle toggledOn={isDarkMode}
-						onToggle={setMode}
-						label={'Dark mode'}
-						onLabel={'Dark mode on'}
-						offLabel={'Dark mode off'}
-						onIcon={LightbulbFilledIcon}
-						offIcon={LightbulbIcon}
-						labelVisible={false}
-						onColour="mutedDark"
-						offColour="mutedLight"
+					<Popup
+						isOpen={menuOpen}
+						onClose={() => setMenuOpen(false)}
+						placement="bottom-end"
+						content={() => <PopupMenu>
+							<MenuGroup>
+								<Section title="Options">
+									<Toggle toggledOn={isDarkMode}
+										onToggle={setMode}
+										label={'Dark mode'}
+										onLabel={'Dark mode on'}
+										offLabel={'Dark mode off'}
+										onIcon={LightbulbFilledIcon}
+										offIcon={LightbulbIcon}
+										labelVisible
+										onColour="mutedDark"
+										offColour="mutedLight"
+									/>
+								</Section>
+							</MenuGroup>
+						</PopupMenu>}
+						trigger={(triggerProps) => (
+							<Button
+								{...triggerProps}
+								label="Menu"
+								icon={MoreIcon}
+								appearance="subtle"
+								onClick={() => setMenuOpen(!menuOpen)}
+								isCollapsed
+								isActive={menuOpen}/>
+						)}
 					/>
-					<Button label="Menu" icon={MoreIcon} onClick={handleMenu} appearance="subtle" collapsed active={menuOpen}/>
 				</Row>
 			</Container>
 		</GlobalHeaderWrapper>

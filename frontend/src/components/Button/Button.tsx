@@ -1,8 +1,8 @@
-import { ComponentType, FC } from 'react';
-import { LinkButtonWrapper, ButtonWrapper } from './Button.style';
+import { ComponentType, FC, ForwardedRef, forwardRef } from 'react';
 import { ThemeColour } from '../../theme.ts';
 import VisuallyHidden from '@atlaskit/visually-hidden';
 import { IconProps } from '@atlaskit/icon';
+import { ButtonWrapper, LinkButtonWrapper } from './Button.style.ts';
 
 type ButtonSharedProps = {
 	label: string;
@@ -11,37 +11,39 @@ type ButtonSharedProps = {
 
 export type ButtonProps = ButtonSharedProps & {
 	onClick?: () => void;
-	active?: boolean;
+	isActive?: boolean;
 }
 
-export type IconButtonProps = ButtonSharedProps & {
+export type IconButtonProps = ButtonProps & ButtonSharedProps & {
 	icon: ComponentType<IconProps>;
-	collapsed: boolean;
+	isCollapsed: boolean;
 }
 
 export type LinkButtonProps = ButtonSharedProps & {
 	href: string;
 }
 
-const Button: FC<ButtonProps | IconButtonProps | LinkButtonProps> = ({
-	label,
-	appearance,
-	icon = undefined,
-	collapsed = false,
-	active = false,
-	onClick = undefined,
-	href = undefined
-}) => {
+const Button: FC<ButtonProps | IconButtonProps | LinkButtonProps> = forwardRef<HTMLElement, ButtonProps>((props, ref) => {
+	const {
+		label,
+		appearance,
+		// @ts-expect-error TS2339: Property isCollapsed does not exist on type
+		isCollapsed = false,
+		isActive = false,
+		// @ts-expect-error TS2339: Property icon does not exist on type
+		icon = undefined,
+		...restProps
+	} = props;
 
 	if(icon) {
 		const IconComponent = icon;
-		return collapsed ? (
-			<ButtonWrapper appearance={appearance} collapsed active={active} onClick={onClick} data-testid="IconButtonCollapsed">
+		return isCollapsed ? (
+			<ButtonWrapper data-testid="IconButtonCollapsed" ref={ref ? ref as ForwardedRef<HTMLButtonElement> : null} $appearance={appearance} $isCollapsed={isCollapsed} $isActive={isActive} {...restProps}>
 				<IconComponent label={label}/>
 				<VisuallyHidden>{label}</VisuallyHidden>
 			</ButtonWrapper>
 		) : (
-			<ButtonWrapper appearance={appearance} active={active} onClick={onClick} data-testid="IconButton">
+			<ButtonWrapper data-testid="IconButton" ref={ref ? ref as ForwardedRef<HTMLButtonElement> : null} $appearance={appearance} $isCollapsed={false} $isActive={isActive} {...restProps}>
 				<IconComponent label={label}/>
 				{label}
 			</ButtonWrapper>
@@ -49,11 +51,12 @@ const Button: FC<ButtonProps | IconButtonProps | LinkButtonProps> = ({
 	}
 
 	return (
-		href
-			? <LinkButtonWrapper appearance={appearance} href={href}>{label}</LinkButtonWrapper>
-			: <ButtonWrapper appearance={appearance} onClick={onClick}>{label}</ButtonWrapper>
+		// @ts-expect-error TS2339: Property href does not exist on type
+		restProps?.href
+			? <LinkButtonWrapper ref={ref ? ref as ForwardedRef<HTMLAnchorElement> : null} data-testid="LinkButton" $appearance={appearance} {...restProps}>{label}</LinkButtonWrapper>
+			: <ButtonWrapper ref={ref ? ref as ForwardedRef<HTMLButtonElement> : null} data-testid="Button" $appearance={appearance} {...restProps}>{label}</ButtonWrapper>
 	);
-};
+});
 
 export default Button;
 

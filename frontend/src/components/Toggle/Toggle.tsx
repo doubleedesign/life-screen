@@ -38,15 +38,15 @@ const Toggle: FC<ToggleProps> = ({
 
 	return (
 		<Tooltip content={toggledOn ? onLabel : offLabel}>
-			<ToggleWrapper data-testid="Toggle" aria-label={`Toggle for ${label}`} background={toggledOn? onColour : offColour}>
+			<ToggleWrapper data-testid="Toggle" aria-label={`Toggle for ${label}`} $background={toggledOn? onColour : offColour}>
 				<ToggleLabel>
 					{labelVisible ? label : <VisuallyHidden>{label}</VisuallyHidden>}
 					<ToggleInput name={name} checked={toggledOn} onChange={onToggle}/>
 				</ToggleLabel>
-				<ToggleIconWrapper background={toggledOn? onColour : offColour}>
+				<ToggleIconWrapper>
 					<IconComponent label="Toggle icon"/>
 				</ToggleIconWrapper>
-				<ToggleSwitch toggledOn={toggledOn}/>
+				<ToggleSwitch $toggledOn={toggledOn}/>
 			</ToggleWrapper>
 		</Tooltip>
 	);

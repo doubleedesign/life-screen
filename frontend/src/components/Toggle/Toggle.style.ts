@@ -1,15 +1,15 @@
 import styled from 'styled-components';
 import { ThemeColour } from '../../theme.ts';
 import { readableColor } from 'polished';
-export const ToggleWrapper = styled.div<{background: ThemeColour}>`
+export const ToggleWrapper = styled.div<{$background: ThemeColour}>`
 	width: ${props => `calc(${props.theme.spacing.lg} * 2)`};
-	border: 1px solid ${props => readableColor(props.theme.colours[props.background])};
+	border: 1px solid ${props => readableColor(props.theme.colours[props.$background])};
 	display: flex;
 	border-radius: ${props => props.theme.spacing.lg};
 	position: relative;
 	align-items: center;
 	justify-content: space-around;
-	background: ${props => props.theme.colours[props.background]};
+	background: ${props => props.theme.colours[props.$background]};
 	padding-left: 1px;
 	padding-right: 1px;
 `;
@@ -31,18 +31,18 @@ export const ToggleInput = styled.input.attrs({ type: 'checkbox' })`
 	position: absolute;
 `;
 
-export const ToggleIconWrapper = styled.span<{background: ThemeColour}>`
+export const ToggleIconWrapper = styled.span`
 	display: block;
 	width: ${props => props.theme.spacing.lg};
 	height: ${props => props.theme.spacing.lg};
 	order: 1;
 `;
 
-export const ToggleSwitch = styled.span<{toggledOn: boolean}>`
+export const ToggleSwitch = styled.span<{$toggledOn: boolean}>`
 	display: block;
 	width: ${props => props.theme.spacing.mdLg};
 	height: ${props => props.theme.spacing.mdLg};
-	order: ${props => props.toggledOn ? 2 : 0};
+	order: ${props => props.$toggledOn ? 2 : 0};
 	background: ${props => props.theme.colours.text};
 	border-radius: ${props => props.theme.spacing.lg};
 	border: 2px solid transparent;
