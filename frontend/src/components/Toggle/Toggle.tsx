@@ -1,5 +1,12 @@
 import { ComponentType, FC, useId } from 'react';
-import { ToggleIconWrapper, ToggleInput, ToggleLabel, ToggleSwitch, ToggleWrapper } from './Toggle.style';
+import {
+	ToggleIconWrapper,
+	ToggleInput,
+	ToggleLabel,
+	ToggleSwitch,
+	ToggleSwitchWrapper,
+	ToggleWrapper
+} from './Toggle.style';
 import { IconProps } from '@atlaskit/icon';
 import Tooltip from '@atlaskit/tooltip';
 import VisuallyHidden from '@atlaskit/visually-hidden';
@@ -37,18 +44,22 @@ const Toggle: FC<ToggleProps> = ({
 	const IconComponent = toggledOn ? onIcon : offIcon;
 
 	return (
-		<Tooltip content={toggledOn ? onLabel : offLabel}>
-			<ToggleWrapper data-testid="Toggle" aria-label={`Toggle for ${label}`} $background={toggledOn? onColour : offColour}>
-				<ToggleLabel>
-					{labelVisible ? label : <VisuallyHidden>{label}</VisuallyHidden>}
+		<div data-testid="Toggle" aria-label={`Toggle for ${label}`}>
+			<ToggleWrapper>
+				<ToggleLabel $labelVisible={labelVisible}>
+					{labelVisible ? <span>{label}</span> : <VisuallyHidden>{label}</VisuallyHidden>}
 					<ToggleInput name={name} checked={toggledOn} onChange={onToggle}/>
 				</ToggleLabel>
-				<ToggleIconWrapper>
-					<IconComponent label="Toggle icon"/>
-				</ToggleIconWrapper>
-				<ToggleSwitch $toggledOn={toggledOn}/>
+				<Tooltip content={toggledOn ? onLabel : offLabel}>
+					<ToggleSwitchWrapper onClick={onToggle} $background={toggledOn? onColour : offColour}>
+						<ToggleIconWrapper $toggledOn={toggledOn}>
+							<IconComponent label="Toggle icon"/>
+						</ToggleIconWrapper>
+						<ToggleSwitch $toggledOn={toggledOn}/>
+					</ToggleSwitchWrapper>
+				</Tooltip>
 			</ToggleWrapper>
-		</Tooltip>
+		</div>
 	);
 };
 

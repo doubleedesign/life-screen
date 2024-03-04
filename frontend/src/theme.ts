@@ -15,6 +15,15 @@ const defaults = {
 	fonts: {
 		body: '\'Fira Sans\', \'sans-serif\'',
 	},
+	fontSizes: {
+		xxs: '0.6rem',
+		xs: '0.75rem',
+		sm: '0.875rem',
+		md: '1rem',
+		lg: '1.25rem',
+		xl: '1.5rem',
+		xxl: '2rem',
+	},
 	fontWeights: {
 		light: 300,
 		normal: 400,
@@ -58,7 +67,7 @@ export default {
 		colours: {
 			...defaults.colours,
 			background: defaults.colours.light,
-			text: defaults.colours.dark,
+			text: '#2f2f2f',
 			subtle: defaults.colours.mutedLight,
 		}
 	}

@@ -19,6 +19,8 @@ export const useIsDarkMode = () => {
 export const selectUserId = (idType: IdType) => createSelector(
 	[makeGetConfig],
 	(config) => {
-		return config[idType].userId;
+		return config[idType]?.userId ?? undefined;
 	}
 );
+
+

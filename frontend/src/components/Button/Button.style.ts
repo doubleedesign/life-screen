@@ -6,7 +6,7 @@ export const ButtonWrapper = styled.button<{$appearance: ThemeColour, $isCollaps
 	background: ${props => {
 		if(props.$isActive) {
 			if(props.theme.name === 'dark') {
-				return tint(0.3, props.theme.colours[props.$appearance]);
+				return tint(0.2, props.theme.colours[props.$appearance]);
 			}
 			return shade(0.2, props.theme.colours[props.$appearance]);
 		}

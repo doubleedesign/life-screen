@@ -1,27 +1,24 @@
 import styled from 'styled-components';
 import { ThemeColour } from '../../theme.ts';
 import { readableColor } from 'polished';
-export const ToggleWrapper = styled.div<{$background: ThemeColour}>`
-	width: ${props => `calc(${props.theme.spacing.lg} * 2)`};
-	border: 1px solid ${props => readableColor(props.theme.colours[props.$background])};
-	display: flex;
-	border-radius: ${props => props.theme.spacing.lg};
-	position: relative;
-	align-items: center;
-	justify-content: space-around;
-	background: ${props => props.theme.colours[props.$background]};
-	padding-left: 1px;
-	padding-right: 1px;
-`;
 
-export const ToggleLabel = styled.label`
+export const ToggleLabel = styled.label<{ $labelVisible: boolean }>`
 	display: block;
-	position: absolute;
-	top: 0;
+	position: ${props => props.$labelVisible ? 'relative' : 'absolute'};
+	top: 1px; // the text just looked a little off even with flex align center
 	left: 0;
 	right: 0;
 	bottom: 0;
 	cursor: pointer;
+	font-size: ${props => props.theme.fontSizes.sm};
+	font-weight: ${props => props.theme.fontWeights.normal};
+	z-index: 10;
+`;
+
+export const ToggleWrapper = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 `;
 
 export const ToggleInput = styled.input.attrs({ type: 'checkbox' })`
@@ -31,19 +28,44 @@ export const ToggleInput = styled.input.attrs({ type: 'checkbox' })`
 	position: absolute;
 `;
 
-export const ToggleIconWrapper = styled.span`
-	display: block;
-	width: ${props => props.theme.spacing.lg};
+export const ToggleSwitchWrapper = styled.button<{$background: ThemeColour}>`
+	width: ${props => `calc(${props.theme.spacing.lg} * 2)`};
+	border: 1px solid ${props => readableColor(props.theme.colours[props.$background])};
+	border-radius: ${props => props.theme.spacing.lg};
+	position: relative;
+	background: ${props => props.theme.colours[props.$background]};
+	padding: 1px 2px;
+	z-index: 0;
+	cursor: pointer;
+	appearance: none;
 	height: ${props => props.theme.spacing.lg};
-	order: 1;
+`;
+
+export const ToggleIconWrapper = styled.span<{$toggledOn: boolean}>`
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	align-items: center;
+	justify-content: ${props => props.$toggledOn ? 'flex-start' : 'flex-end'};
+	padding: 0 2px;
+	
+	svg {
+		color: ${props => props.theme.colours.text} !important;
+	}
 `;
 
 export const ToggleSwitch = styled.span<{$toggledOn: boolean}>`
 	display: block;
-	width: ${props => props.theme.spacing.mdLg};
-	height: ${props => props.theme.spacing.mdLg};
-	order: ${props => props.$toggledOn ? 2 : 0};
+	width: ${props => props.theme.spacing.md};
+	height: ${props => props.theme.spacing.md};
 	background: ${props => props.theme.colours.text};
 	border-radius: ${props => props.theme.spacing.lg};
-	border: 2px solid transparent;
+	transform: ${props => {
+		return props.$toggledOn ? `translateX(${props.theme.spacing.lg})` : 'translateX(0)';
+	}};
+	transition: transform 0.3s ease;
 `;
