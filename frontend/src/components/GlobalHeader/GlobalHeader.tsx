@@ -9,8 +9,7 @@ import Button from '../Button/Button.tsx';
 import MoreIcon from '@atlaskit/icon/glyph/more';
 import PopupMenu from '../PopupMenu/PopupMenu.tsx';
 import PopupMenuSection from '../PopupMenuSection/PopupMenuSection.tsx';
-import AccountsMenu from '../AccountsMenu/AccountsMenu.tsx';
-
+import AccountsMenu from '../Accounts/AccountsMenu/AccountsMenu.tsx';
 interface GlobalHeaderProps {
 }
 

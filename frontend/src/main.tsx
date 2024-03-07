@@ -7,7 +7,7 @@ import {
 import { Provider } from 'react-redux';
 import { store } from './state/actions.ts';
 import App from './App.tsx';
-import { GoogleAccountPage, MicrosoftAccountPage } from './components/Accounts';
+import { MicrosoftAccountPage, GoogleAccountPage } from './components/Accounts/AccountPage';
 
 const router = createBrowserRouter([
 	{

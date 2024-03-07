@@ -29,21 +29,23 @@ router.get('/callback', async function (req, res) {
 			const gcal = google.calendar({ version: 'v3', auth: req.app.locals.cache.googleClient });
 			const calendarList = await gcal.calendarList.list();
 			const calendars = calendarList.data.items;
+			const userId = calendars.find(calendar => calendar.primary).id;
 			const settings = await gcal.settings.list();
 
-			const userId = calendars.find(calendar => calendar.primary).id;
+			// Add the user object to the session
 			req.session.gcal = {
 				userId: userId,
 				displayName: userId,
 				email: userId,
 				timeZone: String(Object.values(settings).find(setting => setting.id === 'timezone')?.value),
-				tokens: tokens
+				token: tokens.access_token
 			};
 
-			res.status(200).json({
-				status: 200,
-				message: 'Login successful'
-			});
+			// Save the session
+			req.session.save((err) => err && console.error(err));
+
+			// Redirect to front-end with auth data in URL fragment
+			res.redirect(`${process.env.FRONTEND_URL}/gcal#token=${encodeURIComponent(tokens.access_token)}&userId=${encodeURIComponent(userId)}`);
 		}
 		else {
 			throw new Error({

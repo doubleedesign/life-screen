@@ -1,28 +1,4 @@
-import { FC } from 'react';
-import { AccountsMenuItem, AccountsMenuWrapper } from './AccountsMenu.style';
-import { Link } from 'react-router-dom';
-import Icon from '@atlaskit/icon';
-import { selectUserId } from '../../state/selectors.ts';
-import { useSelector } from 'react-redux';
-import Label from '../Label/Label.tsx';
-import { SERVER_URL } from '../../constants.tsx';
-
-interface AccountsMenuProps {
-	onMenuItemClick: () => void;
-}
-
-const MicrosoftLogo = () => {
-	return (
-		<svg width="24" height="24" viewBox="0 0 24 24">
-			<path fill="#f35325" d="M0 0h11v11H0z"/>
-			<path fill="#81bc06" d="M12 0h11v11H12z"/>
-			<path fill="#05a6f0" d="M0 12h11v11H0z"/>
-			<path fill="#ffba08" d="M12 12h11v11H12z"/>
-		</svg>
-	);
-};
-
-const GoogleLogo = () => {
+export const GoogleLogo = () => {
 	return (
 		<svg width="24" height="24" x="0px" y="0px" viewBox="0 0 200 200" enable-background="new 0 0 200 200">
 			<g>
@@ -41,34 +17,3 @@ const GoogleLogo = () => {
 		</svg>
 	);
 };
-
-const AccountsMenu: FC<AccountsMenuProps> = ({ onMenuItemClick }) => {
-	const msId = useSelector((selectUserId('msgraph')));
-	const gcalId = useSelector((selectUserId('gcal')));
-
-	return (
-		<AccountsMenuWrapper data-testid="AccountsMenu">
-			<AccountsMenuItem>
-				<Link to={msId ? '/msgraph' : `${SERVER_URL}/msgraph/auth/login`} onClick={onMenuItemClick}>
-					<span>
-						<Icon glyph={MicrosoftLogo} label="Microsoft"/>
-						<span>Microsoft</span>
-					</span>
-					<Label appearance={msId ? 'success' : 'error'} text={msId ? 'Logged in' : 'Logged out'} />
-				</Link>
-			</AccountsMenuItem>
-			<AccountsMenuItem>
-				<Link to={gcalId ? '/gcal' : `${SERVER_URL}/gcal/auth/login`} onClick={onMenuItemClick}>
-					<span>
-						<Icon glyph={GoogleLogo} label="Google"/>
-						<span>Google</span>
-					</span>
-					<Label appearance={gcalId ? 'success' : 'error'} text={gcalId ? 'Logged in' : 'Logged out'} />
-				</Link>
-			</AccountsMenuItem>
-		</AccountsMenuWrapper>
-	);
-};
-
-export default AccountsMenu;
-
