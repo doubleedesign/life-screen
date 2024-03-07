@@ -1,26 +1,28 @@
-import { FC, useState, useEffect } from 'react';
-import { SERVER_URL } from '../../../constants.tsx';
-import { useLocalStorage } from '../../../hooks/useLocalStorage.ts';
-import { parseHash } from '../../../utils.ts';
+import { FC, useEffect, useState } from 'react';
+import { IdType } from '../../state/types.ts';
 import { useDispatch } from 'react-redux';
-import { setUserId, setUserProfile } from '../../../state/actions.ts';
-import Message from '../../Message/Message.tsx';
-import Button from '../../Button/Button.tsx';
-import { Container } from '../../common.styled.ts';
+import { useLocalStorage } from '../../hooks/useLocalStorage.ts';
+import { parseHash } from '../../utils.ts';
+import { setUserId, setUserProfile } from '../../state/actions.ts';
+import { SERVER_URL } from '../../constants.tsx';
+import Message from '../Message/Message.tsx';
+import Button from '../Button/Button.tsx';
+import { Container } from '../common.styled.ts';
 
-interface MicrosoftAccountProps {
+type AccountPageProps = {
+	accountType: IdType;
+	title: string;
 	userId?: string;
 }
 
-
-export const MicrosoftAccountComponent: FC<MicrosoftAccountProps> = ({ userId }) => {
+const AccountPage: FC<AccountPageProps> = ({ accountType, userId, title }) => {
 	const dispatch = useDispatch();
 	const [status, setStatus] = useState({
 		code: 418,
 		message: 'I\'m a teapot',
 	});
 	const [message, setMessage] = useState('');
-	const token = useLocalStorage('ls_msgraph', '');
+	const token = useLocalStorage(`ls_${accountType}`, '');
 
 	useEffect(() => {
 		// Just logged in and returned with URL fragment
@@ -28,14 +30,14 @@ export const MicrosoftAccountComponent: FC<MicrosoftAccountProps> = ({ userId })
 		if (hashData?.token && hashData?.userId) {
 			dispatch(setUserId({
 				id: hashData.userId,
-				idType: 'msgraph'
+				idType: accountType
 			}));
 			token.setValue(hashData.token);
 		}
 
 		// If userId and token are set, attempt to fetch profile
 		if (token.value !== '' && userId) {
-			fetch(`${SERVER_URL}/msgraph/me`, {
+			fetch(`${SERVER_URL}/${accountType}/me`, {
 				method: 'GET',
 				credentials: 'include',
 				headers: {
@@ -54,7 +56,7 @@ export const MicrosoftAccountComponent: FC<MicrosoftAccountProps> = ({ userId })
 					const profileData = JSON.parse(result);
 					dispatch(setUserProfile({
 						userId: profileData.id,
-						idType: 'msgraph',
+						idType: accountType,
 						displayName: profileData.displayName,
 						email: profileData.mail,
 						timeZone: profileData.timeZone
@@ -68,20 +70,21 @@ export const MicrosoftAccountComponent: FC<MicrosoftAccountProps> = ({ userId })
 	}, []);
 
 	return (
-		<Container data-testid="MicrosoftAccount">
+		<Container data-testid="Account">
 			{(status.code === 200 && userId) ? (
 				<Message type="success">
 					<p>{message}</p>
-					<Button appearance="primary" label="Log out of Microsoft account" href={`${SERVER_URL}/msgraph/auth/logout`}></Button>
+					<Button appearance="primary" label={`Log out of ${title} account`} href={`${SERVER_URL}/${accountType}/auth/logout`}></Button>
 				</Message>
 			) : (
 				<Message type="error">
 					<p>{status.code}: {status.message}</p>
-					<Button appearance="primary" label="Log in to Microsoft account" href={`${SERVER_URL}/msgraph/auth/login`}></Button>
+					<Button appearance="primary" label={`Log in to ${title} account`} href={`${SERVER_URL}/${accountType}/auth/login`}></Button>
 				</Message>
 			)}
 		</Container>
 	);
 };
 
+export default AccountPage;
 

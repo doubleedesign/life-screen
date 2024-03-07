@@ -7,7 +7,7 @@ import {
 import { Provider } from 'react-redux';
 import { store } from './state/actions.ts';
 import App from './App.tsx';
-import MicrosoftAccount from './components/Accounts/MicrosoftAccount';
+import { GoogleAccountPage, MicrosoftAccountPage } from './components/Accounts';
 
 const router = createBrowserRouter([
 	{
@@ -16,7 +16,11 @@ const router = createBrowserRouter([
 		children: [
 			{
 				path: '/msgraph',
-				element: <MicrosoftAccount/>
+				element: <MicrosoftAccountPage title="Microsoft" accountType="msgraph"/>
+			},
+			{
+				path: '/gcal',
+				element: <GoogleAccountPage title="Google" accountType="gcal"/>
 			}
 		]
 	},
