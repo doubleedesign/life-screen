@@ -9,7 +9,7 @@ const initialState: RootState = {
 		gcal: undefined
 	},
 	ui: {
-		darkMode: true
+		darkMode: localStorage.getItem('ls_darkmode') === 'true'
 	}
 };
 
@@ -75,6 +75,7 @@ function configReducer(state = initialState.config, action: SetUserIdAction | Se
 function UiReducer(state = initialState.ui, action: SetUiModeAction) {
 	switch (action.type) {
 	case SET_UI_MODE:
+		localStorage.setItem('ls_darkmode', action.payload);
 		return {
 			...state,
 			darkMode: action.payload
