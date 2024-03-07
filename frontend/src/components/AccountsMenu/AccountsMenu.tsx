@@ -5,6 +5,7 @@ import Icon from '@atlaskit/icon';
 import { selectUserId } from '../../state/selectors.ts';
 import { useSelector } from 'react-redux';
 import Label from '../Label/Label.tsx';
+import { SERVER_URL } from '../../constants.tsx';
 
 interface AccountsMenuProps {
 	onMenuItemClick: () => void;
@@ -48,7 +49,7 @@ const AccountsMenu: FC<AccountsMenuProps> = ({ onMenuItemClick }) => {
 	return (
 		<AccountsMenuWrapper data-testid="AccountsMenu">
 			<AccountsMenuItem>
-				<Link to="/msgraph" onClick={onMenuItemClick}>
+				<Link to={msId ? '/msgraph' : `${SERVER_URL}/msgraph/auth/login`} onClick={onMenuItemClick}>
 					<span>
 						<Icon glyph={MicrosoftLogo} label="Microsoft"/>
 						<span>Microsoft</span>
@@ -57,7 +58,7 @@ const AccountsMenu: FC<AccountsMenuProps> = ({ onMenuItemClick }) => {
 				</Link>
 			</AccountsMenuItem>
 			<AccountsMenuItem>
-				<Link to="/gcal" onClick={onMenuItemClick}>
+				<Link to={gcalId ? '/gcal' : `${SERVER_URL}/gcal/auth/login`} onClick={onMenuItemClick}>
 					<span>
 						<Icon glyph={GoogleLogo} label="Google"/>
 						<span>Google</span>

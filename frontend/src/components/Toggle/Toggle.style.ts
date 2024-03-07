@@ -41,7 +41,7 @@ export const ToggleSwitchWrapper = styled.button<{$background: ThemeColour}>`
 	height: ${props => props.theme.spacing.lg};
 `;
 
-export const ToggleIconWrapper = styled.span<{$toggledOn: boolean}>`
+export const ToggleIconWrapper = styled.span<{$toggledOn: boolean, $background: ThemeColour}>`
 	width: 100%;
 	height: 100%;
 	position: absolute;
@@ -50,22 +50,27 @@ export const ToggleIconWrapper = styled.span<{$toggledOn: boolean}>`
 	right: 0;
 	display: flex;
 	align-items: center;
+	align-content: center;
 	justify-content: ${props => props.$toggledOn ? 'flex-start' : 'flex-end'};
 	padding: 0 2px;
 	
 	svg {
-		color: ${props => props.theme.colours.text} !important;
+		color: ${props => readableColor(props.theme.colours[props.$background])};
+		width: 1.25rem;
+		height: 1.25rem;
+		max-width: 1.25rem !important;
+		max-height: 1.25rem !important;
 	}
 `;
 
-export const ToggleSwitch = styled.span<{$toggledOn: boolean}>`
+export const ToggleSwitch = styled.span<{$toggledOn: boolean, $background: ThemeColour}>`
 	display: block;
 	width: ${props => props.theme.spacing.md};
 	height: ${props => props.theme.spacing.md};
-	background: ${props => props.theme.colours.text};
+	background: ${props => readableColor(props.theme.colours[props.$background])};
 	border-radius: ${props => props.theme.spacing.lg};
 	transform: ${props => {
-		return props.$toggledOn ? `translateX(${props.theme.spacing.lg})` : 'translateX(0)';
+		return props.$toggledOn ? `translateX(${props.theme.spacing.lg})` : 'translateX(1px)';
 	}};
 	transition: transform 0.3s ease;
 `;

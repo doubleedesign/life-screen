@@ -1,11 +1,11 @@
 const defaults = {
 	colours: {
-		primary: '#be82f3',
-		secondary: '#82bef3',
-		success: '#56e5a4',
-		error: '#d55064',
-		warning: '#f3d682',
-		info: '#82bef3',
+		primary: '#54428E',
+		secondary: '#007bc5',
+		success: '#00bd99',
+		error: '#e15477',
+		warning: '#F0A202',
+		info: '#8972c4',
 		light: '#f3f3f3',
 		mutedLight: '#d3d3d3',
 		mutedDark: '#3d3742',
@@ -55,7 +55,6 @@ export default {
 		...defaults,
 		colours: {
 			...defaults.colours,
-			error: '#b92941',
 			background: defaults.colours.dark,
 			text: defaults.colours.light,
 			subtle: defaults.colours.mutedDark,

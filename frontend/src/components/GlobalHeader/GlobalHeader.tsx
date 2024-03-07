@@ -5,8 +5,6 @@ import { useIsDarkMode } from '../../state/selectors.ts';
 import Toggle from '../Toggle/Toggle.tsx';
 import { setUiMode } from '../../state/actions.ts';
 import { useDispatch } from 'react-redux';
-import LightbulbIcon from '@atlaskit/icon/glyph/lightbulb';
-import LightbulbFilledIcon from '@atlaskit/icon/glyph/lightbulb-filled';
 import Button from '../Button/Button.tsx';
 import MoreIcon from '@atlaskit/icon/glyph/more';
 import PopupMenu from '../PopupMenu/PopupMenu.tsx';
@@ -49,10 +47,7 @@ const GlobalHeader: FC<GlobalHeaderProps> = () => {
 								label={'Dark mode'}
 								onLabel={'Dark mode is on'}
 								offLabel={'Dark mode is off'}
-								onIcon={LightbulbFilledIcon}
-								offIcon={LightbulbIcon}
 								labelVisible
-								onColour="mutedDark"
 								offColour="mutedLight"
 								aria-haspopup="menu"
 								aria-expanded={menuOpen}

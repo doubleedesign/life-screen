@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { TemplateNameWrapper } from './TemplateName.style';
 
-interface TemplateNameProps {}
+type TemplateNameProps = {}
 
 const TemplateName: FC<TemplateNameProps> = () => {
 	return (

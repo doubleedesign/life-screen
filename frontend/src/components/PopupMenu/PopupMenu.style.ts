@@ -16,7 +16,7 @@ export const PopupMenuContentWrapper = styled.div<{$height: number}>`
 		if(props.theme.name === 'dark') {
 			return tint(0.1, props.theme.colours.subtle);
 		}
-		return props.theme.colours.background;
+		return tint(0.5, props.theme.colours.background);
 	}};
 	border-radius: ${props => props.theme.spacing.xs};
 	box-shadow: ${props => {

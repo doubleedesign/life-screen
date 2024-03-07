@@ -50,14 +50,14 @@ const Toggle: FC<ToggleProps> = ({
 					{labelVisible ? <span>{label}</span> : <VisuallyHidden>{label}</VisuallyHidden>}
 					<ToggleInput name={name} checked={toggledOn} onChange={onToggle}/>
 				</ToggleLabel>
-				<Tooltip content={toggledOn ? onLabel : offLabel}>
-					<ToggleSwitchWrapper onClick={onToggle} $background={toggledOn? onColour : offColour}>
-						<ToggleIconWrapper $toggledOn={toggledOn}>
+				<ToggleSwitchWrapper onClick={onToggle} $background={toggledOn? onColour : offColour}>
+					<Tooltip content={toggledOn ? onLabel : offLabel}>
+						<ToggleIconWrapper $toggledOn={toggledOn} $background={toggledOn? onColour : offColour}>
 							<IconComponent label="Toggle icon"/>
 						</ToggleIconWrapper>
-						<ToggleSwitch $toggledOn={toggledOn}/>
-					</ToggleSwitchWrapper>
-				</Tooltip>
+						<ToggleSwitch $toggledOn={toggledOn} $background={toggledOn? onColour : offColour}/>
+					</Tooltip>
+				</ToggleSwitchWrapper>
 			</ToggleWrapper>
 		</div>
 	);
