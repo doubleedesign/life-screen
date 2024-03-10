@@ -3,7 +3,7 @@ import session from 'express-session';
 import listEndpoints from 'express-list-endpoints';
 import { ConfidentialClientApplication } from '@azure/msal-node';
 import { google } from 'googleapis';
-import { GCalUser, MSGraphUser, MyCache } from './types';
+import { User, MyCache } from './types';
 import cors from 'cors';
 import nodeCache from 'node-cache';
 import msGraphRouter from './msgraph';
@@ -14,8 +14,8 @@ config();
 
 declare module 'express-session' {
 	interface SessionData {
-		msgraph: MSGraphUser | undefined;
-		gcal: GCalUser | undefined
+		msgraph: User | undefined;
+		gcal: User | undefined
 	}
 }
 

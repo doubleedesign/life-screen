@@ -16,11 +16,23 @@ const router = createBrowserRouter([
 		children: [
 			{
 				path: '/msgraph',
-				element: <MicrosoftAccountPage title="Microsoft" accountType="msgraph"/>
+				element: <MicrosoftAccountPage title="Microsoft" accountType="msgraph"/>,
+				children: [
+					{
+						path: 'logout',
+						element: <MicrosoftAccountPage title="Microsoft" accountType="msgraph"/>
+					}
+				]
 			},
 			{
-				path: '/gcal',
-				element: <GoogleAccountPage title="Google" accountType="gcal"/>
+				path: 'gcal',
+				element: <GoogleAccountPage title="Google" accountType="gcal"/>,
+				children: [
+					{
+						path: 'logout',
+						element: <GoogleAccountPage title="Google" accountType="gcal"/>
+					}
+				]
 			}
 		]
 	},

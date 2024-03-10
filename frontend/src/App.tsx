@@ -15,20 +15,18 @@ import Message from './components/Message/Message.tsx';
 function App() {
 	const mode = useIsDarkMode() ? 'dark' : 'light';
 	const currentTheme = theme[mode] ?? theme['dark'];
-	const msIdInState = useSelector((selectUserId('msgraph')));
-	const gcalIdInState = useSelector((selectUserId('gcal')));
+	// Check local storage for accounts and set them in state if they aren't already there
+	// because Redux doesn't persist between refreshes which includes service login redirects
+	const msId = useSelector((selectUserId('msgraph'))) ?? localStorage.getItem('msgraph_id');
+	const gcalId = useSelector((selectUserId('gcal'))) ?? localStorage.getItem('gcal_id');
 	const [status, setStatus] = useState<{code: number|undefined, message: string | undefined}>({
 		code: undefined,
 		message: undefined
 	});
 
-	// Check local storage for accounts and set them in state if they aren't already there
-	// because Redux doesn't persist between refreshes which includes service login redirects
 	const dispatch = useDispatch();
-	const { value: msId } = useLocalStorage('ls_msgraph_id', '');
-	const { value: msToken } = useLocalStorage('ls_msgraph_token', '');
-	const { value: gcalId } = useLocalStorage('ls_gcal_id', '');
-	const { value: gcalToken } = useLocalStorage('ls_gcal_token', '');
+	const { value: msToken } = useLocalStorage('msgraph_token', '');
+	const { value: gcalToken } = useLocalStorage('gcal_token', '');
 
 	const fetchProfile = useCallback((accountType: IdType, token: string, userId: string) => {
 		if (token !== '' && userId) {
@@ -62,7 +60,7 @@ function App() {
 	}, [dispatch]);
 
 	useEffect(() => {
-		if (!msIdInState && msId && msToken) {
+		if (msId && msToken) {
 			dispatch(setUserId({
 				id: msId,
 				idType: 'msgraph'
@@ -70,7 +68,7 @@ function App() {
 			fetchProfile('msgraph', msToken, msId);
 		}
 
-		if (!gcalIdInState && gcalId && gcalToken) {
+		if (gcalId && gcalToken) {
 			dispatch(setUserId({
 				id: gcalId,
 				idType: 'gcal'

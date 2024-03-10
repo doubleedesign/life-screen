@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { RootState } from '../../state/types.ts';
 import AccountPage from './AccountPage.tsx';
+import { RootState } from '../../../state/types.ts';
 
 function msGraphMapStateToProps(state: RootState) {
 	return {

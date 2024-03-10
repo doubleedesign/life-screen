@@ -1,6 +1,6 @@
 export const GoogleLogo = () => {
 	return (
-		<svg width="24" height="24" x="0px" y="0px" viewBox="0 0 200 200" enable-background="new 0 0 200 200">
+		<svg width="24" height="24" x="0px" y="0px" viewBox="0 0 200 200">
 			<g>
 				<g transform="translate(3.75 3.75)">
 					<path fill="#FFFFFF" d="M148.882,43.618l-47.368-5.263l-57.895,5.263L38.355,96.25l5.263,52.632l52.632,6.579l52.632-6.579    l5.263-53.947L148.882,43.618z"/>

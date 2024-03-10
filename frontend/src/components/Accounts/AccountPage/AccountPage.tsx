@@ -16,7 +16,7 @@ type AccountPageProps = {
 
 const AccountPage: FC<AccountPageProps> = ({ accountType, userId, title }) => {
 	const dispatch = useDispatch();
-	const token = useLocalStorage(`ls_${accountType}_token`, '');
+	const token = useLocalStorage(`${accountType}_token`, '');
 
 	useEffect(() => {
 		// Just logged in and returned with URL fragment
@@ -28,9 +28,16 @@ const AccountPage: FC<AccountPageProps> = ({ accountType, userId, title }) => {
 			}));
 			token.setValue(hashData.token);
 		}
+
+		// Just logged out
+		if (window.location.pathname === `/${accountType}/logout`) {
+			token.setValue('');
+		}
+
 		// Only run on load; if deps are set then the server his hit with repeated requests
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
 
 	return (
 		<Container data-testid="Account">

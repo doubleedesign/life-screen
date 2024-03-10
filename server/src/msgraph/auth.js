@@ -88,10 +88,7 @@ router.get('/logout', async function (req, res) {
 			// Clear from the session
 			req.session.msgraph = undefined;
 
-			res.status(200).json({
-				status: 200,
-				message: 'Logged out of Microsoft account'
-			});
+			res.redirect(`${process.env.FRONTEND_URL}/msgraph/logout`);
 		}
 		else {
 			res.status(404).json({

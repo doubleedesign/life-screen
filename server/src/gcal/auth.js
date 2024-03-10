@@ -60,10 +60,10 @@ router.get('/callback', async function (req, res) {
 			});
 		}
 
-		req.app.locals.cache.googleClient.on('tokens', (tokens) => {
-			// Remove in production
-			console.log(tokens);
-		});
+		// req.app.locals.cache.googleClient.on('tokens', (tokens) => {
+		// 	// Remove in production
+		// 	console.log(tokens);
+		// });
 	}
 	catch(error) {
 		console.log(chalk.red(`${error.name}: ${error.message}`));
@@ -84,10 +84,7 @@ router.get('/logout', async function(req, res) {
 		// Clear from the session
 		req.session.gcal = undefined;
 
-		res.status(200).json({
-			status: 200,
-			message: 'Logged out of Google account'
-		});
+		res.redirect(`${process.env.FRONTEND_URL}/gcal/logout`);
 	}
 	catch(error) {
 		console.error(error);

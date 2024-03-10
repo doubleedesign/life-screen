@@ -5,11 +5,15 @@ import { omit } from 'lodash';
 
 const initialState: RootState = {
 	config: {
-		msgraph: undefined,
-		gcal: undefined
+		msgraph: {
+			userId: localStorage.getItem('msgraph_id'),
+		},
+		gcal: {
+			userId: localStorage.getItem('gcal_id'),
+		}
 	},
 	ui: {
-		darkMode: localStorage.getItem('ls_darkmode') === 'true'
+		darkMode: localStorage.getItem('darkmode') === 'true'
 	}
 };
 
@@ -53,6 +57,7 @@ export const setUiMode = (darkMode: boolean) => ({
 function configReducer(state = initialState.config, action: SetUserIdAction | SetUserProfileAction){
 	switch (action.type) {
 	case SET_USER_ID:
+		localStorage.setItem(`${action.payload.idType}_id`, action.payload.id);
 		return {
 			...state,
 			[action.payload.idType]: {
@@ -75,7 +80,7 @@ function configReducer(state = initialState.config, action: SetUserIdAction | Se
 function UiReducer(state = initialState.ui, action: SetUiModeAction) {
 	switch (action.type) {
 	case SET_UI_MODE:
-		localStorage.setItem('ls_darkmode', action.payload);
+		localStorage.setItem('darkmode', action.payload);
 		return {
 			...state,
 			darkMode: action.payload
