@@ -1,12 +1,16 @@
 import { FC, useEffect } from 'react';
 import { IdType } from '../../../state/types.ts';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocalStorage } from '../../../hooks/useLocalStorage.ts';
 import { parseHash } from '../../../utils.ts';
 import { setUserId } from '../../../state/actions.ts';
 import { SERVER_URL } from '../../../constants.tsx';
-import { Container } from '../../common.styled.ts';
+import { Container, Row } from '../../common.styled.ts';
 import Button from '../../Button/Button.tsx';
+import { MicrosoftLogo } from '../assets/MicrosoftLogo.tsx';
+import { selectUserProfile } from '../../../state/selectors.ts';
+import EmailIcon from '@atlaskit/icon/glyph/email';
+import RecentIcon from '@atlaskit/icon/glyph/recent';
 
 type AccountPageProps = {
 	accountType: IdType;
@@ -17,6 +21,7 @@ type AccountPageProps = {
 const AccountPage: FC<AccountPageProps> = ({ accountType, userId, title }) => {
 	const dispatch = useDispatch();
 	const token = useLocalStorage(`${accountType}_token`, '');
+	const profile = useSelector(selectUserProfile(accountType));
 
 	useEffect(() => {
 		// Just logged in and returned with URL fragment
@@ -41,12 +46,26 @@ const AccountPage: FC<AccountPageProps> = ({ accountType, userId, title }) => {
 
 	return (
 		<Container data-testid="Account">
-			<h1>{title} Account</h1>
-			{userId && token ? (
-				<Button href={`${SERVER_URL}/${accountType}/auth/logout`} appearance="primary" label="Log out"/>
-			): (
-				<Button href={`${SERVER_URL}/${accountType}/auth/login`} appearance="primary" label="Log in"/>
-			)}
+			<Row>
+				<div>
+					<MicrosoftLogo />
+				</div>
+				<div>
+					<h1>{title} Account</h1>
+					{profile.displayName && <h2>{profile.displayName}</h2>}
+				</div>
+				{userId && token ? (
+					<Button href={`${SERVER_URL}/${accountType}/auth/logout`} appearance="primary" label="Log out"/>
+				): (
+					<Button href={`${SERVER_URL}/${accountType}/auth/login`} appearance="primary" label="Log in"/>
+				)}
+			</Row>
+
+
+
+			{profile.email && <><EmailIcon label="Email"/><span>{profile.email}</span></> }
+			{profile.timeZone && <><RecentIcon label="Timezone"/><span>{profile.timeZone}</span></>}
+
 		</Container>
 	);
 };

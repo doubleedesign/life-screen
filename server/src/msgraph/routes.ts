@@ -13,9 +13,11 @@ router.get('/me', async function(req, res) {
 		//console.log(req.session.msgraph.userId);
 		const user = await graph.getUserDetails(req.app.locals.cache.msalClient, req.session.msgraph.userId);
 		const profile = {
-			...pick(user, ['id', 'displayName', 'email']),
+			...pick(user, ['id', 'displayName']),
+			email: user.mail,
 			timeZone: user.mailboxSettings.timeZone
 		};
+
 		res.status(200).json(profile);
 	}
 	catch(error) {
@@ -31,7 +33,7 @@ router.get('/calendars', async function (req, res) {
 	try {
 		const calendars = await graph.getCalendars(req.app.locals.cache.msalClient, req.session.msgraph.userId);
 
-		res.status(200).send(calendars);
+		res.status(200).json(calendars);
 	}
 	catch(error) {
 		res.status(ResponseCode[error.name]).json(error.message);
@@ -63,7 +65,7 @@ router.get('/:calendarId', async function (req, res) {
 			};
 		});
 
-		res.status(200).send(events);
+		res.status(200).json(events);
 	}
 	catch(error) {
 		res.status(ResponseCode[error.name]).json(error.message);

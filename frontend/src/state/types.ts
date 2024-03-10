@@ -1,4 +1,4 @@
-import { User } from '../types.ts';
+import { Message, User } from '../types.ts';
 
 export type IdType = 'msgraph' | 'gcal';
 
@@ -9,6 +9,7 @@ export type RootState = {
 	};
 	ui: {
 		darkMode: boolean;
+		messages: Message[]
 	}
 }
 

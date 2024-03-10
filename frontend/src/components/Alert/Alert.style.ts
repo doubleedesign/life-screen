@@ -1,7 +1,9 @@
 import styled from 'styled-components';
-import { darken, lighten, meetsContrastGuidelines, transparentize } from 'polished';
-export const MessageWrapper = styled.div<{type: 'success' | 'error' | 'warning' | 'info'}>`
-	padding: ${props => props.theme.spacing.sm};
+import { darken, lighten, meetsContrastGuidelines, readableColor, transparentize } from 'polished';
+
+export const AlertWrapper = styled.div<{type: 'success' | 'error' | 'warning' | 'info'}>`
+	display: flex;
+	margin-bottom: ${props => props.theme.spacing.sm};
 	border: 1px solid ${props => props.theme.colours[props.type]};
 	border-left-width: ${props => props.theme.spacing.xs};
 	background: ${props => transparentize(0.9, props.theme.colours.light)};
@@ -16,4 +18,20 @@ export const MessageWrapper = styled.div<{type: 'success' | 'error' | 'warning' 
 		}
 		return tries < 5 ? result : props.theme.colours.text;
 	}};
+	
+	p {
+		margin: 0;
+		
+		strong {
+			display: inline-block;
+			background: ${props => props.theme.colours[props.type]};
+			color: ${props => readableColor(props.theme.colours[props.type])};
+			padding: ${props => props.theme.spacing.sm};
+			margin-right: ${props => props.theme.spacing.sm};
+		}
+	}
+	
+	button {
+		margin-left: auto;
+	}
 `;

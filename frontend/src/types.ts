@@ -4,3 +4,9 @@ export type User = {
 	email?: string;
 	timeZone?: string;
 }
+
+export type Message = {
+	key: string;
+	code: number;
+	message: string;
+}

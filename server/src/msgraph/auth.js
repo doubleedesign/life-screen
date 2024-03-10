@@ -43,7 +43,7 @@ router.get('/callback', async function (req, res) {
 			req.session.msgraph = {
 				userId: response.account.homeAccountId,
 				displayName: user.displayName,
-				email: user.mail || user.userPrincipalName,
+				email: user.userPrincipalName,
 				timeZone: user.mailboxSettings.timeZone,
 				token: response.accessToken
 			};

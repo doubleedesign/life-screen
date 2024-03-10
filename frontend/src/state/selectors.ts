@@ -23,4 +23,17 @@ export const selectUserId = (idType: IdType) => createSelector(
 	}
 );
 
+export const selectUserProfile = (idType: IdType) => createSelector(
+	[makeGetConfig],
+	(config) => {
+		return config[idType] ?? undefined;
+	}
+);
+
+export const getMessages = () => createSelector(
+	[makeGetUi],
+	(ui) => {
+		return ui.messages;
+	}
+);
 

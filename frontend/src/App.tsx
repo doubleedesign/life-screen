@@ -5,12 +5,12 @@ import theme from './theme.ts';
 import GlobalStyle from './components/global.style.ts';
 import { selectUserId, useIsDarkMode } from './state/selectors.ts';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUserId, setUserProfile } from './state/actions.ts';
+import { setMessage, setUserId, setUserProfile } from './state/actions.ts';
 import { useLocalStorage } from './hooks/useLocalStorage.ts';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { SERVER_URL } from './constants.tsx';
 import { IdType } from './state/types.ts';
-import Message from './components/Message/Message.tsx';
+import MessageBar from './components/MessageBar/MessageBar.tsx';
 
 function App() {
 	const mode = useIsDarkMode() ? 'dark' : 'light';
@@ -19,10 +19,7 @@ function App() {
 	// because Redux doesn't persist between refreshes which includes service login redirects
 	const msId = useSelector((selectUserId('msgraph'))) ?? localStorage.getItem('msgraph_id');
 	const gcalId = useSelector((selectUserId('gcal'))) ?? localStorage.getItem('gcal_id');
-	const [status, setStatus] = useState<{code: number|undefined, message: string | undefined}>({
-		code: undefined,
-		message: undefined
-	});
+
 
 	const dispatch = useDispatch();
 	const { value: msToken } = useLocalStorage('msgraph_token', '');
@@ -39,10 +36,11 @@ function App() {
 				},
 			})
 				.then(response => {
-					setStatus({
+					dispatch(setMessage({
+						key: `${accountType}_fetch_profile`,
 						code: response.status,
-						message: response.statusText
-					});
+						message: `Fetch profile for ${accountType} account: ${response.statusText}`
+					}));
 					return response.text();
 				})
 				.then(result => {
@@ -51,7 +49,7 @@ function App() {
 						userId: profileData.id,
 						idType: accountType,
 						displayName: profileData.displayName,
-						email: profileData.mail,
+						email: profileData.email,
 						timeZone: profileData.timeZone
 					}));
 				})
@@ -84,13 +82,7 @@ function App() {
 		<ThemeProvider theme={currentTheme}>
 			<GlobalStyle />
 			<GlobalHeader/>
-
-			{status.code &&
-				<Message type={(status.code >= 200 && status.code < 300) ? 'success' : 'error'}>
-					<p>{status.code}: {status.message}</p>
-				</Message>
-			}
-
+			<MessageBar/>
 			<Outlet/>
 		</ThemeProvider>
 	);

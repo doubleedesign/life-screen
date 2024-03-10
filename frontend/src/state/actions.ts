@@ -1,26 +1,17 @@
+import { initialState } from '../constants.tsx';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { createLogger } from 'redux-logger';
-import { RootState, SetUserIdActionPayload, SetUserProfileActionPayload } from './types.ts';
+import { SetUserIdActionPayload, SetUserProfileActionPayload } from './types.ts';
 import { omit } from 'lodash';
+import { Message } from '../types.ts';
 
-const initialState: RootState = {
-	config: {
-		msgraph: {
-			userId: localStorage.getItem('msgraph_id'),
-		},
-		gcal: {
-			userId: localStorage.getItem('gcal_id'),
-		}
-	},
-	ui: {
-		darkMode: localStorage.getItem('darkmode') === 'true'
-	}
-};
 
 // Action types
 export const SET_USER_ID = 'SET_USER_ID';
 export const SET_USER_PROFILE = 'SET_USER_PROFILE';
 export const SET_UI_MODE = 'SET_UI_MODE';
+export const SET_MESSAGE = 'SET_MESSAGE';
+export const CLEAR_MESSAGE = 'CLEAR_MESSAGE';
 
 type SetUserIdAction = {
 	type: typeof SET_USER_ID,
@@ -37,6 +28,18 @@ type SetUiModeAction = {
 	payload: 'light' | 'dark'
 };
 
+type SetMessageAction = {
+	type: typeof SET_MESSAGE,
+	payload: Message
+};
+
+type ClearMessageAction = {
+	type: typeof CLEAR_MESSAGE,
+	payload: string // key
+};
+
+
+
 // Action creators
 export const setUserId = (data: SetUserIdActionPayload) => ({
 	type: SET_USER_ID,
@@ -51,6 +54,16 @@ export const setUserProfile = (data: SetUserProfileActionPayload) => ({
 export const setUiMode = (darkMode: boolean) => ({
 	type: SET_UI_MODE,
 	payload: darkMode
+});
+
+export const setMessage = (message: Message) => ({
+	type: SET_MESSAGE,
+	payload: message
+});
+
+export const clearMessage = (key: string) => ({
+	type: CLEAR_MESSAGE,
+	payload: key
 });
 
 // Reducer
@@ -77,13 +90,26 @@ function configReducer(state = initialState.config, action: SetUserIdAction | Se
 	}
 }
 
-function UiReducer(state = initialState.ui, action: SetUiModeAction) {
+function UiReducer(state = initialState.ui, action: SetUiModeAction | SetMessageAction | ClearMessageAction) {
 	switch (action.type) {
 	case SET_UI_MODE:
 		localStorage.setItem('darkmode', action.payload);
 		return {
 			...state,
 			darkMode: action.payload
+		};
+	case SET_MESSAGE:
+		return {
+			...state,
+			messages: {
+				...state.messages,
+				[action.payload.key]: action.payload
+			}
+		};
+	case CLEAR_MESSAGE:
+		return {
+			...state,
+			messages: omit(state.messages, action.payload)
 		};
 	default:
 		return state;
