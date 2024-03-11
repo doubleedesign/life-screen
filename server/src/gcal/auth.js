@@ -1,15 +1,15 @@
 import Router from 'express-promise-router';
 const router = Router();
 import { google } from 'googleapis';
-import chalk from 'chalk';
+import { ResponseCode } from '../responses.js';
 
 router.get('/login', async function(req, res) {
 	try {
-		const url = req.app.locals.cache.googleClient.generateAuthUrl({
+		const authUrl = req.app.locals.cache.googleClient.generateAuthUrl({
 			scope: process.env.GOOGLE_OAUTH_SCOPES
 		});
 
-		res.redirect(url);
+		res.redirect(authUrl);
 	}
 	catch (error) {
 		res.status(error.status).json({
@@ -51,12 +51,7 @@ router.get('/callback', async function (req, res) {
 			throw new Error({
 				status: 500,
 				statusText: 'Internal server error',
-				response :{
-					data: {
-						error: 'Unknown',
-						error_description: 'Unknown problem getting tokens'
-					}
-				}
+				errorMessage: 'Unknown problem getting tokens from Google API client'
 			});
 		}
 
@@ -66,11 +61,9 @@ router.get('/callback', async function (req, res) {
 		// });
 	}
 	catch(error) {
-		console.log(chalk.red(`${error.name}: ${error.message}`));
-
-		res.status(error.status).json({
-			status: error.status,
-			message: `${error.statusText}: ${error.response.data.error_description} (${error.response.data.error})`
+		res.status(error.status ?? 500).json({
+			status: error.status ?? 500,
+			message: `Error completing Google authentication: ${error?.errorMessage}`,
 		});
 	}
 });
@@ -84,14 +77,19 @@ router.get('/logout', async function(req, res) {
 		// Clear from the session
 		req.session.gcal = undefined;
 
-		res.redirect(`${process.env.FRONTEND_URL}/gcal/logout`);
+		res.status(200).json({
+			ok: true,
+			statusText: 'OK',
+			code: ResponseCode.SuccessFound,
+			content: {
+				message: 'Logged out of Google account'
+			}
+		});
 	}
 	catch(error) {
-		console.error(error);
-
-		res.status(error.status).json({
-			status: error.status,
-			message: `${error.statusText}: ${error.response.data.error_description} (${error.response.data.error})`
+		res.status((error.status || error.code) ?? 500).json({
+			status: (error.status || error.code) ?? 500,
+			message: `Error logging out of Google account: ${error.message}`,
 		});
 	}
 });

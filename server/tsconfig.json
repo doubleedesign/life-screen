@@ -8,6 +8,7 @@
 		"allowSyntheticDefaultImports": true,
 		"declaration": true,
 		"isolatedModules": true,
-		"resolveJsonModule": true
+		"resolveJsonModule": true,
+		"sourceMap": true
 	}
 }

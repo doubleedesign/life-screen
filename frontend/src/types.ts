@@ -10,3 +10,10 @@ export type Message = {
 	code: number;
 	message: string;
 }
+
+export type FormattedResponse = {
+	ok: boolean;
+	code: number;
+	statusText: string;
+	content?: User | Pick<Message, 'message'>;
+}

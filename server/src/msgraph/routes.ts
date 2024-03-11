@@ -2,16 +2,23 @@ import Router from 'express-promise-router';
 import graph from './graph.js';
 const router = Router();
 import pick from 'lodash/pick';
-import { ResponseCode } from '../responses';
+import { CustomResponse, ResponseCode } from '../responses';
 
 /**
  * Get user summary
  */
 router.get('/me', async function(req, res) {
-	//console.log(req.session);
 	try {
-		//console.log(req.session.msgraph.userId);
-		const user = await graph.getUserDetails(req.app.locals.cache.msalClient, req.session.msgraph.userId);
+		if(!req?.query?.userId) {
+			throw new CustomResponse.Unauthorized('User ID is missing from the request');
+		}
+		if(req?.query?.userId !== req?.session?.msgraph?.userId) {
+			throw new CustomResponse.Unauthorized('User ID does not match the session');
+		}
+		if(!req?.session?.msgraph?.userId) {
+			throw new CustomResponse.Unauthorized('User ID is missing from the session');
+		}
+		const user = await graph.getUserDetails(req.app.locals.cache.msalClient, req.session.msgraph?.userId);
 		const profile = {
 			...pick(user, ['id', 'displayName']),
 			email: user.mail,
