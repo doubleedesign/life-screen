@@ -3,14 +3,15 @@ import { ResponseCode } from '../responses';
 import { calendar } from 'googleapis/build/src/apis/calendar';
 import chalk from 'chalk';
 const router = Router();
-
+import pick from 'lodash/pick';
 
 /**
  * Get user summary
  */
-router.get('/', async function(req, res) {
+router.get('/me', async function(req, res) {
 	try {
-		res.status(ResponseCode.NotImplemented).json('Feature not yet implemented');
+		const user = req.session.gcal;
+		res.status(200).json(pick(user, ['id', 'displayName', 'email', 'timeZone']));
 	}
 	catch(error) {
 		res.status(ResponseCode[error.name]).json(`${error.message}. Please try logging in again.`);

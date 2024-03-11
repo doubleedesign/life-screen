@@ -86,10 +86,8 @@ router.get('/logout', async function (req, res) {
 			req.session.msgraph = undefined;
 
 			res.status(200).json({
-				ok: true,
-				statusText: 'OK',
-				code: ResponseCode.SuccessFound,
-				content: 'Logged out of Microsoft account'
+				status: ResponseCode.SuccessFound,
+				message: 'Logged out of Microsoft account'
 			});
 		}
 		else {

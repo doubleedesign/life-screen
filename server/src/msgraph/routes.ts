@@ -8,7 +8,6 @@ import { CustomResponse, ResponseCode } from '../responses';
  * Get user summary
  */
 router.get('/me', async function(req, res) {
-	//console.log(req.session);
 	try {
 		if(!req?.query?.userId) {
 			throw new CustomResponse.Unauthorized('User ID is missing from the request');

@@ -1,7 +1,7 @@
 import Router from 'express-promise-router';
 const router = Router();
 import { google } from 'googleapis';
-import { CustomResponse, ResponseCode } from '../responses.js';
+import { ResponseCode } from '../responses.js';
 
 router.get('/login', async function(req, res) {
 	try {
@@ -71,31 +71,25 @@ router.get('/callback', async function (req, res) {
 
 router.get('/logout', async function(req, res) {
 	try {
-		if(req?.session?.gcal?.userId) {
+		// Revoke credentials in Google APIs client
+		await req.app.locals.cache.googleClient.revokeCredentials();
 
-			// Revoke credentials in Google APIs client
-			await req.app.locals.cache.googleClient.revokeCredentials();
+		// Clear from the session
+		req.session.gcal = undefined;
 
-			// Clear from the session
-			req.session.gcal = undefined;
-
-			res.status(200).json({
-				ok: true,
-				statusText: 'OK',
-				code: ResponseCode.SuccessFound,
-				content: 'Logged out of Google account'
-			});
-		}
-		else {
-			throw new CustomResponse.NotFoundError('Cannot find user in session, so cannot log them out');
-		}
+		res.status(200).json({
+			ok: true,
+			statusText: 'OK',
+			code: ResponseCode.SuccessFound,
+			content: {
+				message: 'Logged out of Google account'
+			}
+		});
 	}
 	catch(error) {
-		console.error(error);
-
 		res.status((error.status || error.code) ?? 500).json({
 			status: (error.status || error.code) ?? 500,
-			message: `Error logging out of Google account: ${error?.errorMessage}`,
+			message: `Error logging out of Google account: ${error.message}`,
 		});
 	}
 });

@@ -15,5 +15,5 @@ export type FormattedResponse = {
 	ok: boolean;
 	code: number;
 	statusText: string;
-	content?: User | object | string;
+	content?: User | Pick<Message, 'message'>;
 }

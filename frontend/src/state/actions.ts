@@ -26,7 +26,9 @@ type SetUserProfileAction = {
 
 type ClearUserAccountAction = {
 	type: typeof CLEAR_USER_ACCOUNT,
-	payload: IdType
+	payload: {
+		idType: IdType
+	}
 };
 
 type SetUiModeAction = {
@@ -83,7 +85,6 @@ export const clearMessage = (key: string) => ({
 function configReducer(state = initialState.config, action: SetUserIdAction | SetUserProfileAction | ClearUserAccountAction){
 	switch (action.type) {
 	case SET_USER_ID:
-		localStorage.setItem(`${action.payload.idType}_id`, action.payload.id);
 		return {
 			...state,
 			[action.payload.idType]: {
@@ -99,11 +100,9 @@ function configReducer(state = initialState.config, action: SetUserIdAction | Se
 			}
 		};
 	case CLEAR_USER_ACCOUNT:
-		localStorage.removeItem(`${action.payload}_id`);
-		localStorage.removeItem(`${action.payload}_token`);
 		return {
 			...state,
-			[action.payload]: undefined
+			[action.payload.idType]: undefined
 		};
 	default:
 		return state;
