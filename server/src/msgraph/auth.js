@@ -1,5 +1,6 @@
 import graph from './graph.js';
 import Router from 'express-promise-router';
+import { CustomResponse, ResponseCode } from '../responses.js';
 const router = Router();
 
 router.get('/login', async function (req, res) {
@@ -14,11 +15,9 @@ router.get('/login', async function (req, res) {
 		res.redirect(authUrl);
 	}
 	catch (error) {
-		console.error(error);
-
 		res.status(error.status).json({
 			status: error.status,
-			message: 'Error getting auth URL'
+			message: error.message
 		});
 	}
 });
@@ -63,11 +62,9 @@ router.get('/callback', async function (req, res) {
 		}
 	}
 	catch (error) {
-		console.error(error);
-
 		res.status(error.status ?? 500).json({
 			status: error.status ?? 500,
-			message: `Error completing Microsoft authentication (${error?.errorCode}). ${error?.errorMessage}`,
+			message: `Error completing Microsoft authentication: ${error?.errorMessage}`,
 		});
 	}
 });
@@ -88,21 +85,21 @@ router.get('/logout', async function (req, res) {
 			// Clear from the session
 			req.session.msgraph = undefined;
 
-			res.redirect(`${process.env.FRONTEND_URL}/msgraph/logout`);
+			res.status(200).json({
+				ok: true,
+				statusText: 'OK',
+				code: ResponseCode.SuccessFound,
+				content: 'Logged out of Microsoft account'
+			});
 		}
 		else {
-			res.status(404).json({
-				status: 404,
-				message: 'Cannot find user in session, so cannot log them out'
-			});
+			throw new CustomResponse.NotFoundError('Cannot find user in session, so cannot log them out');
 		}
 	}
 	catch(error) {
-		console.error(error);
-
-		res.status(error.status ?? 500).json({
-			status: error.status ?? 500,
-			message: `Error logging out of Microsoft account (${error?.errorCode}). ${error?.errorMessage}`,
+		res.status((error.status || error.code) ?? 500).json({
+			status: (error.status || error.code) ?? 500,
+			message: `Error logging out of Microsoft account: ${error?.errorMessage}`,
 		});
 	}
 

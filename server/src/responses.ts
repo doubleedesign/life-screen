@@ -1,3 +1,4 @@
+// TODO: Refactor this file to somewhere common because both server and frontend are using it
 enum ResponseCodes {
 	OK = 200,
 	CREATED = 201,
@@ -33,6 +34,7 @@ export const ResponseMessage = {
 	}
 };
 
+// TODO: Replace usages with CustomResponses.NotFoundError
 export class NotFoundError extends Error {
 	name: string;
 
@@ -42,3 +44,27 @@ export class NotFoundError extends Error {
 		this.name = 'NotFoundError';
 	}
 }
+
+type ResponseClasses = {
+	[key in keyof typeof ResponseCode]: typeof Error;
+}
+
+function generateResponseClasses(): ResponseClasses {
+	const responseClasses: ResponseClasses = {} as ResponseClasses;
+	Object.entries(ResponseCode).forEach(([key, value]) => {
+		responseClasses[key] = class extends Error {
+			name: string;
+			code: number;
+
+			constructor(message: string) {
+				super(message);
+				this.message = message;
+				this.name = key;
+				this.code = value;
+			}
+		};
+	});
+
+	return responseClasses;
+}
+export const CustomResponse: ResponseClasses = generateResponseClasses();

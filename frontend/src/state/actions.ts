@@ -1,7 +1,7 @@
 import { initialState } from '../constants.tsx';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { createLogger } from 'redux-logger';
-import { SetUserIdActionPayload, SetUserProfileActionPayload } from './types.ts';
+import { IdType, SetUserIdActionPayload, SetUserProfileActionPayload } from './types.ts';
 import { omit } from 'lodash';
 import { Message } from '../types.ts';
 
@@ -9,6 +9,7 @@ import { Message } from '../types.ts';
 // Action types
 export const SET_USER_ID = 'SET_USER_ID';
 export const SET_USER_PROFILE = 'SET_USER_PROFILE';
+export const CLEAR_USER_ACCOUNT = 'CLEAR_USER_PROFILE';
 export const SET_UI_MODE = 'SET_UI_MODE';
 export const SET_MESSAGE = 'SET_MESSAGE';
 export const CLEAR_MESSAGE = 'CLEAR_MESSAGE';
@@ -21,6 +22,11 @@ type SetUserIdAction = {
 type SetUserProfileAction = {
 	type: typeof SET_USER_PROFILE,
 	payload: SetUserProfileActionPayload
+};
+
+type ClearUserAccountAction = {
+	type: typeof CLEAR_USER_ACCOUNT,
+	payload: IdType
 };
 
 type SetUiModeAction = {
@@ -51,6 +57,13 @@ export const setUserProfile = (data: SetUserProfileActionPayload) => ({
 	payload: data
 });
 
+export const clearUserAccount = (idType: string) => ({
+	type: CLEAR_USER_ACCOUNT,
+	payload: {
+		idType,
+	}
+});
+
 export const setUiMode = (darkMode: boolean) => ({
 	type: SET_UI_MODE,
 	payload: darkMode
@@ -67,7 +80,7 @@ export const clearMessage = (key: string) => ({
 });
 
 // Reducer
-function configReducer(state = initialState.config, action: SetUserIdAction | SetUserProfileAction){
+function configReducer(state = initialState.config, action: SetUserIdAction | SetUserProfileAction | ClearUserAccountAction){
 	switch (action.type) {
 	case SET_USER_ID:
 		localStorage.setItem(`${action.payload.idType}_id`, action.payload.id);
@@ -84,6 +97,13 @@ function configReducer(state = initialState.config, action: SetUserIdAction | Se
 			[action.payload.idType]: {
 				...omit(action.payload, 'idType')
 			}
+		};
+	case CLEAR_USER_ACCOUNT:
+		localStorage.removeItem(`${action.payload}_id`);
+		localStorage.removeItem(`${action.payload}_token`);
+		return {
+			...state,
+			[action.payload]: undefined
 		};
 	default:
 		return state;

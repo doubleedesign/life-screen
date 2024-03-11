@@ -5,77 +5,105 @@ import theme from './theme.ts';
 import GlobalStyle from './components/global.style.ts';
 import { selectUserId, useIsDarkMode } from './state/selectors.ts';
 import { useDispatch, useSelector } from 'react-redux';
-import { setMessage, setUserId, setUserProfile } from './state/actions.ts';
+import { clearUserAccount, setMessage, setUserProfile } from './state/actions.ts';
 import { useLocalStorage } from './hooks/useLocalStorage.ts';
-import { useCallback, useEffect } from 'react';
-import { SERVER_URL } from './constants.tsx';
-import { IdType } from './state/types.ts';
+import { useCallback } from 'react';
 import MessageBar from './components/MessageBar/MessageBar.tsx';
+import { fetchProfile } from './utils.ts';
+import { FormattedResponse, User } from './types.ts';
+import { CustomResponse, ResponseCode } from 'lifescreen-server/src/responses.ts';
 
 function App() {
+	const dispatch = useDispatch();
 	const mode = useIsDarkMode() ? 'dark' : 'light';
 	const currentTheme = theme[mode] ?? theme['dark'];
-	// Check local storage for accounts and set them in state if they aren't already there
-	// because Redux doesn't persist between refreshes which includes service login redirects
-	const msId = useSelector((selectUserId('msgraph'))) ?? localStorage.getItem('msgraph_id');
-	const gcalId = useSelector((selectUserId('gcal'))) ?? localStorage.getItem('gcal_id');
-
-
-	const dispatch = useDispatch();
 	const { value: msToken } = useLocalStorage('msgraph_token', '');
 	const { value: gcalToken } = useLocalStorage('gcal_token', '');
 
-	const fetchProfile = useCallback((accountType: IdType, token: string, userId: string) => {
-		if (token !== '' && userId) {
-			fetch(`${SERVER_URL}/${accountType}/me`, {
-				method: 'GET',
-				credentials: 'include',
-				headers: {
-					'Authorization': `Bearer ${token}`,
-					'Content-Type': 'application/json'
-				},
-			})
-				.then(response => {
-					dispatch(setMessage({
-						key: `${accountType}_fetch_profile`,
-						code: response.status,
-						message: `Fetch profile for ${accountType} account: ${response.statusText}`
-					}));
-					return response.text();
-				})
-				.then(result => {
-					const profileData = JSON.parse(result);
-					dispatch(setUserProfile({
-						userId: profileData.id,
-						idType: accountType,
-						displayName: profileData.displayName,
-						email: profileData.email,
-						timeZone: profileData.timeZone
-					}));
-				})
-				.catch(error => console.log('error', error));
+	const handleProfile = useCallback((response: FormattedResponse, key: string) => {
+		if (response.ok && response.content) {
+			const profile = response.content as User;
+			dispatch(setUserProfile({
+				userId: profile.userId,
+				idType: 'msgraph',
+				displayName: profile.displayName,
+				email: profile.email,
+				timeZone: profile.timeZone
+			}));
+			dispatch(setMessage({
+				key: key,
+				code: response.code,
+				message: `Fetched profile for msgraph account: ${profile.displayName}`
+			}));
+		}
+		else {
+			const errorType = Object.entries(ResponseCode).find(([, responseCode]) => responseCode === response.code);
+			throw new CustomResponse[errorType?.[0] as keyof typeof ResponseCode ?? 'Error'](response.content as string ?? response.statusText);
 		}
 	}, [dispatch]);
 
-	useEffect(() => {
-		if (msId && msToken) {
-			dispatch(setUserId({
-				id: msId,
-				idType: 'msgraph'
-			}));
-			fetchProfile('msgraph', msToken, msId);
+	const handleError = useCallback((error: FormattedResponse, key: string) => {
+		let prefix = '';
+		if(key === 'msgraph_fetch_profile') {
+			prefix = 'Microsoft account';
+			dispatch(clearUserAccount('msgraph'));
 		}
+		if(key === 'gcal_fetch_profile') {
+			prefix = 'Google account';
+			dispatch(clearUserAccount('gcal'));
+		}
+		dispatch(setMessage({
+			key: key,
+			code: error.code,
+			message: `${prefix} error: ${JSON.stringify(error.content)}`,
+		}));
+	}, [dispatch]);
 
-		if (gcalId && gcalToken) {
-			dispatch(setUserId({
-				id: gcalId,
-				idType: 'gcal'
-			}));
-			fetchProfile('gcal', gcalToken, gcalId);
-		}
-		// Only run on load; if deps are set then the server his hit with repeated requests
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+
+	// Check local storage for accounts and set them in state if they aren't already there
+	// because Redux doesn't persist between refreshes which includes service login redirects
+	if(!useSelector(selectUserId('msgraph')) && localStorage.getItem('msgraph_id') !== null) {
+		fetchProfile('msgraph', msToken, localStorage.getItem('msgraph_id') as string)
+			.then(response => {
+				handleProfile({
+					...response,
+					content: {
+						// @ts-expect-error TS2698: Spread types may only be created from object types -- expecting an object here
+						...response.content,
+						userId: localStorage.getItem('msgraph_id') as string
+					}
+				}, 'msgraph_fetch_profile');
+			})
+			.catch(error => {
+				handleError({
+					ok: false,
+					code: error.code,
+					statusText: JSON.parse(JSON.stringify(error)).name,
+					content: error.toString()
+				}, 'msgraph_fetch_profile');
+			});
+	}
+	if(!useSelector(selectUserId('gcal')) && localStorage.getItem('gcal_id') !== null) {
+		fetchProfile('gcal', gcalToken, localStorage.getItem('gcal_id') as string)
+			.then(response => {
+				handleProfile({
+					...response,
+					content: {
+						// @ts-expect-error TS2698: Spread types may only be created from object types -- expecting an object here
+						...response.content,
+						userId: localStorage.getItem('gcal_id') as string
+					}
+				}, 'gcal_fetch_profile');
+			})
+			.catch(error => {
+				handleError({
+					ok: false,
+					code: error.code,
+					statusText: JSON.parse(JSON.stringify(error)).name,
+					content: error.toString()
+				}, 'gcal_fetch_profile');
+			});
+	}
 
 
 	return (
