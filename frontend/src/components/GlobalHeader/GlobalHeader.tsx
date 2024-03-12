@@ -10,6 +10,7 @@ import MoreIcon from '@atlaskit/icon/glyph/more';
 import PopupMenu from '../PopupMenu/PopupMenu.tsx';
 import PopupMenuSection from '../PopupMenuSection/PopupMenuSection.tsx';
 import AccountsMenu from '../Accounts/AccountsMenu/AccountsMenu.tsx';
+import { Link } from 'react-router-dom';
 interface GlobalHeaderProps {
 }
 
@@ -35,7 +36,7 @@ const GlobalHeader: FC<GlobalHeaderProps> = () => {
 		<GlobalHeaderWrapper data-testid="GlobalHeader">
 			<Container>
 				<Row>
-					<h1>Life Screen</h1>
+					<h1><Link to="/">Life Screen</Link></h1>
 					<PopupMenu isOpen={menuOpen} trigger={triggerButton}>
 						<PopupMenuSection title="Accounts">
 							<AccountsMenu onMenuItemClick={() => setMenuOpen(false)}/>

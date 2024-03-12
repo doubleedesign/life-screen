@@ -13,6 +13,7 @@ import EmailIcon from '@atlaskit/icon/glyph/email';
 import RecentIcon from '@atlaskit/icon/glyph/recent';
 import { AccountBox, AccountLogo, AccountRow } from './AccountPage.style.ts';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { GoogleLogo } from '../assets/GoogleLogo.tsx';
 
 type AccountPageProps = {
 	accountType: IdType;
@@ -36,8 +37,8 @@ const AccountPage: FC<AccountPageProps> = ({ accountType, userId, title }) => {
 				id: hashData.userId,
 				idType: accountType
 			}));
-			token.setValue(hashData.token.toString());
-			id.setValue(hashData.userId.toString());
+			token.setValue(hashData.token);
+			id.setValue(hashData.userId);
 
 			setTimeout(() => {
 				navigate(location.pathname + location.search, { replace: true });
@@ -74,7 +75,8 @@ const AccountPage: FC<AccountPageProps> = ({ accountType, userId, title }) => {
 			<AccountBox>
 				<AccountRow>
 					<AccountLogo>
-						<MicrosoftLogo/>
+						{accountType === 'msgraph' && <MicrosoftLogo/>}
+						{accountType === 'gcal' && <GoogleLogo/>}
 					</AccountLogo>
 					{profile ? (
 						<div>
