@@ -1,11 +1,10 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { pageState } from '../state/page';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import IconButton from './IconButton.vue';
 
 export default defineComponent({
-	components: { IconButton, FontAwesomeIcon },
+	components: { IconButton },
 	props: {
 		position: String as PropType<'left' | 'right'>,
 		as: String as PropType<keyof HTMLElementTagNameMap>
@@ -35,7 +34,7 @@ export default defineComponent({
 		</div>
 		<div :class="['toggle-wrapper']">
 			<IconButton :action="toggle" :label="isOpen ? 'Close panel' : 'Open panel'">
-				<font-awesome-icon :icon="['fas', 'arrow-right']" :class="['toggle-icon', isOpen ? 'toggle-icon--close' : 'toggle-icon--open']" />
+<!--				<font-awesome-icon :icon="['fas', 'arrow-right']" :class="['toggle-icon', isOpen ? 'toggle-icon&#45;&#45;close' : 'toggle-icon&#45;&#45;open']" />-->
 			</IconButton>
 		</div>
 	</component>

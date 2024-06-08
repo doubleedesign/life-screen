@@ -9,12 +9,7 @@ import sortBy from 'lodash/sortBy';
 import App from './App.vue';
 import Page from './components/Page.vue';
 import Tag from './components/Tag.vue';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faArrowRight, faHouse } from '@fortawesome/free-solid-svg-icons';
-import { faChevronRight } from '@fortawesome/pro-light-svg-icons';
-library.add(faArrowRight, faHouse, faChevronRight);
-import './style.css';
+import './style.scss';
 
 const contentTree = new ContentTree().growTree();
 
@@ -102,7 +97,7 @@ const router = createRouter({
 });
 
 const store = createPinia();
-const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon);
+const app = createApp(App);
 app.use(router);
 app.use(store);
 app.mount('#app');

@@ -17,13 +17,13 @@ export default defineComponent({
 		<ul class="breadcrumbs-list">
 			<li class="breadcrumbs-list__item">
 				<router-link to="/" class="breadcrumbs-list__item__link" aria-label="Home">
-					<font-awesome-icon :icon="['fas', 'house']" />
-					<font-awesome-icon :icon="['fal', 'chevron-right']" />
+					<span class="pi pi-home"></span>
+					<span class="pi pi-angle-right"></span>
 				</router-link>
 			</li>
 			<li class="breadcrumbs-list__item" v-for="item in items" :key="item.path">
 				<router-link :to="item.path" class="breadcrumbs-list__item__link">{{ item.name }}</router-link>
-				<font-awesome-icon :icon="['fal', 'chevron-right']" />
+				<span class="pi pi-angle-right"></span>
 			</li>
 			<li class="breadcrumbs-list__item">
 				<span class="breadcrumbs-list__item__link">{{ title }}</span>
