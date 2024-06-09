@@ -39,3 +39,16 @@ An example of the expected folder structure is as follows:
       - :page_facing_up: leaf9.md
 
 No Markdown files (leaves) should be placed directly in the `src/content` folder. In an instance where you want a standalone page at the top level, this would be achieved with the structure `src/content/page-name/index.md`.
+
+## WebStorm configuration for Vue
+
+For proper syntax highlighting, recognition of Vue functions and types, "go to definition", etc. to work:
+1. In Settings, go to Languages & Frameworks > JavaScript > Libraries and manually add the folders for `vue`, `vue-router`, and `vue-ts`
+2. Invalidate caches and restart.
+
+## Vue DevTools
+
+I use the [Vue DevTools](https://devtools.vuejs.org/guide/installation.html) browser extension. I previously used the [standalone version](https://devtools.vuejs.org/guide/installation.html#standalone) when the browser extension didn't seem to be working in Firefox (see below), but have since removed it due to dependency vulnerabilities at the time of writing.
+
+If the Firefox extension is picking up Vue (the icon is lighting up green and clicking it shows a "Vue.js is detected on this page" message) but the tab isn't shown in the browser dev tools, go to the dev tools settings (via the three-dot menu icon in the top right, same place you choose where to dock the panel). There should be a heading "Developer Tools installed by add-ons" where you can tick "Vue.js devtools." The tab should now be available.
+

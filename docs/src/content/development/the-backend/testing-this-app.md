@@ -1,4 +1,4 @@
-### Testing this app's endpoints in Postman
+## Testing this app's endpoints in Postman
 
 Because the Express app saves user info, including tokens, in a session using [express-session](https://www.npmjs.com/package/express-session), logging in to the various third-party services as per the below instructions for their own endpoints does nothing for the local endpoints.
 
