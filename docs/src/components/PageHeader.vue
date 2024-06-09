@@ -37,17 +37,18 @@ export default defineComponent({
 
 	.page-header {
         background: map-get($colours, 'secondary');
+		color: readableColor(map-get($colours, 'secondary'));
         padding: 1rem;
 		height: 100%;
 
         h1 {
-            margin: 0;
-			color: readableColor(map-get($colours, 'secondary'));
+			margin: 0;
+			color: inherit;
 
 			a {
 				color: inherit;
 				text-decoration: none;
 			}
-        }
+		}
 	}
 </style>;

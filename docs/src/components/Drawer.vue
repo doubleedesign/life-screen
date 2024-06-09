@@ -34,7 +34,7 @@ export default defineComponent({
 		</div>
 		<div :class="['toggle-wrapper']">
 			<IconButton :action="toggle" :label="isOpen ? 'Close panel' : 'Open panel'">
-<!--				<font-awesome-icon :icon="['fas', 'arrow-right']" :class="['toggle-icon', isOpen ? 'toggle-icon&#45;&#45;close' : 'toggle-icon&#45;&#45;open']" />-->
+				<span :class="['pi', 'pi-angle-left', 'toggle-icon', isOpen ? 'toggle-icon--close' : 'toggle-icon--open']"></span>
 			</IconButton>
 		</div>
 	</component>
@@ -86,6 +86,9 @@ export default defineComponent({
 
 		.toggle-icon {
 			transition: all 0.3s ease;
+			transform-origin: center;
+			display: block;
+			line-height: 1;
 
 			&--close {
 				transform: rotate(-180deg);

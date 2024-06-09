@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import compact from 'lodash/compact';
-import MenuList from './MenuList.vue';
+import MenuListInteractive from './MenuListInteractive.vue';
 
 const router = useRouter();
 const topLevelItems = router.getRoutes().filter(route => {
@@ -12,7 +12,7 @@ const topLevelItems = router.getRoutes().filter(route => {
 
 <template>
     <nav class="menu">
-		<MenuList :items="topLevelItems" :depth="2"/>
+		<MenuListInteractive :items="topLevelItems" :depth="3" />
     </nav>
 </template>
 

@@ -1,9 +1,12 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { RouteRecordNormalized, RouteRecordRaw } from 'vue-router';
+import { RouteRecordNormalized, RouteRecordRaw, RouteRecordName } from 'vue-router';
+import MenuListLink from './MenuListLink.vue';
+import MenuListItem from './MenuListItem.vue';
 
 export default defineComponent({
 	name: 'MenuList',
+	components: { MenuListItem, MenuListLink },
 	props: {
 		items: {
 			type: Array as PropType<RouteRecordNormalized[] | RouteRecordRaw[]>,
@@ -11,58 +14,56 @@ export default defineComponent({
 		},
 		depth: {
 			type: Number,
-			default: 5
+			default: 3
+		},
+		count: {
+			type: Number,
+			default: 1
 		},
 		routePrefix: {
 			type: String,
 			default: ''
-		}
+		},
 	},
 	data() {
 		return {
-			count: 0
+			openItemId: '' as RouteRecordName | null
 		};
-	},
-	methods: {
-		incrementCount() {
-			this.count++;
-		}
-	},
-	mounted() {
-		this.incrementCount();
 	},
 });
 </script>
 
 <template>
 	<ul v-if="depth >= count" class="menu-list">
-		<li v-for="item in items" class="menu-list__item">
-			<router-link :to="`${routePrefix && routePrefix + '/'}${item.path}`">{{item.name}}</router-link>
-			<template v-if="item.children && item.children.length > 0">
-				<MenuList :items="item.children"
-						:depth="depth - count"
-						:route-prefix="`${routePrefix && routePrefix + '/'}${item.path}`"
-						class="menu-list__item__link"
+		<MenuListItem v-for="item in items" :key="item.name" :isExpanded="true" :level="count">
+			<template #menu-list-item-link>
+				<MenuListLink :item="item" :route-prefix="routePrefix" :isExpanded="true"/>
+			</template>
+			<template #menu-list-item-submenu>
+				<MenuList v-if="item.children && item.children.length > 0"
+					:items="item.children"
+					:depth="depth"
+					:count="count + 1"
+					:route-prefix="`${routePrefix && routePrefix + '/'}${item.path}`"
+					:class="['menu-list__submenu']"
 				/>
 			</template>
-		</li>
+		</MenuListItem>
 	</ul>
 </template>
 
 <style scoped lang="scss">
+	@import 'tokens';
+	@import 'utils';
+
 	.menu-list {
-		margin: 0 0 1rem 0;
-		padding: 0;
-		list-style: none;
 		width: 100%;
+		list-style: none;
+		padding: 0;
 
-		&__item {
-			display: flex;
-			flex-basis: 100%;
-			flex-wrap: wrap;
-
-			&__link {
-				display: block;
+		&__submenu {
+			.menu-list__item {
+				border-radius: 0;
 			}
 		}
 	}
