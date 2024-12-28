@@ -1,0 +1,124 @@
+openapi: 3.0.3
+info:
+  title: Life Screen
+  description: This is me trying to document my application.
+  version: 2.0.0
+servers:
+  - url: 'http://localhost:3001'
+tags:
+  - name: Lifx Lights
+  - name: Microsoft Graph
+  - name: Google Calendar
+paths:
+  /lifx/setup:
+    patch:
+      summary: Discover lights on the local network and cache them.
+      tags:
+        - Lifx Lights
+      responses:
+        201:
+          description: Array of light data objects.
+        408:
+          description: Discovery operation timed out before any lights were found.
+  /lifx/cache:
+    get:
+      summary: Get summary of lights that have been discovered and cached in this session.
+      tags:
+        - Lifx Lights
+      responses:
+        200:
+          description: Array of light data objects.
+        404:
+          description: No lights found in the cache.
+  /lifx/cache/groups:
+    get:
+      summary: Get summary of light groups that have been discovered and cached in this session.
+      tags:
+        - Lifx Lights
+      responses:
+        200:
+          description: Array of group data objects.
+        404:
+          description: No groups found in the cache.
+  /lifx/cache/:id:
+    get:
+      summary: Get saved details of a specific light.
+      tags:
+        - Lifx Lights
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the light.
+          schema:
+            type: string
+      responses:
+        200:
+          description: Object containing cached light details.
+        404:
+          description: No Light found by that ID.
+    patch:
+      summary: Testing what happens with more then one operation for an endpoint in the spec for documentation.
+      tags:
+        - Lifx Lights
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the light.
+          schema:
+            type: string
+      responses:
+        200:
+          description: Object containing cached light details.
+        404:
+          description: No Light found by that ID.
+  /lifx/:id/state:
+    patch:
+      summary: Fetch/update and cache the current state of a light.
+      tags:
+        - Lifx Lights
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the light.
+          schema:
+            type: string
+      responses:
+        201:
+          description: Object containing the current state of the light.
+        404:
+          description: No light found by that ID.
+  /lifx/:id/device:
+    patch:
+      summary: Fetch/update and cache the hardware information about a light.
+      tags:
+        - Lifx Lights
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the light.
+          schema:
+            type: string
+      responses:
+        201:
+          description: Object containing the hardware and Lifx product type details of the light.
+        404:
+          description: No light found by that ID.
+  /msgraph:
+    get:
+      summary: Current MS Graph user information.
+      tags:
+        - Microsoft Graph
+      responses:
+        200:
+          description: Current user object.
+        400:
+          description: Bad request.
+        404:
+          description: User not found.
+
+
+

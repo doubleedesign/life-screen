@@ -1,39 +1,43 @@
 {
 	"name": "lifescreen-server",
-	"version": "0.0.1",
+	"version": "0.0.3",
 	"private": true,
 	"type": "module",
+	"main": "src/app.ts",
 	"scripts": {
-		"start": "node bin/www",
-		"local": "set NODE_ENV=LOCAL && nodemon --watch",
+		"local": "set NODE_ENV=LOCAL && nodemon",
+		"lifx": "node --experimental-specifier-resolution=node --loader ts-node/esm src/lifx/index.ts --watch",
 		"lint": "eslint"
 	},
+	"engines": {
+		"node": "^20.18.1"
+	},
 	"dependencies": {
-		"@azure/msal-node": "^1.1.0",
-		"@microsoft/microsoft-graph-client": "^3.0.0",
-		"@types/node": "^18.11.9",
-		"connect-flash": "^0.1.1",
-		"cookie-parser": "~1.4.4",
+		"@azure/identity": "^4.5.0",
+		"@microsoft/microsoft-graph-client": "^3.0.7",
+		"@microsoft/microsoft-graph-types": "^2.40.0",
+		"@types/cors": "^2.8.17",
+		"@types/express": "^5.0.0",
+		"@types/express-list-endpoints": "^6.0.3",
+		"@types/lodash": "^4.17.13",
+		"@types/microsoft-graph": "^2.40.0",
+		"@types/node": "^22.10.2",
+		"chalk": "^5.4.1",
 		"cors": "^2.8.5",
-		"date-fns": "^2.22.1",
-		"date-fns-tz": "^1.1.6",
-		"debug": "^4.3.2",
-		"dotenv": "^10.0.0",
-		"express": "^4.17.1",
-		"express-promise-router": "^4.1.0",
-		"express-session": "^1.17.2",
-		"express-validator": "^6.12.0",
-		"hbs": "^4.1.2",
-		"http-errors": "^1.8.0",
-		"isomorphic-fetch": "^3.0.0",
-		"morgan": "^1.10.0",
-		"node-cache": "^5.1.2",
-		"nodemon": "^2.0.20",
-		"ts-node": "^10.9.1",
-		"typescript": "^5.0.2",
-		"windows-iana": "^5.0.2"
+		"date-fns": "^4.1.0",
+		"date-fns-tz": "^3.2.0",
+		"dotenv": "^16.4.7",
+		"express": "^4.21.2",
+		"express-list-endpoints": "^7.1.1",
+		"express-promise-router": "^4.1.1",
+		"googleapis": "^144.0.0",
+		"lifxware": "github:doubleedesign/lifxware#0.1.24",
+		"lodash": "^4.17.21",
+		"p-wait-for": "^5.0.2",
+		"windows-iana": "^5.1.0"
 	},
 	"devDependencies": {
-		"nodemon": "^2.0.20"
+		"nodemon": "^3.1.9",
+		"ts-node": "^10.9.2"
 	}
 }

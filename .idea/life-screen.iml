@@ -8,5 +8,11 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="@types/lodash" level="application" />
+    <orderEntry type="library" name="jest" level="application" />
+    <orderEntry type="library" name="@types/jest" level="application" />
+    <orderEntry type="library" name="vue" level="project" />
+    <orderEntry type="library" name="vue-tsc" level="project" />
+    <orderEntry type="library" name="vue-router" level="project" />
   </component>
 </module>
