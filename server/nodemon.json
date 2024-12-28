@@ -2,5 +2,5 @@
 	"watch": ["./src"],
 	"ext": "ts,js",
 	"ignore": ["node_modules"],
-	"exec": "node --experimental-specifier-resolution=node --loader ts-node/esm src/app.ts --watch"
+	"exec": "NODE_OPTIONS=--enable-source-maps node --trace-uncaught --import ./loader.mjs ./src/app.ts"
 }

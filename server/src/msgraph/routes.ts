@@ -1,24 +1,13 @@
 import Router from 'express-promise-router';
-import graph from './graph.js';
 const router = Router();
-import pick from 'lodash/pick';
-import { CustomResponse, ResponseCode } from '../responses';
+import pick from 'lodash/pick.js';
 
 /**
  * Get user summary
  */
 router.get('/me', async function(req, res) {
 	try {
-		if(!req?.query?.userId) {
-			throw new CustomResponse.Unauthorized('User ID is missing from the request');
-		}
-		if(req?.query?.userId !== req?.session?.msgraph?.userId) {
-			throw new CustomResponse.Unauthorized('User ID does not match the session');
-		}
-		if(!req?.session?.msgraph?.userId) {
-			throw new CustomResponse.Unauthorized('User ID is missing from the session');
-		}
-		const user = await graph.getUserDetails(req.app.locals.cache.msalClient, req.session.msgraph?.userId);
+		const user = await req.app.locals.msGraph.getUserDetails();
 		const profile = {
 			...pick(user, ['id', 'displayName']),
 			email: user.mail,
@@ -28,7 +17,7 @@ router.get('/me', async function(req, res) {
 		res.status(200).json(profile);
 	}
 	catch(error) {
-		res.status(ResponseCode[error.name]).json(`${error.message}. Please try logging in again.`);
+		req.app.locals.msGraph.handleError(error, res);
 	}
 });
 
@@ -38,12 +27,12 @@ router.get('/me', async function(req, res) {
  */
 router.get('/calendars', async function (req, res) {
 	try {
-		const calendars = await graph.getCalendars(req.app.locals.cache.msalClient, req.session.msgraph.userId);
+		const calendars = await req.app.locals.msGraph.getCalendars(req.app.locals.microsoftClient, process.env.MS_USERNAME);
 
 		res.status(200).json(calendars);
 	}
 	catch(error) {
-		res.status(ResponseCode[error.name]).json(error.message);
+		req.app.locals.msGraph.handleError(error, res);
 	}
 });
 
@@ -52,15 +41,14 @@ router.get('/calendars', async function (req, res) {
  * Get upcoming events from a specific calendar by its ID
  */
 router.get('/:calendarId', async function (req, res) {
-
 	try {
 		// Get upcoming events from the calendar specified by ID in the request
-		const response = await graph.getCalendarEvents(req.app.locals.cache.msalClient, req.session.msgraph.userId, req.params.calendarId, req.query.weeks);
+		const weeks = req.query.weeks ? parseInt(req.query.weeks as string) : 1; // TODO: Proper validation
+		const response = await req.app.locals.msGraph.getCalendarEvents(req.params.calendarId, weeks);
 
 		// Compile events data into the desired response format
 		// Note: To retrieve more fields, edit the getCalendarEvents function
 		const events = response.value.map((event) => {
-
 			return {
 				what: event.subject,
 				when: event.isAllDay ? { start: event.start } : { start: event.start, end: event.end },
@@ -75,9 +63,8 @@ router.get('/:calendarId', async function (req, res) {
 		res.status(200).json(events);
 	}
 	catch(error) {
-		res.status(ResponseCode[error.name]).json(error.message);
+		req.app.locals.msGraph.handleError(error, res);
 	}
-
 });
 
 

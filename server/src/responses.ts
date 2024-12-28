@@ -14,6 +14,7 @@ enum ResponseCodes {
 
 export const ResponseCode = {
 	Unauthorized: ResponseCodes.UNAUTHORIZED,
+	AuthenticationRequiredError: ResponseCodes.UNAUTHORIZED,
 	Forbidden: ResponseCodes.FORBIDDEN,
 	SuccessFound: ResponseCodes.OK,
 	SuccessCreated: ResponseCodes.CREATED,
@@ -33,38 +34,3 @@ export const ResponseMessage = {
 		Lights: 'No lights found, maybe you need to run setup again'
 	}
 };
-
-// TODO: Replace usages with CustomResponses.NotFoundError
-export class NotFoundError extends Error {
-	name: string;
-
-	constructor(props: string) {
-		super(props);
-		this.message = props;
-		this.name = 'NotFoundError';
-	}
-}
-
-type ResponseClasses = {
-	[key in keyof typeof ResponseCode]: typeof Error;
-}
-
-function generateResponseClasses(): ResponseClasses {
-	const responseClasses: ResponseClasses = {} as ResponseClasses;
-	Object.entries(ResponseCode).forEach(([key, value]) => {
-		responseClasses[key] = class extends Error {
-			name: string;
-			code: number;
-
-			constructor(message: string) {
-				super(message);
-				this.message = message;
-				this.name = key;
-				this.code = value;
-			}
-		};
-	});
-
-	return responseClasses;
-}
-export const CustomResponse: ResponseClasses = generateResponseClasses();

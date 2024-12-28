@@ -3,7 +3,7 @@ import { LightNetwork } from './LightNetwork';
 import chalk from 'chalk';
 import { FancyLight, LightState } from './types';
 import { Group } from 'lifxware/dist/packets/group/group';
-import { ResponseCode } from '../responses';
+import { ResponseCode } from '../responses.ts';
 const router = Router();
 
 const network = new LightNetwork();

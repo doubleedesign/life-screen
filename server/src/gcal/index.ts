@@ -1,5 +1,5 @@
-import auth from './auth';
-import routes from './routes';
+import auth from './auth.js';
+import routes from './routes.ts';
 import Router from 'express-promise-router';
 const router = Router();
 

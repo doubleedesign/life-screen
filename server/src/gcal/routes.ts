@@ -1,9 +1,9 @@
 import Router from 'express-promise-router';
-import { ResponseCode } from '../responses';
+import { ResponseCode } from '../responses.ts';
 import { calendar } from 'googleapis/build/src/apis/calendar';
 import chalk from 'chalk';
 const router = Router();
-import pick from 'lodash/pick';
+import pick from 'lodash/pick.js';
 
 /**
  * Get user summary
